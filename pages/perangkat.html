@@ -1,11 +1,472 @@
 <!doctype html>
-<html lang="en">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perangkat Ajar</title>
+    <title>Perangkat Ajar | neoguru</title>
+
+    <!-- FontAwesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Tailwind CSS Output File -->
+    <link rel="stylesheet" href="../src/output.css" />
+
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      body {
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+    </style>
   </head>
-  <body>
-    <p>Perangkat</p>
+  <body
+    class="bg-brand-white text-gray-800 dark:bg-brand-darkbg dark:text-gray-200 antialiased selection:bg-brand-secondary selection:text-white pt-24"
+  >
+    <nav
+      class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="../index.html#home" class="w-36">
+              <img
+                class=""
+                src="../pic/neo-logo.png"
+                alt="home-logo"
+                onerror="
+                  this.src =
+                    'https://placehold.co/150x50/2F318B/FFFFFF?text=neoguru'
+                "
+              />
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-6 items-center">
+            <a
+              href="../index.html#home"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Beranda</a
+            >
+            <a
+              href="../index.html#profil"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Profil</a
+            >
+            <a
+              href="../index.html#perangkat"
+              class="text-sm font-medium text-brand-secondary transition border-b-2 border-brand-secondary pb-1"
+              >Perangkat</a
+            >
+            <a
+              href="../index.html#media"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Media</a
+            >
+            <a
+              href="../index.html#portofolio"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Portofolio</a
+            >
+            <a
+              href="../index.html#kontak"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Kontak</a
+            >
+
+            <!-- Dark Mode Toggle -->
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center space-x-4">
+            <button
+              id="theme-toggle-mobile"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >
+              <i class="fas fa-moon" id="theme-icon-mobile"></i>
+            </button>
+            <button
+              id="mobile-menu-btn"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand-primary focus:outline-none"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white dark:bg-brand-darkbg border-b border-gray-200 dark:border-gray-800"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="../index.html#home"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Beranda</a
+          >
+          <a
+            href="../index.html#profil"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Profil</a
+          >
+          <a
+            href="../index.html#perangkat"
+            class="block px-3 py-2 rounded-md text-base font-bold bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >Perangkat Ajar</a
+          >
+          <a
+            href="../index.html#media"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Media Pembelajaran</a
+          >
+          <a
+            href="../index.html#portofolio"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Portofolio Murid</a
+          >
+          <a
+            href="../index.html#kontak"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Kontak</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="min-h-screen pb-20">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <!-- Header Section -->
+        <div class="mb-12 text-center">
+          <h1
+            class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+          >
+            Pilih <span class="text-brand-secondary">Mata Pelajaran</span>
+          </h1>
+          <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Silakan pilih bidang mata pelajaran di bawah ini untuk melihat
+            pilihan kategori dokumen dan mengakses materi pembelajaran di Google
+            Drive.
+          </p>
+        </div>
+
+        <!-- 3 Cards Mata Pelajaran (Dengan Sub-Menu Terintegrasi) -->
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-10 items-start">
+          <!-- Card 1: Informatika -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 shadow-sm transition overflow-hidden"
+          >
+            <!-- Area yang bisa diklik -->
+            <div
+              onclick="toggleKategori('kat-informatika')"
+              class="cursor-pointer p-8 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition text-center group"
+            >
+              <div
+                class="w-16 h-16 mx-auto mb-6 rounded-xl bg-brand-accent/40 dark:bg-gray-800 flex items-center justify-center text-brand-primary dark:text-brand-secondary text-2xl group-hover:scale-110 transition"
+              >
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Informatika
+              </h3>
+
+              <div
+                class="text-brand-secondary text-xs font-bold uppercase tracking-wider"
+              >
+                <i class="fas fa-chevron-down mr-1"></i> Lihat Kategori
+              </div>
+            </div>
+
+            <!-- Area Sub-Menu Kategori (Tersembunyi by default) -->
+            <div
+              id="kat-informatika"
+              class="hidden border-t-2 border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 p-6 space-y-3"
+            >
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-book-reader"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+                >
+                  Modul / Rencana
+                </h4>
+              </a>
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-file-powerpoint"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+                >
+                  Materi Presentasi
+                </h4>
+              </a>
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+                >
+                  Lembar Diskusi
+                </h4>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2: Koding dan AI -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 shadow-sm transition overflow-hidden"
+          >
+            <div
+              onclick="toggleKategori('kat-koding')"
+              class="cursor-pointer p-8 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition text-center group"
+            >
+              <div
+                class="w-16 h-16 mx-auto mb-6 rounded-xl bg-brand-accent/40 dark:bg-gray-800 flex items-center justify-center text-brand-primary dark:text-brand-secondary text-2xl group-hover:scale-110 transition"
+              >
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Koding & Kecerdasan Artifisial
+              </h3>
+
+              <div
+                class="text-brand-secondary text-xs font-bold uppercase tracking-wider"
+              >
+                <i class="fas fa-chevron-down mr-1"></i> Lihat Kategori
+              </div>
+            </div>
+
+            <div
+              id="kat-koding"
+              class="hidden border-t-2 border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 p-6 space-y-3"
+            >
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-book-reader"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary transition"
+                >
+                  Modul / Rencana
+                </h4>
+              </a>
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-file-powerpoint"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary transition"
+                >
+                  Materi Presentasi
+                </h4>
+              </a>
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary transition"
+                >
+                  Lembar Diskusi
+                </h4>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3: Lainnya -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 shadow-sm transition overflow-hidden"
+          >
+            <div
+              onclick="toggleKategori('kat-lainnya')"
+              class="cursor-pointer p-8 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition text-center group"
+            >
+              <div
+                class="w-16 h-16 mx-auto mb-6 rounded-xl bg-brand-accent/40 dark:bg-gray-800 flex items-center justify-center text-brand-primary dark:text-brand-secondary text-2xl group-hover:scale-110 transition"
+              >
+                <i class="fas fa-folder-open"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Dokumen Lainnya
+              </h3>
+
+              <div
+                class="text-brand-secondary text-xs font-bold uppercase tracking-wider"
+              >
+                <i class="fas fa-chevron-down mr-1"></i> Lihat Dokumen
+              </div>
+            </div>
+
+            <div
+              id="kat-lainnya"
+              class="hidden border-t-2 border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 p-6 space-y-3"
+            >
+              <a
+                href="#"
+                class="flex items-center p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-primary dark:hover:border-brand-secondary transition group"
+              >
+                <div class="text-brand-secondary text-lg w-8">
+                  <i class="fas fa-book"></i>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-primary transition"
+                >
+                  Buka Dokumen
+                </h4>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="kontak" class="bg-gray-900 text-white pt-5 pb-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16"
+        >
+          <!-- Branding -->
+          <div class="col-span-1 md:col-span-2">
+            <img
+              class="w-50 mb-4"
+              src="../pic/neo-logo.png"
+              alt="neo-logo"
+              onerror="
+                this.src =
+                  'https://placehold.co/150x50/2F318B/FFFFFF?text=neoguru'
+              "
+            />
+            <p class="text-gray-400 mb-6 max-w-md">
+              Mendedikasikan diri untuk pendidikan teknologi yang inklusif,
+              menyenangkan, dan relevan dengan kebutuhan masa depan.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="https://www.facebook.com/hanifnurf1999"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/hanifnur_f"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@neoguruID"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Tautan Cepat</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a
+                  href="../index.html#home"
+                  class="hover:text-brand-secondary transition"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#profil"
+                  class="hover:text-brand-secondary transition"
+                  >Profil</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#perangkat"
+                  class="hover:text-brand-secondary transition"
+                  >Perangkat Ajar</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#media"
+                  class="hover:text-brand-secondary transition"
+                  >Media Pembelajaran</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Kontak</h4>
+            <ul class="space-y-4 text-gray-400">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-envelope mt-1 text-brand-secondary"></i>
+                <span>hanif.nur3514@guru.smp.belajar.id</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i
+                  class="fas fa-map-marker-alt mt-1 text-brand-secondary mr-1"
+                ></i>
+                <span>Kepahiang, Indonesia</span>
+              </li>
+            </ul>
+            <a
+              href="mailto:hanif.nur3514@guru.smp.belajar.id"
+              class="mt-6 inline-block w-full text-center px-4 py-2 bg-brand-primary hover:bg-brand-secondary transition rounded-lg font-medium"
+            >
+              Kirim Email
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"
+        >
+          <p>&copy; 2026 Hanif Nur Fadhil. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js"></script>
   </body>
 </html>

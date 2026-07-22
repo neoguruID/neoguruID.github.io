@@ -61,3 +61,20 @@ mobileLinks.forEach((link) => {
     mobileMenu.classList.add("hidden");
   });
 });
+
+// SCRIPT FOR PERANGKAT
+// Interactive Mapel Selection Logic (Accordion Style)
+function toggleKategori(id) {
+  const elemenTarget = document.getElementById(id);
+
+  // Opsional: Tutup semua sub-menu yang lain saat satu dibuka
+  const semuaId = ["kat-informatika", "kat-koding", "kat-lainnya"];
+  semuaId.forEach((katId) => {
+    if (katId !== id) {
+      document.getElementById(katId).classList.add("hidden");
+    }
+  });
+
+  // Toggle (buka/tutup) sub-menu yang diklik
+  elemenTarget.classList.toggle("hidden");
+}
