@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neoguru - Hanif Nur Fadhil | Guru Informatika</title>
+
+    FontAwesome for Icons
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="src/output.css" />
+
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      /* Custom base styles for smooth transitions */
+      body {
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-white text-gray-800 dark:bg-brand-darkbg dark:text-gray-200 font-sans antialiased selection:bg-brand-secondary selection:text-white"
+  >
+    <nav
+      class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="#home" class="w-36">
+              <img class="" src="pic/neo-logo.png" alt="home-logo" />
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-6 items-center">
+            <a
+              href="#home"
+              class="text-sm font-medium text-brand-secondary transition border-b-2 border-brand-secondary pb-1"
+              >Beranda</a
+            >
+            <a
+              href="#profil"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Profil</a
+            >
+            <a
+              href="#catatan"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Catatan</a
+            >
+            <a
+              href="#perangkat"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Perangkat</a
+            >
+            <a
+              href="#media"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Media</a
+            >
+            <a
+              href="#portofolio"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Portofolio</a
+            >
+            <a
+              href="#kontak"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Kontak</a
+            >
+
+            <!-- Dark Mode Toggle -->
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center space-x-4">
+            <button
+              id="theme-toggle-mobile"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >
+              <i class="fas fa-moon" id="theme-icon-mobile"></i>
+            </button>
+            <button
+              id="mobile-menu-btn"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand-primary focus:outline-none"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white dark:bg-brand-darkbg border-b border-gray-200 dark:border-gray-800"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#home"
+            class="block px-3 py-2 rounded-md text-base font-bold bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >Beranda</a
+          >
+          <a
+            href="#profil"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Profil</a
+          >
+          <a
+            href="#catatan"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Catatan Mengajar</a
+          >
+          <a
+            href="#perangkat"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Perangkat Ajar</a
+          >
+          <a
+            href="#media"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Media Pembelajaran</a
+          >
+          <a
+            href="#portofolio"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Portofolio Murid</a
+          >
+          <a
+            href="#kontak"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Kontak</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <section
+      id="home"
+      class="pt-32 pb-20 md:pt-48 md:pb-32 px-4 relative overflow-hidden"
+    >
+      <!-- Decorative Background Blob -->
+      <div
+        class="absolute top-0 right-0 -z-10 w-96 h-96 bg-brand-accent rounded-full mix-blend-multiply filter blur-3xl opacity-50 dark:opacity-10 dark:bg-brand-primary animate-blob"
+      ></div>
+      <div
+        class="absolute top-0 left-20 -z-10 w-72 h-72 bg-brand-secondary rounded-full mix-blend-multiply filter blur-3xl opacity-30 dark:opacity-10 dark:bg-brand-secondary animate-blob animation-delay-2000"
+      ></div>
+
+      <div class="max-w-7xl mx-auto text-center">
+        <h2
+          class="text-brand-secondary font-semibold tracking-wide uppercase text-sm md:text-base mb-3"
+        >
+          Selamat Datang di neoguru
+        </h2>
+        <h1
+          class="text-4xl md:text-6xl font-bold leading-tight text-grey-900 dark:text-white"
+        >
+          Halo,
+        </h1>
+        <h1
+          class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-grey-900 dark:text-white"
+        >
+          Saya
+          <span class="text-brand-primary dark:text-brand-secondary"
+            >Hanif Nur Fadhil</span
+          >. <br />
+          Guru Informatika & Kreator.
+        </h1>
+        <p
+          class="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10"
+        >
+          Membangun nalar komputasional, mengembangkan media interaktif, dan
+          mempersiapkan generasi digital masa depan.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="#perangkat"
+            class="px-8 py-3 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/30"
+          >
+            Lihat Perangkat Ajar
+          </a>
+          <a
+            href="#kontak"
+            class="px-8 py-3 rounded-full border-2 border-brand-primary dark:border-brand-secondary text-brand-primary dark:text-brand-secondary font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-800 transition"
+          >
+            Kontak Saya
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="profil" class="py-20 bg-gray-50 dark:bg-gray-950">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+          <div class="w-full md:w-1/2">
+            <div class="relative">
+              <!-- Profile Image Placeholder -->
+              <img
+                src="pic/photo-profile.jpg"
+                alt="photo profile"
+                class="rounded-2xl shadow-xl w-full object-cover aspect-square border-4 border-brand-accent dark:border-gray-800"
+              />
+              <div
+                class="absolute -bottom-6 -right-6 bg-brand-secondary text-white p-4 rounded-xl shadow-lg"
+              >
+                <!-- <p class="font-bold text-2xl">2+ Tahun</p> -->
+                <p class="text-sm">Mendidik dan Menginspirasi</p>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/2">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+              <span class="border-b-4 border-brand-secondary pb-1">Profil</span>
+              Saya
+            </h2>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-4 text-lg leading-relaxed"
+            >
+              Saya adalah seorang guru di SMP Negeri 02 Bermani Ilir, Kabupaten
+              Kepahiang, Provinsi Bengkulu. Saya memilih jalan untuk mengabdi di
+              ruang kelas, membangun manusia dan membantu siswa mencapai potensi
+              terbaik mereka.
+            </p>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed"
+            >
+              Selain mengajar di kelas, saya aktif mengembangkan modul
+              pembelajaran, game edukasi, dan membimbing siswa dalam berbagai
+              kegiatan.
+            </p>
+            <div class="flex">
+              <a
+                href="pages/profile.html"
+                class="mx-auto inline-block px-6 py-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-white font-medium hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+                >Baca Profil Selengkapnya</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="catatan" class="py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+            <span class="border-b-4 border-brand-secondary pb-1">Catatan</span>
+            Mengajar
+          </h2>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">
+            Refleksi, cerita dari ruang kelas, dan tulisan seputar pendidikan
+            lainnya.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition group"
+          >
+            <img
+              src="https://placehold.co/600x400/D0E5F2/2F318B?text=Lab+Komputer"
+              alt="Blog 1"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <div class="text-sm text-brand-secondary mb-2">12 Juli 2026</div>
+              <h3
+                class="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+              >
+                Mengatasi "Bugs" Semangat Siswa di Jam Terakhir
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                Membagikan strategi gamifikasi sederhana saat energi siswa mulai
+                habis di lab komputer pada jam pelajaran terakhir.
+              </p>
+              <a
+                href="#"
+                class="text-brand-primary dark:text-brand-secondary font-medium hover:underline"
+                >Baca selengkapnya &rarr;</a
+              >
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition group"
+          >
+            <img
+              src="https://placehold.co/600x400/D0E5F2/2F318B?text=Scratch+Programming"
+              alt="Blog 2"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <div class="text-sm text-brand-secondary mb-2">28 Juni 2026</div>
+              <h3
+                class="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+              >
+                Mengenalkan Computational Thinking dengan Scratch
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                Mengapa block programming sangat penting sebelum siswa menyentuh
+                sintaks bahasa pemrograman teks.
+              </p>
+              <a
+                href="#"
+                class="text-brand-primary dark:text-brand-secondary font-medium hover:underline"
+                >Baca selengkapnya &rarr;</a
+              >
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition group"
+          >
+            <img
+              src="https://placehold.co/600x400/D0E5F2/2F318B?text=AI+di+Kelas"
+              alt="Blog 3"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <div class="text-sm text-brand-secondary mb-2">05 Juni 2026</div>
+              <h3
+                class="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-brand-primary dark:group-hover:text-brand-secondary transition"
+              >
+                AI: Ancaman atau Asisten untuk Guru?
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                Opini saya tentang bagaimana AI generatif bisa membantu kita
+                menyusun RPP dan merancang studi kasus yang relevan.
+              </p>
+              <a
+                href="#"
+                class="text-brand-primary dark:text-brand-secondary font-medium hover:underline"
+                >Baca selengkapnya &rarr;</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-10">
+          <a
+            href="pages/artikel.html"
+            class="inline-block px-6 py-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-white font-medium hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+            >Lihat Semua Tulisan</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section id="perangkat" class="py-20 bg-brand-primary text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row justify-between items-end mb-12">
+          <div class="max-w-2xl">
+            <h2 class="text-3xl font-bold text-white">
+              <span class="border-b-4 border-brand-secondary pb-1"
+                >Perangkat</span
+              >
+              Ajar
+            </h2>
+            <p class="mt-6 text-brand-accent text-lg">
+              Kumpulan modul, silabus, dan materi presentasi yang saya gunakan.
+              Silakan diunduh dan disesuaikan untuk kebutuhan kelas Bapak/Ibu.
+            </p>
+          </div>
+          <div class="mt-6 lg:mt-0">
+            <a
+              href="pages/perangkat.html"
+              class="px-6 py-2 rounded-full border border-brand-secondary text-brand-secondary hover:bg-brand-secondary hover:text-white transition font-medium"
+            >
+              Buka Selengkapnya
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Material Item -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 flex justify-between items-center hover:bg-white/20 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-brand-secondary/20 rounded-lg flex items-center justify-center text-brand-secondary text-xl"
+              >
+                <i class="fas fa-book"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">
+                  Modul Ajar: Jaringan Dasar (Kelas X)
+                </h4>
+                <p class="text-sm text-brand-accent">
+                  PDF • 2.4 MB • Update: Jan 2026
+                </p>
+              </div>
+            </div>
+            <button
+              class="p-3 text-brand-secondary hover:text-white transition"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+          <!-- Material Item -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 flex justify-between items-center hover:bg-white/20 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-brand-secondary/20 rounded-lg flex items-center justify-center text-brand-secondary text-xl"
+              >
+                <i class="fas fa-book"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">
+                  Slide: Etika Digital & Keamanan Siber
+                </h4>
+                <p class="text-sm text-brand-accent">
+                  PPTX • 5.1 MB • Update: Mar 2026
+                </p>
+              </div>
+            </div>
+            <button
+              class="p-3 text-brand-secondary hover:text-white transition"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+          <!-- Material Item -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 flex justify-between items-center hover:bg-white/20 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-brand-secondary/20 rounded-lg flex items-center justify-center text-brand-secondary text-xl"
+              >
+                <i class="fas fa-book"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">
+                  Starter Code: Intro to HTML/CSS
+                </h4>
+                <p class="text-sm text-brand-accent">
+                  ZIP • 1.2 MB • Update: Mei 2026
+                </p>
+              </div>
+            </div>
+            <button
+              class="p-3 text-brand-secondary hover:text-white transition"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+          <!-- Material Item -->
+          <div
+            class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 flex justify-between items-center hover:bg-white/20 transition"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-brand-secondary/20 rounded-lg flex items-center justify-center text-brand-secondary text-xl"
+              >
+                <i class="fas fa-book"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">RPP Merdeka Belajar (Fase E)</h4>
+                <p class="text-sm text-brand-accent">
+                  DOCX • 3.0 MB • Update: Jun 2026
+                </p>
+              </div>
+            </div>
+            <button
+              class="p-3 text-brand-secondary hover:text-white transition"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="media" class="py-20 bg-brand-accent/20 dark:bg-gray-950">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+            <span class="border-b-4 border-brand-secondary pb-1">Media</span>
+            Pembelajaran
+          </h2>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">
+            Aplikasi interaktif dan game edukasi yang saya kembangkan untuk
+            mempermudah pemahaman siswa.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Media Card -->
+          <div
+            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+          >
+            <div
+              class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
+            >
+              <i class="fas fa-network-wired"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 dark:text-white">
+              NetSim (Network Simulator)
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+              Aplikasi web sederhana untuk mensimulasikan topologi jaringan dan
+              pengalamatan IP. Dibuat dengan HTML Canvas dan JS.
+            </p>
+            <a
+              href="#"
+              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Coba Aplikasi &rarr;</a
+            >
+          </div>
+
+          <!-- Media Card -->
+          <div
+            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+          >
+            <div
+              class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
+            >
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 dark:text-white">LogicBot</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+              Game edukasi memprogram gerakan robot melewati rintangan
+              menggunakan blok logika if-else dan perulangan.
+            </p>
+            <a
+              href="#"
+              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Mainkan Game &rarr;</a
+            >
+          </div>
+
+          <!-- Media Card -->
+          <div
+            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+          >
+            <div
+              class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
+            >
+              <i class="fas fa-database"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 dark:text-white">
+              SQL Adventure
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+              Petualangan teks interaktif di mana siswa harus menulis query SQL
+              yang benar untuk memecahkan misteri dan lanjut ke level
+              berikutnya.
+            </p>
+            <a
+              href="#"
+              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Mulai Petualangan &rarr;</a
+            >
+          </div>
+        </div>
+        <div class="flex mx-auto mt-7">
+          <a
+            href="pages/media-pembelajaran.html"
+            class="mx-auto inline-block px-6 py-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-white font-medium hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+            >Lihat Semua Media Pembelajaran</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section id="portofolio" class="py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+            <span class="border-b-4 border-brand-secondary pb-1"
+              >Portofolio</span
+            >
+            Murid
+          </h2>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">
+            Hasil karya kebanggaan dari siswa-siswi yang telah menyelesaikan
+            projek akhir mereka.
+          </p>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div
+            class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
+          >
+            <img
+              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=Web+Profil"
+              alt="Karya 1"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
+            >
+              <h4 class="text-white font-bold">Web Pariwisata</h4>
+              <p class="text-brand-accent text-xs">Oleh: Budi (Kelas XI)</p>
+            </div>
+          </div>
+          <div
+            class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
+          >
+            <img
+              src="https://placehold.co/400x400/2F318B/FFFFFF?text=IoT+Project"
+              alt="Karya 2"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
+            >
+              <h4 class="text-white font-bold">Smart Trash Bin</h4>
+              <p class="text-brand-accent text-xs">Oleh: Tim IoT (Kelas XII)</p>
+            </div>
+          </div>
+          <div
+            class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
+          >
+            <img
+              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=Python+App"
+              alt="Karya 3"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
+            >
+              <h4 class="text-white font-bold">Aplikasi Kasir Teks</h4>
+              <p class="text-brand-accent text-xs">Oleh: Siti (Kelas X)</p>
+            </div>
+          </div>
+          <div
+            class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
+          >
+            <img
+              src="https://placehold.co/400x400/2F318B/FFFFFF?text=Animasi"
+              alt="Karya 4"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
+            >
+              <h4 class="text-white font-bold">Animasi Cerita Rakyat</h4>
+              <p class="text-brand-accent text-xs">Oleh: Anton (Kelas X)</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-10">
+          <a
+            href="pages/portofolio-murid.html"
+            class="text-brand-primary dark:text-brand-secondary font-medium hover:underline"
+            >Lihat Galeri Penuh &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <footer id="kontak" class="bg-gray-900 text-white pt-5 pb-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16"
+        >
+          <!-- Branding -->
+          <div class="col-span-1 md:col-span-2">
+            <img class="w-50 mb-4" src="pic/neo-logo.png" alt="neo-logo" />
+            <p class="text-gray-400 mb-6 max-w-md">
+              Mendedikasikan diri untuk pendidikan teknologi yang inklusif,
+              menyenangkan, dan relevan dengan kebutuhan masa depan.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="https://www.facebook.com/hanifnurf1999"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/hanifnur_f"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@neoguruID"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Tautan Cepat</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a href="#home" class="hover:text-brand-secondary transition"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a href="#profil" class="hover:text-brand-secondary transition"
+                  >Profil</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#perangkat"
+                  class="hover:text-brand-secondary transition"
+                  >Perangkat Ajar</a
+                >
+              </li>
+              <li>
+                <a href="#media" class="hover:text-brand-secondary transition"
+                  >Media Pembelajaran</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Kontak</h4>
+            <ul class="space-y-4 text-gray-400">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-envelope mt-1 text-brand-secondary"></i>
+                <span>hanif.nur3514@guru.smp.belajar.id</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i
+                  class="fas fa-map-marker-alt mt-1 text-brand-secondary mr-1"
+                ></i>
+                <span>Kepahiang, Indonesia</span>
+              </li>
+            </ul>
+            <a
+              href="mailto:hanif.nur3514@guru.smp.belajar.id"
+              class="mt-6 inline-block w-full text-center px-4 py-2 bg-brand-primary hover:bg-brand-secondary transition rounded-lg font-medium"
+            >
+              Kirim Email
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"
+        >
+          <p>&copy; 2026 Hanif Nur Fadhil. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

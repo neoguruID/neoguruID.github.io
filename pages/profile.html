@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil John Doe | neoguru</title>
+
+    <!-- FontAwesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../src/output.css" />
+
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+
+      body {
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+      /* Animasi kustom untuk pattern background */
+      .bg-pattern {
+        background-image: radial-gradient(var(--tw-gradient-stops));
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-white text-gray-800 dark:bg-brand-darkbg dark:text-gray-200 font-sans antialiased selection:bg-brand-secondary selection:text-white"
+  >
+    <nav
+      class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="../index.html" class="w-36">
+              <img class="" src="../pic/neo-logo.png" alt="home-logo" />
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-6 items-center">
+            <a
+              href="../index.html"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Beranda</a
+            >
+            <a
+              href="profil.html"
+              class="text-sm font-medium text-brand-secondary transition border-b-2 border-brand-secondary pb-1"
+              >Profil</a
+            >
+            <a
+              href="../index.html#catatan"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Catatan</a
+            >
+            <a
+              href="../index.html#perangkat"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Perangkat</a
+            >
+            <a
+              href="../index.html#media"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Media</a
+            >
+            <a
+              href="../index.html#portofolio"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Portofolio</a
+            >
+            <a
+              href="#kontak"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Kontak</a
+            >
+
+            <!-- Dark Mode Toggle -->
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center space-x-4">
+            <button
+              id="theme-toggle-mobile"
+              class="p-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >
+              <i class="fas fa-moon" id="theme-icon-mobile"></i>
+            </button>
+            <button
+              id="mobile-menu-btn"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand-primary focus:outline-none"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white dark:bg-brand-darkbg border-b border-gray-200 dark:border-gray-800"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="../index.html"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Beranda</a
+          >
+          <a
+            href="profil.html"
+            class="block px-3 py-2 rounded-md text-base font-bold bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary"
+            >Profil</a
+          >
+          <a
+            href="../index.html#catatan"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Catatan Mengajar</a
+          >
+          <a
+            href="../index.html#perangkat"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Perangkat Ajar</a
+          >
+          <a
+            href="../index.html#media"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Media Pembelajaran</a
+          >
+          <a
+            href="../index.html#portofolio"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Portofolio Murid</a
+          >
+          <a
+            href="../index.html#kontak"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Kontak</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-24 pb-12">
+      <!-- Hero Section Profil -->
+      <section class="py-12 md:py-20 px-4 relative overflow-hidden">
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl bg-brand-accent/40 dark:bg-brand-primary/10 rounded-full mix-blend-multiply filter blur-3xl -z-10"
+        ></div>
+
+        <div class="max-w-4xl mx-auto text-center">
+          <h1
+            class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white"
+          >
+            Mengenal Lebih Dekat
+          </h1>
+          <p class="text-xl text-brand-secondary font-medium tracking-wide">
+            Guru Informatika & Pengembang Teknologi Edukasi
+          </p>
+        </div>
+      </section>
+
+      <!-- Biografi & Perjalanan -->
+      <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col lg:flex-row gap-16 items-start">
+            <!-- Foto & Quick Info -->
+            <div class="w-full lg:w-1/3">
+              <div class="sticky top-28">
+                <img
+                  src="../pic/photo-profile.jpg"
+                  alt="Foto Profil"
+                  class="rounded-2xl shadow-2xl w-full object-cover aspect-[4/5] mb-6 border-8 border-white dark:border-gray-900"
+                />
+
+                <div
+                  class="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm"
+                >
+                  <h3
+                    class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2 text-gray-900 dark:text-white"
+                  >
+                    Informasi Singkat
+                  </h3>
+                  <ul class="space-y-3 text-sm">
+                    <li class="flex items-center gap-3">
+                      <i
+                        class="fas fa-graduation-cap text-brand-secondary w-5"
+                      ></i>
+                      <span class="text-gray-600 dark:text-gray-400"
+                        >S1 Pendidikan Kimia, Universitas Bengkulu</span
+                      >
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i
+                        class="fas fa-map-marker-alt text-brand-secondary w-5"
+                      ></i>
+                      <span class="text-gray-600 dark:text-gray-400"
+                        >Kepahiang, Indonesia</span
+                      >
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i class="fas fa-briefcase text-brand-secondary w-5"></i>
+                      <span class="text-gray-600 dark:text-gray-400"
+                        >Guru di SMP Negeri 02 Bermani Ilir</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teks Detail Biografi -->
+            <div
+              class="w-full lg:w-2/3 prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-a:text-brand-secondary max-w-none"
+            >
+              <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+                Dari Pembelajar Menjadi Pendidik
+              </h2>
+
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                Halo! Saya Hanif Nur Fadhil. Ketertarikan saya pada teknologi
+                sejujurnya telah tumbuh sejak saya masih seorang siswa Sekolah
+                Dasar. Rasa penasaran terhadap komputer yang saat itu masih
+                asing bagi saya selalu membuat saya ingin tahu lebih banyak.
+              </p>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                Titik balik yang makin menebalkan minat saya di bidang teknologi
+                (khususnya coding) terjadi saat SMA. Saya yang merupakan siswa
+                baru kelas 10, diberi kepercayaan oleh guru sekaligus mentor
+                saya untuk mengikuti OSN Bidang Komputer. Mengejutkan sekali,
+                ternyata saya berhasil meraih Juara 1 di tingkat Kabupaten. Dari
+                situ kepercayaan diri saya tumbuh, dan minat saya terhadap
+                coding semakin besar.
+              </p>
+
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                Seiring berjalannya waktu, pengalaman saya sebagai pembelajar
+                ternyata menumbuhkan dorongan kuat dalam diri saya untuk juga
+                menjadi seorang pendidik. Saya ingin memantik kepercayaan diri
+                siswa, mengasahnya, dan mengoptimalkan potensi mereka, sama
+                seperti yang telah guru-guru saya lakukan untuk mengubah dan
+                membentuk saya.
+              </p>
+
+              <h3
+                class="text-2xl font-bold mt-10 mb-4 text-gray-900 dark:text-white"
+              >
+                Visi Pembelajaran Saya
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                Bagi saya, belajar Informatika bukan semata-mata mencetak anak
+                menjadi programmer. Tapi untuk melatih penalaran sistematis dan
+                pemecahan masalah. Keterampilan ini akan berguna untuk apapun
+                profesi mereka kelak, baik sebagai dokter, seniman, maupun
+                wirausahawan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filosofi Mengajar & Metode -->
+      <section class="py-20 bg-gray-50 dark:bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+              <span class="border-b-4 border-brand-secondary pb-1"
+                >Pendekatan</span
+              >
+              di Kelas
+            </h2>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
+              Bagaimana saya merancang pengalaman belajar bagi siswa.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Filosofi 1 -->
+            <div
+              class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-2xl flex items-center justify-center text-3xl mb-6"
+              >
+                <i class="fas fa-project-diagram"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                Project-Based Learning
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed"
+              >
+                Siswa belajar teori sambil mengerjakan proyek nyata.
+              </p>
+            </div>
+            <!-- Filosofi 2 -->
+            <div
+              class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-2xl flex items-center justify-center text-3xl mb-6"
+              >
+                <i class="fas fa-gamepad"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                Gamifikasi Pembelajaran
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed"
+              >
+                Saya mengembangkan mini-game edukasi dan menerapkannya di
+                pembelajaran agar pembelajaran menjadi menyenangkan.
+              </p>
+            </div>
+            <!-- Filosofi 3 -->
+            <div
+              class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-2xl flex items-center justify-center text-3xl mb-6"
+              >
+                <i class="fas fa-hourglass-2"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                Berorientasi Pada Proses
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed"
+              >
+                Saya selalu menanamkan pada siswa, bahwa hasil akhir bukan
+                segalanya. Justru proses perjalanan kita yang menuntun kita
+                untuk belajar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Keahlian & Teknologi -->
+      <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="w-full md:w-1/3">
+              <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Keterampilan & Keahlian
+              </h2>
+              <p class="text-gray-600 dark:text-gray-400">
+                Sebagai guru Informatika, ini adalah teknologi yang sering saya
+                gunakan baik di dalam kelas maupun saat mengembangkan media
+                pembelajaran.
+              </p>
+            </div>
+
+            <div class="w-full md:w-2/3">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Skill Badges -->
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fab fa-python text-4xl text-[#3776AB] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >Python</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fab fa-html5 text-4xl text-[#E34F26] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >HTML</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fab fa-css3-alt text-4xl text-[#4479A1] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >CSS</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fab fa-js text-4xl text-[#F7DF1E] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >JavaScript</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fas fa-cat text-4xl text-[#4D97FF] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >Scratch</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-brand-secondary transition"
+                >
+                  <i class="fas fa-microchip text-4xl text-[#00979D] mb-2"></i>
+                  <span
+                    class="font-medium text-sm text-gray-700 dark:text-gray-300"
+                    >Arduino / IoT</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sertifikasi & Pencapaian -->
+      <section class="py-20 bg-brand-primary text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold">
+              <span class="border-b-4 border-brand-secondary pb-1"
+                >Sertifikasi &</span
+              >
+              Pencapaian
+            </h2>
+          </div>
+
+          <div
+            class="relative border-l-2 border-brand-secondary/50 ml-4 md:ml-0"
+          >
+            <!-- Item 1 -->
+            <div class="mb-10 ml-8 relative">
+              <div
+                class="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-brand-secondary border-4 border-brand-primary"
+              ></div>
+              <span class="text-brand-accent text-sm font-bold tracking-wide"
+                >2026</span
+              >
+              <h4 class="text-xl font-bold mt-1">
+                Google Certified Educator - Level 2
+              </h4>
+              <p class="text-gray-300 mt-2 text-sm">
+                Sertifikasi resmi atas penguasaan lanjutan alat-alat Google
+                Workspace for Education dalam skenario pembelajaran yang
+                kompleks.
+              </p>
+            </div>
+            <!-- Item 2 -->
+            <div class="mb-10 ml-8 relative">
+              <div
+                class="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-brand-secondary border-4 border-brand-primary"
+              ></div>
+              <span class="text-brand-accent text-sm font-bold tracking-wide"
+                >2025</span
+              >
+              <h4 class="text-xl font-bold mt-1">
+                Pemandu Bina Talenta Indonesia (BTI) Bidang Koding dan
+                Kecerdasan Artifisial
+              </h4>
+              <p class="text-gray-300 mt-2 text-sm">
+                Memperdalam ilmu dalam bidang Koding dan Kecerdasan Artifisial
+                serta bagaimana memandu talenta siswa di bidang tersebut.
+              </p>
+            </div>
+            <!-- Item 3 -->
+            <div class="mb-10 ml-8 relative">
+              <div
+                class="absolute -left-[41px] top-1 w-6 h-6 rounded-full bg-brand-secondary border-4 border-brand-primary"
+              ></div>
+              <span class="text-brand-accent text-sm font-bold tracking-wide"
+                >2024</span
+              >
+              <h4 class="text-xl font-bold mt-1">
+                Pembina Gold Medal Malaysia Technology Expo (MTE)
+              </h4>
+              <p class="text-gray-300 mt-2 text-sm">
+                Membimbing siswa dalam penelitian dan penulisan ilmiah di
+                tingkat internasional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="kontak" class="bg-gray-900 text-white pt-5 pb-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16"
+        >
+          <!-- Branding -->
+          <div class="col-span-1 md:col-span-2">
+            <img class="w-50 mb-4" src="../pic/neo-logo.png" alt="neo-logo" />
+            <p class="text-gray-400 mb-6 max-w-md">
+              Mendedikasikan diri untuk pendidikan teknologi yang inklusif,
+              menyenangkan, dan relevan dengan kebutuhan masa depan.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="https://www.facebook.com/hanifnurf1999"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/hanifnur_f"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@neoguruID"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Tautan Cepat</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a href="#home" class="hover:text-brand-secondary transition"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a href="#profil" class="hover:text-brand-secondary transition"
+                  >Profil</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#perangkat"
+                  class="hover:text-brand-secondary transition"
+                  >Perangkat Ajar</a
+                >
+              </li>
+              <li>
+                <a href="#media" class="hover:text-brand-secondary transition"
+                  >Media Pembelajaran</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Kontak</h4>
+            <ul class="space-y-4 text-gray-400">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-envelope mt-1 text-brand-secondary"></i>
+                <span>hanif.nur3514@guru.smp.belajar.id</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i
+                  class="fas fa-map-marker-alt mt-1 text-brand-secondary mr-1"
+                ></i>
+                <span>Kepahiang, Indonesia</span>
+              </li>
+            </ul>
+            <a
+              href="mailto:hanif.nur3514@guru.smp.belajar.id"
+              class="mt-6 inline-block w-full text-center px-4 py-2 bg-brand-primary hover:bg-brand-secondary transition rounded-lg font-medium"
+            >
+              Kirim Email
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"
+        >
+          <p>&copy; 2026 Hanif Nur Fadhil. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>
