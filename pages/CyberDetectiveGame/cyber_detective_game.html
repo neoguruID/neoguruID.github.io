@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyber Detective: Data Rescue (BK Kelas 8)</title>
+    <!-- Memuat Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cyber: {
+                bg: "#0a0a0f",
+                card: "#12121a",
+                accent: "#00f0ff",
+                green: "#39ff14",
+                red: "#ff003c",
+                border: "#1f2937",
+                text: "#e2e8f0",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              mono: [
+                "Fira Code",
+                "ui-monospace",
+                "SFMono-Regular",
+                "monospace",
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .glitch-text {
+          text-shadow:
+            2px 0 var(--tw-colors-cyber-red),
+            -2px 0 var(--tw-colors-cyber-accent);
+        }
+      }
+
+      /* Kustomisasi Scrollbar untuk Tabel */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #12121a;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #1f2937;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #00f0ff;
+      }
+
+      body {
+        background-color: #0a0a0f;
+        color: #e2e8f0;
+      }
+
+      .screen {
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .corrupted-row td {
+        color: #ff003c;
+        text-decoration: line-through;
+        opacity: 0.8;
+        background-color: rgba(255, 0, 60, 0.05);
+      }
+    </style>
+  </head>
+  <body
+    class="h-full m-0 flex items-center justify-center p-4 md:p-8 font-sans antialiased bg-cyber-bg bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] relative"
+  >
+    <!-- Efek Gradasi Merah (Hidden by default) saat injeksi malware -->
+    <div
+      id="redFlashOverlay"
+      class="fixed inset-0 pointer-events-none z-40 transition-opacity duration-300 opacity-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-cyber-red/10 to-cyber-red/30"
+    ></div>
+
+    <div id="screenMainMenu" class="screen active h-dvh w-full max-w-2xl">
+      <div
+        class="bg-cyber-card border border-cyber-border border-t-4 border-t-cyber-accent rounded-xl p-8 md:p-12 text-center shadow-[0_0_40px_rgba(0,240,255,0.1)]"
+      >
+        <h1
+          class="text-4xl md:text-5xl font-bold text-cyber-accent mb-4 tracking-wider uppercase font-mono glitch-text"
+        >
+          Cyber Detective
+        </h1>
+        <p class="text-gray-400 mb-8 leading-relaxed">
+          <strong class="text-gray-200">Operasi Dekripsi Data BSN</strong><br />
+          Sebuah malware mengunci data penting negara. Gunakan 4 pilar Berpikir
+          Komputasional untuk memecahkan kode rahasianya!
+        </p>
+        <div class="flex flex-col gap-4 max-w-xs mx-auto">
+          <button
+            onclick="showScreen('screenLevelSelect')"
+            class="bg-cyber-accent text-black font-bold py-3 px-6 rounded-lg hover:bg-white transition-all transform hover:-translate-y-1 shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+          >
+            🚀 MULAI MISI
+          </button>
+          <button
+            onclick="showScreen('screenInstructions')"
+            class="bg-transparent border border-cyber-border text-cyber-text py-3 px-6 rounded-lg hover:border-cyber-accent hover:text-cyber-accent transition-all"
+          >
+            📜 CARA MAIN & BK
+          </button>
+          <button
+            onclick="showScreen('screenAbout')"
+            class="bg-transparent border border-cyber-border text-cyber-text py-3 px-6 rounded-lg hover:border-cyber-accent hover:text-cyber-accent transition-all"
+          >
+            ℹ️ TENTANG GAME
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYAR PILIH LEVEL KESULITAN -->
+    <div id="screenLevelSelect" class="screen w-full max-w-2xl">
+      <div
+        class="bg-cyber-card border border-cyber-border border-t-4 border-t-cyber-accent rounded-xl p-8 md:p-12 text-center shadow-[0_0_40px_rgba(0,240,255,0.1)]"
+      >
+        <h2 class="text-3xl font-bold text-cyber-accent mb-6 font-mono">
+          Tingkat Kesulitan
+        </h2>
+        <p class="text-gray-400 mb-8">
+          Pilih seberapa cepat malware akan menyuntikkan data sampah (CORRUPT)
+          ke dalam tabel analisismu.
+        </p>
+        <div class="flex flex-col gap-4 max-w-sm mx-auto">
+          <button
+            onclick="selectLevel(30)"
+            class="bg-green-900/40 border border-green-500 text-green-400 font-bold py-4 px-6 rounded-lg hover:bg-green-600 hover:text-white transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+          >
+            🟢 MUDAH (Injeksi tiap 30 detik)
+          </button>
+          <button
+            onclick="selectLevel(20)"
+            class="bg-yellow-900/40 border border-yellow-500 text-yellow-400 font-bold py-4 px-6 rounded-lg hover:bg-yellow-600 hover:text-white transition-all shadow-[0_0_15px_rgba(234,179,8,0.2)]"
+          >
+            🟡 SEDANG (Injeksi tiap 20 detik)
+          </button>
+          <button
+            onclick="selectLevel(10)"
+            class="bg-red-900/40 border border-red-500 text-red-400 font-bold py-4 px-6 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+          >
+            🔴 SULIT (Injeksi tiap 10 detik)
+          </button>
+          <button
+            onclick="showScreen('screenMainMenu')"
+            class="mt-4 bg-transparent border border-cyber-border text-gray-400 py-2 px-6 rounded-lg hover:border-cyber-accent hover:text-cyber-accent transition-all text-sm"
+          >
+            ⬅️ KEMBALI KE MENU
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="briefingOverlay"
+      class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-cyber-card border border-cyber-accent rounded-xl p-6 md:p-8 w-full max-w-2xl shadow-[0_0_30px_rgba(0,240,255,0.2)]"
+      >
+        <div
+          class="flex items-center gap-4 border-b border-cyber-border pb-4 mb-4"
+        >
+          <div
+            class="w-14 h-14 bg-cyber-accent text-black font-bold text-xl rounded-lg flex items-center justify-center animate-pulse shadow-[0_0_15px_rgba(0,240,255,0.5)]"
+          >
+            BYTE
+          </div>
+          <div>
+            <h3 class="text-cyber-accent font-bold text-lg">
+              AI Assistant BYTE
+            </h3>
+            <p class="text-xs text-gray-400 uppercase tracking-widest">
+              Badan Siber Nasional (BSN)
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="briefingText"
+          class="min-h-[120px] bg-black/50 p-4 rounded-lg border border-cyber-border text-gray-200 text-sm md:text-base leading-relaxed font-mono"
+        >
+          <!-- Teks Mengetik -->
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+          <span id="stepIndicator" class="text-xs text-gray-500 font-mono"
+            >Langkah 1 dari 3</span
+          >
+          <button
+            id="btnNextBriefing"
+            onclick="nextBriefingStep()"
+            class="bg-cyber-accent text-black px-5 py-2 rounded font-bold hover:bg-white transition-colors"
+          >
+            Lanjut ➡️
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screenInstructions" class="screen w-full max-w-2xl">
+      <div
+        class="bg-cyber-card border border-cyber-border rounded-xl p-8 md:p-10 shadow-lg"
+      >
+        <h2
+          class="text-2xl font-bold text-cyber-accent mb-6 border-b border-cyber-border pb-4"
+        >
+          📜 Panduan Misi & Senjata BK
+        </h2>
+        <div
+          class="bg-black/50 border border-cyber-border p-5 rounded-lg mb-8 space-y-4 text-sm md:text-base text-gray-300"
+        >
+          <p>
+            <strong class="text-cyber-accent">🧩 Dekomposisi:</strong> Pecah
+            masalah gembok 4-digit menjadi 4 tugas kecil (mencari angka per
+            digit).
+          </p>
+          <p>
+            <strong class="text-cyber-accent">🚫 Abstraksi:</strong> Abaikan
+            data yang rusak (CORRUPT) dan kolom yang tidak ditanyakan.
+            <i
+              >(Peringatan: Malware akan terus menghasilkan data sampah setiap
+              10 detik!)</i
+            >
+          </p>
+          <p>
+            <strong class="text-cyber-accent">🔍 Pengenalan Pola:</strong> Amati
+            pola nama seri produk dan hubungannya dengan harga/stok.
+          </p>
+          <p>
+            <strong class="text-cyber-accent">⚙️ Algoritma:</strong> Gunakan
+            fitur Filter Kategori dan Urutkan Harga secara sistematis.
+          </p>
+        </div>
+        <div class="text-center">
+          <button
+            onclick="showScreen('screenMainMenu')"
+            class="bg-cyber-border text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            ⬅️ KEMBALI KE MENU
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screenAbout" class="screen w-full max-w-2xl">
+      <div
+        class="bg-cyber-card border border-cyber-border rounded-xl p-8 md:p-10 shadow-lg text-center"
+      >
+        <h2
+          class="text-2xl font-bold text-cyber-accent mb-6 border-b border-cyber-border pb-4"
+        >
+          ℹ️ Tentang Game
+        </h2>
+        <div
+          class="bg-black/50 border border-cyber-border p-6 rounded-lg mb-8 text-sm md:text-base text-gray-300 text-left space-y-3"
+        >
+          <p><b class="text-cyber-accent">Mata Pelajaran:</b> Informatika</p>
+          <p>
+            <b class="text-cyber-accent">Materi:</b> Berpikir Komputasional &
+            Pengolahan Himpunan Data Berstruktur Sederhana
+          </p>
+          <p>
+            <b class="text-cyber-accent">Pengembang:</b> Hanif Nur Fadhil,
+            S.Pd.Gr.
+          </p>
+          <p class="mt-4">
+            Game ini dirancang sebagai media pembelajaran interaktif berbasis
+            masalah (Problem-Based Learning) untuk melatih kemampuan analisis
+            data dan logika siswa dengan menerapkan kemampuan Berpikir
+            Komputasional.
+          </p>
+        </div>
+        <div class="text-center">
+          <button
+            onclick="showScreen('screenMainMenu')"
+            class="bg-cyber-border text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition"
+          >
+            ⬅️ KEMBALI KE MENU
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="screenGameplay"
+      class="screen mt-0 max-h-dvh w-full max-w-7xl relative z-10"
+    >
+      <!-- Header Gameplay -->
+      <header
+        class="bg-cyber-card border border-cyber-border border-l-4 border-l-cyber-accent rounded-lg py-1 px-4 mb-2 flex flex-col md:flex-row justify-between items-center gap-4"
+      >
+        <div>
+          <h1
+            class="text-xl font-bold text-cyber-accent flex items-center gap-2"
+          >
+            <span class="animate-spin duration-3000">⚙️</span> Workstation
+            Analis Data BSN
+          </h1>
+          <p
+            class="text-xs text-cyber-red mt-1 animate-pulse tracking-widest font-mono"
+          >
+            ⚠️ PERINGATAN: MALWARE AKTIF - INJEKSI DATA SAMPAH TERDETEKSI
+          </p>
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- Timer UI Baru -->
+          <div
+            class="bg-black border border-cyber-red px-3 py-1.5 rounded-lg flex flex-col items-center min-w-[120px] shadow-[0_0_15px_rgba(255,0,60,0.2)]"
+          >
+            <span
+              class="text-[9px] text-gray-400 uppercase tracking-wider mb-0.5"
+              >Injeksi Berikutnya</span
+            >
+            <span
+              id="injectionCountdown"
+              class="text-xl font-mono font-bold text-cyber-red transition-all"
+              >10s</span
+            >
+          </div>
+          <button
+            onclick="confirmExit()"
+            class="bg-cyber-border text-xs px-4 py-3 rounded hover:bg-red-900 transition-colors h-full"
+          >
+            Keluar Misi
+          </button>
+        </div>
+      </header>
+
+      <!-- Grid 2 Kolom -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Kolom Kiri: Tabel Data (Lebar porsi 8/12 di Desktop) -->
+        <div
+          class="lg:col-span-8 bg-cyber-card border border-cyber-border rounded-xl p-0 md:p-6 flex flex-col h-[550px]"
+        >
+          <div
+            class="flex justify-between items-end border-b border-cyber-border pb-1 mb-4"
+          >
+            <h2 class="font-bold text-white">📊 Database Toko "Maju Jaya"</h2>
+            <span
+              id="rowCount"
+              class="text-xs font-mono text-gray-400 bg-black px-2 py-1 rounded"
+              >0 Data</span
+            >
+          </div>
+
+          <!-- Kontrol Data -->
+          <div class="flex flex-wrap gap-3 mb-4">
+            <select
+              id="filterKategori"
+              onchange="applyFilters()"
+              class="bg-black border border-cyber-border text-white px-3 py-2 rounded text-sm outline-none focus:border-cyber-accent"
+            >
+              <option value="ALL">📋 Semua Kategori</option>
+              <option value="Smartphone">📱 Smartphone</option>
+              <option value="Laptop">💻 Laptop</option>
+              <option value="Tablet">💊 Tablet</option>
+              <option value="Aksesori">🎧 Aksesori</option>
+            </select>
+            <!-- Tombol Sort & Reset -->
+            <button
+              onclick="sortDataByHarga()"
+              class="bg-cyber-border text-white px-4 py-2 rounded text-sm hover:bg-gray-700 transition flex items-center gap-2"
+            >
+              Urutkan Harga <span class="text-xs">⬇️</span>
+            </button>
+            <button
+              onclick="resetFilters()"
+              class="bg-black border border-cyber-border text-gray-400 px-4 py-2 rounded text-sm hover:text-white transition"
+            >
+              Reset View
+            </button>
+          </div>
+
+          <!-- Tabel Wrapper (Scrollable) -->
+          <div
+            class="overflow-x-auto overflow-y-auto custom-scrollbar flex-grow bg-black rounded-lg border border-cyber-border relative"
+          >
+            <table class="w-full text-left text-sm whitespace-nowrap">
+              <thead
+                class="sticky top-0 bg-[#161b22] text-cyber-accent shadow-md z-10 font-mono text-xs"
+              >
+                <tr>
+                  <th class="p-1 border-b border-cyber-border">ID</th>
+                  <th class="p-1 border-b border-cyber-border">Nama Produk</th>
+                  <th class="p-1 border-b border-cyber-border">Kategori</th>
+                  <th class="p-1 border-b border-cyber-border">Harga (Rp)</th>
+                  <th class="p-1 border-b border-cyber-border">Stok</th>
+                  <th class="p-1 border-b border-cyber-border text-center">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                id="tableBody"
+                class="divide-y divide-cyber-border font-mono text-gray-300"
+              >
+                <!-- Data Tabel Diinjeksi di sini via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex flex-col gap-7 lg:gap-1">
+          <!-- Panel Quest -->
+          <div
+            class="bg-cyber-card border border-cyber-border rounded-xl p-4 md:p-4 flex-grow"
+          >
+            <h2
+              class="font-bold text-white border-b border-cyber-border pb-3 mb-4 flex justify-between items-center"
+            >
+              <span>🎯 Quest Log</span>
+              <span
+                class="text-xs text-cyber-accent bg-cyber-accent/10 px-2 py-1 rounded"
+                >4 Digit</span
+              >
+            </h2>
+
+            <div class="space-y-1">
+              <div
+                class="bg-black border-l-2 border-cyber-accent p-3 rounded-r-lg"
+              >
+                <h4 class="text-xs font-bold text-cyber-accent mb-1">
+                  Digit 1
+                </h4>
+                <p id="quest1Text" class="text-xs text-gray-300 leading-tight">
+                  Berapa jumlah produk
+                  <b class="text-cyber-green">VALID</b> kategori
+                  <b>Smartphone</b> yang harganya di atas <b>Rp 3.000.000</b>?
+                </p>
+              </div>
+              <div
+                class="bg-black border-l-2 border-cyber-accent p-3 rounded-r-lg"
+              >
+                <h4 class="text-xs font-bold text-cyber-accent mb-1">
+                  Digit 2
+                </h4>
+                <p class="text-xs text-gray-300 leading-tight">
+                  Abaikan data <b class="text-cyber-red">CORRUPT</b>. Berapa
+                  total <b>Stok</b> dari produk kategori <b>Aksesori</b> yang
+                  tersisa?
+                </p>
+              </div>
+              <div
+                class="bg-black border-l-2 border-cyber-accent p-3 rounded-r-lg"
+              >
+                <h4 class="text-xs font-bold text-cyber-accent mb-1">
+                  Digit 3
+                </h4>
+                <p class="text-xs text-gray-300 leading-tight">
+                  Cari pola seri <b>"Sumsang"</b>. Berapa angka seri tertinggi
+                  dari tipe HP Sumsang yang harganya di bawah Rp 5.000.000?
+                </p>
+              </div>
+              <div
+                class="bg-black border-l-2 border-cyber-accent p-3 rounded-r-lg"
+              >
+                <h4 class="text-xs font-bold text-cyber-accent mb-1">
+                  Digit 4
+                </h4>
+                <p class="text-xs text-gray-300 leading-tight">
+                  Urutkan data <b class="text-cyber-green">VALID</b> berdasarkan
+                  <b>Harga termahal</b>. Berapa nilai <b>Stok</b> pada produk
+                  urutan ke-2?
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel Brankas Input Kode -->
+          <div
+            class="bg-cyber-card mb-5 border border-cyber-border rounded-xl p-4 md:p-4 text-center shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+          >
+            <label
+              class="block text-xs font-bold text-gray-400 mb-3 tracking-widest uppercase"
+              >Input Kode Dekripsi</label
+            >
+            <div class="flex justify-center gap-2 md:gap-3 mb-4">
+              <input
+                type="text"
+                maxlength="1"
+                class="digit-input w-10 h-10 bg-black border-2 border-cyber-border rounded-lg text-center text-2xl font-bold text-cyber-green focus:border-cyber-accent focus:outline-none focus:ring-1 focus:ring-cyber-accent transition-all"
+                id="d1"
+              />
+              <input
+                type="text"
+                maxlength="1"
+                class="digit-input w-10 h-10 bg-black border-2 border-cyber-border rounded-lg text-center text-2xl font-bold text-cyber-green focus:border-cyber-accent focus:outline-none focus:ring-1 focus:ring-cyber-accent transition-all"
+                id="d2"
+              />
+              <input
+                type="text"
+                maxlength="1"
+                class="digit-input w-10 h-10 bg-black border-2 border-cyber-border rounded-lg text-center text-2xl font-bold text-cyber-green focus:border-cyber-accent focus:outline-none focus:ring-1 focus:ring-cyber-accent transition-all"
+                id="d3"
+              />
+              <input
+                type="text"
+                maxlength="1"
+                class="digit-input w-10 h-10 bg-black border-2 border-cyber-border rounded-lg text-center text-2xl font-bold text-cyber-green focus:border-cyber-accent focus:outline-none focus:ring-1 focus:ring-cyber-accent transition-all"
+                id="d4"
+              />
+            </div>
+            <button
+              onclick="unlockVault()"
+              class="bg-cyber-green/20 text-cyber-green border border-cyber-green font-bold px-7 py-1 mx-auto rounded-lg hover:bg-cyber-green hover:text-black transition-all flex items-center justify-center gap-2"
+            >
+              <span>DEKRIPSI SEKARANG</span> 🔓
+            </button>
+
+            <div
+              id="vaultFeedback"
+              class="mt-3 text-xs font-mono h-4 text-cyber-red hidden"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="winModal"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-cyber-card border border-cyber-green rounded-xl p-8 max-w-lg w-full text-center shadow-[0_0_50px_rgba(57,255,20,0.2)]"
+      >
+        <h2
+          class="text-3xl font-bold text-cyber-green mb-2 glitch-text uppercase font-mono"
+        >
+          Akses Diberikan!
+        </h2>
+        <p class="text-gray-300 mb-6 text-sm">
+          Malware berhasil dilumpuhkan. Data BSN aman.
+        </p>
+
+        <div
+          class="bg-black/50 border border-cyber-border p-4 rounded-lg text-left mb-6"
+        >
+          <strong
+            class="text-cyber-accent text-sm block mb-2 border-b border-cyber-border pb-2"
+            >Laporan Logika Komputasional:</strong
+          >
+          <ul class="text-sm text-gray-300 space-y-2 font-mono">
+            <li>
+              <span class="text-cyber-green">✓</span>
+              <b>Dekomposisi:</b> Memecah masalah menjadi 4 quest.
+            </li>
+            <li>
+              <span class="text-cyber-green">✓</span>
+              <b>Abstraksi:</b> Mengabaikan injeksi data CORRUPT.
+            </li>
+            <li>
+              <span class="text-cyber-green">✓</span> <b>Pola:</b> Mengenali
+              pola seri nama produk.
+            </li>
+            <li>
+              <span class="text-cyber-green">✓</span>
+              <b>Algoritma:</b> Menyaring & mengurutkan secara logis.
+            </li>
+          </ul>
+        </div>
+
+        <button
+          onclick="resetGameAndMenu()"
+          class="w-full bg-cyber-green text-black font-bold py-3 rounded-lg hover:bg-white transition-colors"
+        >
+          Kembali ke Markas (Menu)
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= ELEMEN AUDIO (Ganti src dengan path file lokalmu) ================= -->
+    <audio id="bgMusic" loop>
+      <source src="assets/bgm-cyber.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="alertSound">
+      <source src="assets/alert-error.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
