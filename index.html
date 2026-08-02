@@ -67,7 +67,7 @@
             <a
               href="#portofolio"
               class="text-sm font-medium hover:text-brand-secondary transition"
-              >Portofolio</a
+              >Portofolio Murid</a
             >
             <a
               href="#kontak"
@@ -291,7 +291,31 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Media Card -->
           <div
-            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+            class="relative lg:h-72 bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+          >
+            <div
+              class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
+            >
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 dark:text-white">
+              Gelang Algoritma
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+              Media pembelajaran yang dirancang untuk membantu siswa memahami
+              konsep dasar algoritma (urutan langkah sistematis) melalui studi
+              kasus penyusunan manik-manik gelang.
+            </p>
+            <a
+              href="pages/AlgoritmaGelang/MP_algoritma_gelang.html"
+              target="_blank"
+              class="lg:absolute lg:bottom-5 text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Buka Media Pembelajaran &rarr;</a
+            >
+          </div>
+          <!-- Media Card -->
+          <div
+            class="relative lg:h-72 bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
           >
             <div
               class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
@@ -302,21 +326,20 @@
               Cyber Detective
             </h3>
             <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-              Aplikasi web sederhana untuk melatih elatih kemampuan analisis
-              data dan logika siswa dengan menerapkan kemampuan Berpikir
-              Komputasional.
+              Aplikasi web sederhana untuk melatih kemampuan analisis data dan
+              logika siswa dengan menerapkan kemampuan Berpikir Komputasional.
             </p>
             <a
               href="pages/CyberDetectiveGame/cyber_detective_game.html"
               target="_blank"
-              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
-              >Coba Aplikasi &rarr;</a
+              class="lg:absolute lg:bottom-5 text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Buka Media Pembelajaran &rarr;</a
             >
           </div>
 
           <!-- Media Card -->
           <div
-            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
+            class="relative lg:h-72 bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
           >
             <div
               class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
@@ -330,36 +353,14 @@
             <a
               href="#media"
               onclick="alert('Masih dalam Pengembangan')"
-              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
-              >Mainkan Game &rarr;</a
-            >
-          </div>
-
-          <!-- Media Card -->
-          <div
-            class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 dark:border-gray-800"
-          >
-            <div
-              class="w-14 h-14 bg-brand-accent dark:bg-gray-800 text-brand-primary dark:text-brand-secondary rounded-xl flex items-center justify-center text-2xl mb-6"
-            >
-              <i class="fas fa-robot"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-2 dark:text-white">
-              Masih dalam Pengembangan
-            </h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">-</p>
-            <a
-              href="#media"
-              onclick="alert('Masih dalam Pengembangan')"
-              class="text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
-              >Mulai Petualangan &rarr;</a
+              class="lg:absolute lg:bottom-5 text-sm font-semibold text-brand-secondary hover:text-brand-primary transition"
+              >Buka Media Pembelajaran &rarr;</a
             >
           </div>
         </div>
         <div class="flex mx-auto mt-7">
           <a
-            href="#media"
-            onclick="alert('Masih dalam Pengembangan')"
+            href="pages/media-pembelajaran.html"
             class="mx-auto inline-block px-6 py-2 rounded-full bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-white font-medium hover:bg-brand-accent/60 dark:hover:bg-gray-700 transition"
             >Lihat Semua Media Pembelajaran</a
           >
@@ -385,48 +386,70 @@
         <!-- Portfolio Grid -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           <div
+            onclick="
+              window.open(
+                'https://scratch.mit.edu/projects/1283815487',
+                '_blank',
+              )
+            "
             class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
           >
             <img
-              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=On+Progress"
+              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=Space+Shooter"
               alt="Karya 1"
               class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
             />
             <div
               class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
             >
-              <h4 class="text-white font-bold">Title</h4>
-              <p class="text-brand-accent text-xs">Oleh: Anonim</p>
+              <h4 class="text-white font-bold">Space Shooter</h4>
+              <p class="text-brand-accent text-xs">
+                Oleh: Reval, Riskan, Rasid
+              </p>
             </div>
           </div>
           <div
+            onclick="
+              window.open(
+                'https://scratch.mit.edu/projects/1283814388',
+                '_blank',
+              )
+            "
             class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
           >
             <img
-              src="https://placehold.co/400x400/2F318B/FFFFFF?text=On+Progress"
+              src="https://placehold.co/400x400/2F318B/FFFFFF?text=Flappy+Bird"
               alt="Karya 2"
               class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
             />
             <div
               class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
             >
-              <h4 class="text-white font-bold">Title</h4>
-              <p class="text-brand-accent text-xs">Oleh: Anonim</p>
+              <h4 class="text-white font-bold">Flappy Bird</h4>
+              <p class="text-brand-accent text-xs">
+                Oleh: Meilan, Naura, Riza, Widia
+              </p>
             </div>
           </div>
           <div
+            onclick="
+              window.open(
+                'https://scratch.mit.edu/projects/1283816237',
+                '_blank',
+              )
+            "
             class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition aspect-square"
           >
             <img
-              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=On+Progress"
+              src="https://placehold.co/400x400/3CAEE4/FFFFFF?text=Tendangan+Bola"
               alt="Karya 3"
               class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
             />
             <div
               class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4"
             >
-              <h4 class="text-white font-bold">Title</h4>
-              <p class="text-brand-accent text-xs">Oleh: Anonim</p>
+              <h4 class="text-white font-bold">Tendangan Bola</h4>
+              <p class="text-brand-accent text-xs">Oleh: Efri, Piola, Akila</p>
             </div>
           </div>
           <div
@@ -447,8 +470,7 @@
         </div>
         <div class="text-center mt-10">
           <a
-            href="#portofolio"
-            onclick="alert('Masih dalam Pengembangan')"
+            href="pages/portofolio-murid.html"
             class="text-brand-primary dark:text-brand-secondary font-medium hover:underline"
             >Lihat Galeri Penuh &rarr;</a
           >
@@ -463,7 +485,7 @@
         >
           <!-- Branding -->
           <div class="col-span-1 md:col-span-2">
-            <img class="w-50 mb-4" src="pic/neo-logo.png" alt="neo-logo" />
+            <img class="w-52 mb-4" src="pic/neo-logo.png" alt="neo-logo" />
             <p class="text-gray-400 mb-6 max-w-md">
               Mendedikasikan diri untuk pendidikan teknologi yang inklusif,
               menyenangkan, dan relevan dengan kebutuhan masa depan.

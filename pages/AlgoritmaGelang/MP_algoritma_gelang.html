@@ -1,0 +1,1317 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gelang Algoritma</title>
+    <link rel="shortcut icon" href="../../favicon.png" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Nunito:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Nunito", sans-serif;
+        background-color: #f0fdf4;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Animasi kustom untuk transisi yang mulus */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out forwards;
+      }
+      .bounce-in {
+        animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes bounceIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.3);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Styling Manik-manik */
+      .manik {
+        box-shadow:
+          inset -5px -5px 10px rgba(0, 0, 0, 0.3),
+          0 5px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+      }
+      .manik:active {
+        transform: scale(0.9);
+      }
+
+      .color-merah {
+        background: radial-gradient(circle at 30% 30%, #f87171, #dc2626);
+        border: 2px solid #991b1b;
+      }
+      .color-hijau {
+        background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a);
+        border: 2px solid #14532d;
+      }
+      .color-kuning {
+        background: radial-gradient(circle at 30% 30%, #facc15, #ca8a04);
+        border: 2px solid #713f12;
+      }
+      .color-biru {
+        background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
+        border: 2px solid #1e3a8a;
+      }
+
+      /* Custom Scrollbar untuk area gelang */
+      .gelang-container::-webkit-scrollbar {
+        height: 8px;
+      }
+      .gelang-container::-webkit-scrollbar-track {
+        background: #e2e8f0;
+        border-radius: 10px;
+      }
+      .gelang-container::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen w-screen overflow-hidden bg-green-50 text-gray-800 flex items-center justify-center"
+  >
+    <!-- Container Utama -->
+    <div
+      id="app-container"
+      class="w-full max-w-4xl h-full max-h-[900px] bg-white sm:rounded-3xl shadow-2xl relative overflow-hidden flex flex-col"
+    >
+      <!-- SCREEN 1: MAIN MENU -->
+      <div
+        id="screen-menu"
+        class="screen w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b from-green-100 to-green-300"
+      >
+        <div class="bounce-in text-center z-10 relative">
+          <div class="flex justify-center gap-2 mb-4">
+            <div class="w-12 h-12 rounded-full color-merah manik"></div>
+            <div class="w-12 h-12 rounded-full color-kuning manik"></div>
+            <div class="w-12 h-12 rounded-full color-hijau manik"></div>
+            <div class="w-12 h-12 rounded-full color-biru manik"></div>
+          </div>
+          <h1
+            class="text-4xl md:text-5xl font-black text-green-900 mb-2 drop-shadow-md"
+          >
+            Gelang Algoritma
+          </h1>
+          <p class="text-lg md:text-xl text-green-800 font-semibold mb-10">
+            Misi Belajar Algoritma
+          </p>
+
+          <div class="flex flex-col gap-4 w-64 mx-auto">
+            <button
+              onclick="goToScreen('screen-name')"
+              class="py-4 px-6 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#166534] active:shadow-[0_0px_0_#166534] active:translate-y-[6px] transition-all"
+            >
+              Mulai Main
+            </button>
+            <button
+              onclick="showModal('modal-petunjuk')"
+              class="py-3 px-6 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold text-lg rounded-2xl shadow-[0_6px_0_#a16207] active:shadow-[0_0px_0_#a16207] active:translate-y-[6px] transition-all"
+            >
+              Petunjuk
+            </button>
+            <button
+              onclick="showModal('modal-profil')"
+              class="py-4 px-6 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#166534] active:shadow-[0_0px_0_#166534] active:translate-y-[6px] transition-all"
+            >
+              Tentang
+            </button>
+            <button
+              onclick="window.location.href = '../../index.html'"
+              class="py-3 px-6 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold text-lg rounded-2xl shadow-[0_6px_0_#a16207] active:shadow-[0_0px_0_#a16207] active:translate-y-[6px] transition-all"
+            >
+              Kembali ke Neoguru
+            </button>
+          </div>
+        </div>
+        <!-- Dekorasi background -->
+        <div
+          class="absolute top-10 left-10 w-20 h-20 rounded-full color-merah opacity-20"
+        ></div>
+        <div
+          class="absolute bottom-10 right-10 w-32 h-32 rounded-full color-biru opacity-20"
+        ></div>
+      </div>
+
+      <!-- SCREEN 2: INPUT NAMA -->
+      <div
+        id="screen-name"
+        class="screen hidden w-full h-full flex flex-col items-center justify-center p-6 bg-blue-50"
+      >
+        <div
+          class="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl text-center fade-in"
+        >
+          <div class="text-6xl mb-4">👋</div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">Halo! Aku Algo.</h2>
+          <p class="text-gray-600 mb-6">
+            Aku asisten belajarmu hari ini. Siapa namamu?
+          </p>
+          <input
+            type="text"
+            id="input-nama"
+            placeholder="Ketik namamu di sini..."
+            class="w-full text-center text-xl p-4 border-4 border-blue-200 rounded-2xl focus:outline-none focus:border-blue-500 mb-6 font-semibold text-gray-800"
+          />
+          <button
+            onclick="saveName()"
+            class="w-full py-4 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#1e40af] active:shadow-[0_0px_0_#1e40af] active:translate-y-[6px] transition-all"
+          >
+            Lanjut
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN LEVEL (NEW) -->
+      <div
+        id="screen-level"
+        class="screen hidden w-full h-full flex flex-col items-center justify-center p-6 bg-cyan-50"
+      >
+        <div
+          class="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl text-center fade-in"
+        >
+          <div class="text-6xl mb-4">🎮</div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">
+            Pilih Tingkat Kesulitan
+          </h2>
+          <p class="text-gray-600 mb-6">
+            Seberapa menantang permainan yang kamu inginkan?
+          </p>
+
+          <div class="flex flex-col gap-4">
+            <button
+              onclick="selectLevel('mudah')"
+              class="w-full py-4 bg-green-500 hover:bg-green-400 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#166534] active:shadow-[0_0px_0_#166534] active:translate-y-[6px] transition-all relative overflow-hidden group"
+            >
+              <span class="relative z-10">🌟 Level Mudah</span>
+              <div class="text-sm font-normal mt-1 opacity-90 relative z-10">
+                Menampilkan angka & peringatan aturan
+              </div>
+            </button>
+
+            <button
+              onclick="selectLevel('menantang')"
+              class="w-full py-4 bg-red-500 hover:bg-red-400 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#991b1b] active:shadow-[0_0px_0_#991b1b] active:translate-y-[6px] transition-all relative overflow-hidden group"
+            >
+              <span class="relative z-10">🔥 Level Menantang</span>
+              <div class="text-sm font-normal mt-1 opacity-90 relative z-10">
+                Tanpa angka & bebas berkreasi
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: SETTING URUTAN -->
+      <div
+        id="screen-sequence"
+        class="screen hidden w-full h-full flex flex-col p-6 bg-orange-50"
+      >
+        <div
+          class="w-full max-w-xl mx-auto mt-10 bg-white p-6 md:p-8 rounded-3xl shadow-xl text-center fade-in flex-grow max-h-[90%] flex flex-col"
+        >
+          <h2 class="text-2xl font-bold text-orange-600 mb-2">
+            Pengaturan 1: Urutan Warna
+          </h2>
+          <p class="text-gray-600 mb-6 text-sm md:text-base">
+            Tanyakan pada Gurumu, bagaimana aturan urutan warna manik-maniknya?
+            <br /><strong
+              >Klik warna di bawah sesuai urutan yang disebutkan Guru!</strong
+            >
+          </p>
+
+          <div
+            class="flex justify-center gap-4 mb-8 flex-wrap"
+            id="sequence-buttons"
+          >
+            <!-- Buttons digenerate via JS -->
+          </div>
+
+          <div class="bg-gray-100 p-4 rounded-xl mb-6">
+            <p class="text-sm font-semibold text-gray-500 mb-2">
+              Urutan yang kamu pilih:
+            </p>
+            <div
+              id="selected-sequence-display"
+              class="flex justify-center gap-2 h-16 items-center"
+            >
+              <span class="text-gray-400 italic">Belum ada yang dipilih</span>
+            </div>
+          </div>
+
+          <div class="mt-auto flex gap-4 justify-center">
+            <button
+              onclick="resetSequence()"
+              class="py-3 px-6 bg-red-400 hover:bg-red-300 text-white font-bold rounded-2xl shadow-[0_6px_0_#991b1b] active:shadow-[0_0px_0_#991b1b] active:translate-y-[6px] transition-all"
+            >
+              Ulangi
+            </button>
+            <button
+              id="btn-next-sequence"
+              onclick="goToScreen('screen-quantities')"
+              disabled
+              class="py-3 px-8 bg-gray-400 text-white font-bold rounded-2xl shadow-[0_6px_0_#4b5563] transition-all cursor-not-allowed"
+            >
+              Lanjut
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: SETTING JUMLAH -->
+      <div
+        id="screen-quantities"
+        class="screen hidden w-full h-full flex flex-col p-6 bg-purple-50"
+      >
+        <div
+          class="w-full max-w-xl mx-auto mt-10 bg-white p-6 md:p-8 rounded-3xl shadow-xl text-center fade-in flex-grow max-h-[90%] flex flex-col"
+        >
+          <h2 class="text-2xl font-bold text-purple-600 mb-2">
+            Pengaturan 2: Jumlah Manik
+          </h2>
+          <p class="text-gray-600 mb-6">
+            Masukkan jumlah manik-manik untuk tiap warna sesuai instruksi
+            Gurumu.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <!-- Inputs -->
+            <div
+              class="flex flex-col items-center bg-red-50 p-3 rounded-2xl border-2 border-red-100"
+            >
+              <div class="w-10 h-10 rounded-full color-merah manik mb-2"></div>
+              <span class="font-bold text-red-800 mb-1">Merah</span>
+              <input
+                type="number"
+                id="qty-merah"
+                min="0"
+                value="0"
+                class="w-20 text-center text-lg p-2 border-2 border-red-300 rounded-xl focus:outline-none focus:border-red-500 font-bold"
+              />
+            </div>
+            <div
+              class="flex flex-col items-center bg-green-50 p-3 rounded-2xl border-2 border-green-100"
+            >
+              <div class="w-10 h-10 rounded-full color-hijau manik mb-2"></div>
+              <span class="font-bold text-green-800 mb-1">Hijau</span>
+              <input
+                type="number"
+                id="qty-hijau"
+                min="0"
+                value="0"
+                class="w-20 text-center text-lg p-2 border-2 border-green-300 rounded-xl focus:outline-none focus:border-green-500 font-bold"
+              />
+            </div>
+            <div
+              class="flex flex-col items-center bg-yellow-50 p-3 rounded-2xl border-2 border-yellow-100"
+            >
+              <div class="w-10 h-10 rounded-full color-kuning manik mb-2"></div>
+              <span class="font-bold text-yellow-800 mb-1">Kuning</span>
+              <input
+                type="number"
+                id="qty-kuning"
+                min="0"
+                value="0"
+                class="w-20 text-center text-lg p-2 border-2 border-yellow-300 rounded-xl focus:outline-none focus:border-yellow-500 font-bold"
+              />
+            </div>
+            <div
+              class="flex flex-col items-center bg-blue-50 p-3 rounded-2xl border-2 border-blue-100"
+            >
+              <div class="w-10 h-10 rounded-full color-biru manik mb-2"></div>
+              <span class="font-bold text-blue-800 mb-1">Biru</span>
+              <input
+                type="number"
+                id="qty-biru"
+                min="0"
+                value="0"
+                class="w-20 text-center text-lg p-2 border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 font-bold"
+              />
+            </div>
+          </div>
+
+          <div class="mt-auto flex gap-4 justify-center">
+            <button
+              onclick="goToScreen('screen-sequence')"
+              class="py-3 px-6 bg-gray-400 hover:bg-gray-300 text-white font-bold rounded-2xl shadow-[0_6px_0_#4b5563] active:translate-y-[6px] active:shadow-none transition-all"
+            >
+              Kembali
+            </button>
+            <button
+              onclick="saveSettingsAndShowDialog()"
+              class="py-3 px-8 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded-2xl shadow-[0_6px_0_#7e22ce] active:translate-y-[6px] active:shadow-none transition-all"
+            >
+              Lanjut ke Aturan 🚀
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 5: DIALOG RULES -->
+      <div
+        id="screen-conversation"
+        class="screen hidden w-full h-full flex flex-col p-4 bg-indigo-50 justify-center"
+      >
+        <div
+          class="w-full max-w-2xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden fade-in border-4 border-indigo-100 flex flex-col"
+        >
+          <!-- Header Dialog -->
+          <div class="bg-indigo-500 p-4 flex items-center gap-4 text-white">
+            <div
+              class="text-4xl bg-white rounded-full p-2 w-16 h-16 flex items-center justify-center shadow-inner"
+            >
+              🤖
+            </div>
+            <div>
+              <h3 class="font-bold text-xl">Asisten Algo</h3>
+              <p class="text-indigo-100 text-sm">Menjelaskan Aturan Main</p>
+            </div>
+          </div>
+          <!-- Isi Dialog (Vertikal ke bawah) -->
+          <div
+            class="p-6 md:p-8 flex-grow overflow-y-auto min-h-[300px] text-gray-700 text-lg md:text-xl font-medium leading-relaxed block"
+            id="dialog-content"
+          >
+            <!-- Text will be injected here -->
+          </div>
+          <!-- Tombol Navigasi Dialog -->
+          <div
+            class="p-4 bg-gray-50 flex justify-between border-t border-gray-100"
+          >
+            <button
+              id="btn-dialog-prev"
+              onclick="prevDialog()"
+              class="hidden px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-xl transition"
+            >
+              Kembali
+            </button>
+            <div class="flex-grow"></div>
+            <button
+              id="btn-dialog-next"
+              onclick="nextDialog()"
+              class="px-8 py-2 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-xl shadow-[0_4px_0_#3730a3] active:translate-y-[4px] active:shadow-none transition"
+            >
+              Selanjutnya
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 6: GAME AREA -->
+      <div
+        id="screen-game"
+        class="screen hidden w-full h-full flex flex-col bg-gray-50"
+      >
+        <!-- Header Game -->
+        <div
+          class="bg-white px-4 py-3 shadow-sm flex justify-between items-center z-10 relative border-b"
+        >
+          <div class="flex items-center gap-2">
+            <div class="font-bold text-green-700">Tantangan Algoritma</div>
+            <div
+              id="game-level-badge"
+              class="ml-2 text-xs font-bold px-2 py-1 rounded-md text-white bg-green-500 hidden sm:block"
+            >
+              Mudah
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button
+              onclick="resetWorkspace()"
+              class="text-xs md:text-sm bg-red-100 text-red-700 font-bold px-2 md:px-3 py-1 rounded-full hover:bg-red-200 shadow-sm active:translate-y-1"
+            >
+              Reset
+            </button>
+            <button
+              onclick="showModal('modal-aturan')"
+              class="text-xs md:text-sm bg-blue-100 text-blue-700 font-bold px-2 md:px-3 py-1 rounded-full hover:bg-blue-200 shadow-sm active:translate-y-1"
+            >
+              Aturan
+            </button>
+          </div>
+        </div>
+
+        <!-- Area Atas: Sumber Manik (Remaining) -->
+        <div class="bg-blue-50 p-4 shadow-inner flex flex-col items-center">
+          <p class="text-sm text-blue-800 font-bold mb-3 text-center">
+            Persediaan Manik-manik (Klik untuk mengambil)
+          </p>
+          <div class="flex justify-center gap-6 md:gap-10" id="game-sources">
+            <!-- Akan diisi JS -->
+          </div>
+          <div
+            class="mt-3 bg-white px-4 py-2 rounded-full shadow-sm text-xs md:text-sm font-semibold text-gray-600 flex items-center gap-2"
+          >
+            Urutan:
+            <div id="game-sequence-hint" class="flex gap-1"></div>
+          </div>
+        </div>
+
+        <!-- Area Tengah: Workspace (Gelang) -->
+        <div
+          class="flex-grow bg-white p-4 overflow-hidden flex flex-col relative"
+        >
+          <p class="text-sm text-gray-500 text-center font-semibold mb-2">
+            Area Susun Gelang (Klik manik di sini untuk mengembalikan)
+          </p>
+
+          <!-- Tali Gelang Visual -->
+          <div
+            class="absolute top-1/2 left-0 w-full h-1 bg-gray-300 z-0 transform -translate-y-1/2"
+          ></div>
+
+          <!-- Tempat Manik-manik -->
+          <div
+            class="gelang-container w-full h-full overflow-x-auto overflow-y-hidden flex items-center z-10 px-10 pb-4"
+            id="game-workspace"
+          >
+            <!-- Manik-manik yang ditambahkan akan muncul di sini (Flex-row) -->
+          </div>
+        </div>
+
+        <!-- Area Bawah: Input Jawaban -->
+        <div
+          class="bg-white p-4 md:p-6 border-t-4 border-gray-200 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] z-20"
+        >
+          <p class="text-center font-bold text-gray-800 mb-3 md:text-lg">
+            Berapa banyak manik-manik yang dapat dirangkai?
+          </p>
+          <div class="flex max-w-md mx-auto gap-3">
+            <input
+              type="number"
+              id="input-jawaban"
+              min="0"
+              placeholder="Ketik angka..."
+              class="flex-grow text-center text-xl p-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-green-500 font-bold"
+            />
+            <button
+              onclick="checkAnswer()"
+              class="px-6 bg-green-500 hover:bg-green-400 text-white font-bold text-lg rounded-xl shadow-[0_5px_0_#166534] active:shadow-none active:translate-y-[5px] transition-all"
+            >
+              Cek Jawaban
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 7: KESIMPULAN -->
+      <div
+        id="screen-conclusion"
+        class="screen hidden w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b from-green-400 to-green-600"
+      >
+        <div
+          class="w-full max-w-2xl bg-white p-8 md:p-12 rounded-3xl shadow-2xl text-center bounce-in"
+        >
+          <div class="text-6xl mb-6">🎉🏆</div>
+          <h2 class="text-3xl md:text-4xl font-black text-green-700 mb-4">
+            Luar Biasa, <span id="conc-name">Siswa</span>!
+          </h2>
+          <p class="text-lg md:text-xl text-gray-700 mb-6">
+            Kamu telah berhasil memecahkan tantangan ini dengan jawaban
+            <strong><span id="conc-answer">0</span> manik-manik</strong>.
+          </p>
+
+          <div
+            class="bg-yellow-50 border-2 border-yellow-200 p-6 rounded-2xl mb-8 text-left"
+          >
+            <h3 class="font-bold text-yellow-800 text-lg mb-2">
+              💡 Apa yang baru saja kamu pelajari?
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Tanpa disadari, kamu telah menerapkan konsep
+              <strong>Algoritma</strong>! <br /><br />
+              Algoritma adalah
+              <strong>urutan langkah-langkah sistematis dan logis</strong> untuk
+              menyelesaikan masalah atau tugas tertentu. Sama seperti saat kamu
+              mengikuti aturan urutan warna dan syarat manik yang bersebelahan
+              tadi.
+            </p>
+          </div>
+
+          <button
+            onclick="location.reload()"
+            class="py-4 px-8 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded-2xl shadow-[0_6px_0_#14532d] active:shadow-[0_0px_0_#14532d] active:translate-y-[6px] transition-all"
+          >
+            Main Lagi 🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- MODALS & TOASTS -->
+
+      <!-- Modal Petunjuk -->
+      <div
+        id="modal-petunjuk"
+        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      >
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full relative">
+          <h3 class="text-2xl font-bold text-center text-gray-800 mb-5">
+            Petunjuk
+          </h3>
+          <ol class="list-decimal list-inside text-gray-600 space-y-2 mb-6">
+            <li>Masukkan namamu agar Algo bisa menyapamu.</li>
+            <li>Tanya Guru untuk urutan warna dan jumlah manik-manik.</li>
+            <li>Pahami aturan pembuatan gelang dari Algo.</li>
+            <li>
+              Gunakan area kreasi untuk menyusun gelang sebagai alat bantu
+              (Coret-coret).
+            </li>
+            <li>
+              Hitung maksimal manik yang bisa dirangkai dan masukkan jawabanmu!
+            </li>
+          </ol>
+          <button
+            onclick="hideModal('modal-petunjuk')"
+            class="w-full py-3 bg-gray-200 hover:bg-gray-300 font-bold rounded-xl text-gray-700 transition"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Profil -->
+      <div
+        id="modal-profil"
+        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      >
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full relative">
+          <h3 class="text-2xl font-bold text-center text-gray-800 mb-5">
+            Tentang Media
+          </h3>
+          <p>
+            <span class="font-bold">Pengembang:</span> Hanif Nur Fadhil, S.Pd.,
+            Gr.
+          </p>
+          <p class="mt-2 mb-4">
+            Media ini dikembangkan untuk memfasilitasi pembelajaran Informatika
+            Kelas 7 SMP, materi Berpikir Komputasional (Algoritma). Mengacu pada
+            aktivitas "Gelang Warna-Warni" (Aktivitas VII-BK-01-U).
+          </p>
+
+          <button
+            onclick="hideModal('modal-profil')"
+            class="w-full py-3 bg-gray-200 hover:bg-gray-300 font-bold rounded-xl text-gray-700 transition"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Aturan (In-Game) -->
+      <div
+        id="modal-aturan"
+        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      >
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full relative">
+          <h3 class="text-xl font-bold text-gray-800 mb-4">
+            Aturan Pembuatan Gelang
+          </h3>
+          <ul
+            class="list-disc list-inside text-gray-700 space-y-3 mb-6 font-medium"
+          >
+            <li>
+              Gunakan urutan warna:
+              <strong id="rule-seq-text" class="text-blue-600"></strong>.
+            </li>
+            <li>
+              Jika warna urutan habis, lewati dan teruskan dengan warna yang
+              tersisa sesuai urutan.
+            </li>
+            <li>
+              <span class="text-red-600 font-bold">ATURAN PENTING:</span>
+              Manik-manik yang bersebelahan TIDAK BOLEH berwarna sama!
+            </li>
+          </ul>
+          <button
+            onclick="hideModal('modal-aturan')"
+            class="w-full py-3 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition shadow-[0_4px_0_#1e3a8a] active:shadow-none active:translate-y-[4px]"
+          >
+            Paham!
+          </button>
+        </div>
+      </div>
+
+      <!-- Custom Toast untuk pesan kesalahan / notifikasi -->
+      <div
+        id="toast-container"
+        class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[60] flex flex-col gap-2 pointer-events-none"
+      ></div>
+    </div>
+
+    <script>
+      // --- DATA & STATE ---
+      const colors = [
+        { id: "merah", name: "Merah", hex: "#ef4444" },
+        { id: "hijau", name: "Hijau", hex: "#22c55e" },
+        { id: "kuning", name: "Kuning", hex: "#eab308" },
+        { id: "biru", name: "Biru", hex: "#3b82f6" },
+      ];
+
+      let state = {
+        playerName: "Kiki",
+        difficulty: "mudah", // 'mudah' atau 'menantang'
+        sequence: [], // e.g. ['merah', 'hijau', 'kuning', 'biru']
+        quantities: {}, // e.g. { merah: 5, hijau: 3, kuning: 7, biru: 2 }
+        remaining: {},
+        workspaceGelang: [], // array of color ids user put in workspace
+        correctAnswer: 0,
+        dialogStep: 0,
+      };
+
+      let typeInterval;
+      let isTyping = false;
+
+      // --- NAVIGATION LOGIC ---
+      function goToScreen(screenId) {
+        try {
+          // Sembunyikan semua screen terlebih dahulu
+          document.querySelectorAll(".screen").forEach((s) => {
+            s.classList.add("hidden");
+            s.classList.remove("fade-in");
+          });
+
+          const target = document.getElementById(screenId);
+          if (!target) {
+            throw new Error(`Layar tujuan (${screenId}) tidak dapat dimuat!`);
+          }
+
+          // Munculkan layar yang dituju
+          target.classList.remove("hidden");
+          // Trigger reflow untuk mengulang animasi css
+          void target.offsetWidth;
+          target.classList.add("fade-in");
+        } catch (error) {
+          console.error(error);
+          showToast("Terjadi kendala visual: " + error.message, "error");
+        }
+      }
+
+      function showModal(modalId) {
+        document.getElementById(modalId).classList.remove("hidden");
+      }
+      function hideModal(modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+      }
+
+      // Custom Toast Notification
+      function showToast(message, type = "error") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+
+        const bgColor =
+          type === "error"
+            ? "bg-red-500"
+            : type === "success"
+              ? "bg-green-500"
+              : "bg-gray-800";
+        toast.className = `${bgColor} text-white px-6 py-3 rounded-xl shadow-lg font-bold text-center transition-all duration-300 transform scale-0`;
+        toast.innerHTML = message;
+
+        container.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+          toast.classList.remove("scale-0");
+        }, 10);
+
+        // Animate out and remove after 3 seconds
+        setTimeout(() => {
+          toast.classList.add("scale-0");
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, 3000);
+      }
+
+      // --- SCREEN 2 & LEVEL LOGIC ---
+      function saveName() {
+        const input = document.getElementById("input-nama").value.trim();
+        if (input.length < 2) {
+          showToast("Masukkan nama minimal 2 huruf ya!");
+          return;
+        }
+        state.playerName = input;
+
+        goToScreen("screen-level");
+      }
+
+      function selectLevel(level) {
+        state.difficulty = level;
+        // Update badge di area game
+        const badge = document.getElementById("game-level-badge");
+        badge.innerText = level === "mudah" ? "🌟 Mudah" : "🔥 Menantang";
+        badge.className =
+          level === "mudah"
+            ? "ml-2 text-xs font-bold px-2 py-1 rounded-md text-white bg-green-500 hidden sm:block"
+            : "ml-2 text-xs font-bold px-2 py-1 rounded-md text-white bg-red-500 hidden sm:block";
+
+        initSequenceUI();
+        goToScreen("screen-sequence");
+      }
+
+      // --- SCREEN 3: SEQUENCE LOGIC ---
+      function initSequenceUI() {
+        const container = document.getElementById("sequence-buttons");
+        container.innerHTML = "";
+        colors.forEach((c) => {
+          const btn = document.createElement("div");
+          btn.className = `w-20 h-20 rounded-full color-${c.id} manik flex items-center justify-center cursor-pointer relative`;
+          btn.id = `seq-btn-${c.id}`;
+          btn.onclick = () => selectSequence(c.id);
+
+          // Badge for number
+          const badge = document.createElement("div");
+          badge.className = `absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white text-gray-800 font-bold border-2 border-gray-300 flex items-center justify-center text-sm hidden z-10`;
+          badge.id = `seq-badge-${c.id}`;
+
+          btn.appendChild(badge);
+          container.appendChild(btn);
+        });
+        updateSequenceDisplay();
+      }
+
+      function selectSequence(colorId) {
+        if (state.sequence.includes(colorId)) return; // Already selected
+
+        state.sequence.push(colorId);
+        const num = state.sequence.length;
+
+        const badge = document.getElementById(`seq-badge-${colorId}`);
+        badge.innerText = num;
+        badge.classList.remove("hidden");
+
+        // Add visual dim to button
+        document
+          .getElementById(`seq-btn-${colorId}`)
+          .classList.add("opacity-50");
+
+        updateSequenceDisplay();
+
+        if (state.sequence.length === 4) {
+          const btnNext = document.getElementById("btn-next-sequence");
+          btnNext.disabled = false;
+          btnNext.classList.remove("bg-gray-400", "cursor-not-allowed");
+          btnNext.classList.add(
+            "bg-orange-500",
+            "hover:bg-orange-400",
+            "shadow-[0_6px_0_#c2410c]",
+            "active:shadow-none",
+            "active:translate-y-[6px]",
+          );
+        }
+      }
+
+      function resetSequence() {
+        state.sequence = [];
+        colors.forEach((c) => {
+          const badge = document.getElementById(`seq-badge-${c.id}`);
+          badge.classList.add("hidden");
+          document
+            .getElementById(`seq-btn-${c.id}`)
+            .classList.remove("opacity-50");
+        });
+
+        const btnNext = document.getElementById("btn-next-sequence");
+        btnNext.disabled = true;
+        btnNext.className =
+          "py-3 px-8 bg-gray-400 text-white font-bold rounded-2xl shadow-[0_6px_0_#4b5563] transition-all cursor-not-allowed";
+
+        updateSequenceDisplay();
+      }
+
+      function updateSequenceDisplay() {
+        const disp = document.getElementById("selected-sequence-display");
+        if (state.sequence.length === 0) {
+          disp.innerHTML =
+            '<span class="text-gray-400 italic">Belum ada yang dipilih</span>';
+        } else {
+          disp.innerHTML = "";
+          state.sequence.forEach((colorId, idx) => {
+            const colorObj = colors.find((c) => c.id === colorId);
+
+            const dot = document.createElement("div");
+            dot.className = `w-10 h-10 rounded-full color-${colorId} manik flex items-center justify-center text-white text-xs font-bold drop-shadow-md`;
+            dot.innerText = idx + 1;
+
+            disp.appendChild(dot);
+
+            if (idx < state.sequence.length - 1) {
+              const arrow = document.createElement("div");
+              arrow.innerHTML = "➔";
+              arrow.className = "text-gray-400 text-sm";
+              disp.appendChild(arrow);
+            }
+          });
+        }
+      }
+
+      // --- SCREEN 4 & CORE ALGORITHM ---
+      function saveSettingsAndShowDialog() {
+        try {
+          // Ambil Nilai Kuantitas
+          state.quantities = {
+            merah: parseInt(document.getElementById("qty-merah").value) || 0,
+            hijau: parseInt(document.getElementById("qty-hijau").value) || 0,
+            kuning: parseInt(document.getElementById("qty-kuning").value) || 0,
+            biru: parseInt(document.getElementById("qty-biru").value) || 0,
+          };
+
+          if (!state.sequence || state.sequence.length === 0) {
+            showToast(
+              "Urutan warna belum lengkap! Silakan kembali dan pilih.",
+              "error",
+            );
+            return;
+          }
+
+          // Hitung Jawaban Benar berdasarkan Algoritma di background
+          state.correctAnswer = calculateTrueAnswer(
+            state.sequence,
+            state.quantities,
+          );
+
+          // Setup state sisa manik untuk area game
+          state.remaining = { ...state.quantities };
+          state.workspaceGelang = [];
+
+          // Siapkan Dialog & Game UI
+          prepareDialogs();
+          initGameUI();
+
+          state.dialogStep = 0;
+          renderDialog();
+
+          // Melompat ke screen-conversation dengan aman
+          goToScreen("screen-conversation");
+        } catch (error) {
+          console.error(error);
+          showToast("Gagal memproses pengaturan: " + error.message, "error");
+        }
+      }
+
+      // FUNGSI INTI: Menghitung jawaban sebenarnya berdasarkan aturan LKPD
+      function calculateTrueAnswer(seq, quantities) {
+        let simQ = { ...quantities };
+        let count = 0;
+        let lastColor = null;
+        let seqIdx = 0;
+
+        while (true) {
+          let startIdx = seqIdx;
+          let placedInRound = false;
+
+          do {
+            let color = seq[seqIdx];
+            if (simQ[color] > 0 && color !== lastColor) {
+              simQ[color]--;
+              lastColor = color;
+              count++;
+              placedInRound = true;
+              seqIdx = (seqIdx + 1) % seq.length; // Lanjut ke urutan berikutnya
+              break; // Keluar dari loop pencarian (do-while), kembali ke while utama
+            } else {
+              seqIdx = (seqIdx + 1) % seq.length; // Cek warna berikutnya di urutan
+            }
+          } while (seqIdx !== startIdx);
+
+          if (!placedInRound) {
+            break; // Tidak ada satupun manik yang bisa diletakkan sesuai aturan
+          }
+        }
+        return count;
+      }
+
+      // --- SCREEN 5: DIALOG LOGIC ---
+      let dialogs = [];
+
+      function getColorName(id) {
+        return colors.find((c) => c.id === id).name;
+      }
+
+      function prepareDialogs() {
+        const seqNames = state.sequence.map((id) => getColorName(id));
+        const p = state.playerName;
+
+        dialogs = [
+          `<div class="mb-4"><span class="text-indigo-600 font-bold text-2xl">Halo ${p}! 👋</span></div>
+             <p>Pengaturan sudah kusimpan. Sekarang, perhatikan baik-baik instruksiku ya!</p>`,
+
+          `<p class="mb-4"><strong>${p}</strong> sedang membuat gelang dari manik-manik berbentuk bulat.</p>
+             <p>Urutan warna manik-manik pada gelang tersebut ialah <strong class="text-indigo-700">${seqNames.join(", ")}</strong>.</p>`,
+
+          `<p class="mb-4">Selama empat warna manik-manik tersebut masih tersedia, <strong>${p}</strong> tidak akan mengubah urutan warnanya.</p>
+             <p class="text-sm md:text-base text-indigo-600 bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                Setelah memasukkan manik-manik <strong>${seqNames[3]}</strong>, ${p} akan kembali memasukkan manik-manik berwarna <strong>${seqNames[0]}</strong>, dan seterusnya.
+             </p>`,
+
+          `<p>Jika salah satu warna manik-manik habis, <strong>${p}</strong> akan meneruskan membuat gelang dengan manik-manik yang tersisa.</p>`,
+          `<p class="mb-4">Aturan terpenting adalah:</p>
+             <div class="bg-red-50 text-red-700 p-4 rounded-xl border-2 border-red-200 text-center font-black shadow-sm text-xl md:text-2xl mb-6">
+                MANIK-MANIK YANG BERSEBELAHAN TIDAK BOLEH BERWARNA SAMA!
+             </div>
+             <!-- Layout diubah menjadi vertikal (flex-col) murni -->
+             <div class="flex flex-col justify-center gap-4 mt-4 items-center">
+                <div class="flex items-center gap-3 flex-col bg-white p-4 rounded-2xl shadow-sm border border-gray-100 w-full">
+                    <div class="flex -space-x-1">
+                        <div class="w-10 h-10 rounded-full color-biru border-2 border-white shadow-sm"></div>
+                        <div class="w-10 h-10 rounded-full color-biru border-2 border-white shadow-sm"></div>
+                    </div>
+                    <span class="text-red-500 font-bold text-xl flex items-center gap-1">❌ SALAH (Warnanya Sama)</span>
+                </div>
+                <div class="flex items-center gap-3 flex-col bg-white p-4 rounded-2xl shadow-sm border border-gray-100 w-full">
+                    <div class="flex -space-x-1">
+                        <div class="w-10 h-10 rounded-full color-merah border-2 border-white shadow-sm"></div>
+                        <div class="w-10 h-10 rounded-full color-biru border-2 border-white shadow-sm"></div>
+                    </div>
+                    <span class="text-green-500 font-bold text-xl flex items-center gap-1">✅ BENAR (Warnanya Beda)</span>
+                </div>
+             </div>`,
+
+          `<p class="mb-4">Saat ini, <strong>${p}</strong> memiliki:</p>
+             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 inline-block w-full sm:w-auto">
+                 <ul class="space-y-3 text-left">
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full color-${state.sequence[0]}"></div> <strong>${state.quantities[state.sequence[0]]}</strong> manik ${seqNames[0]}</li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full color-${state.sequence[1]}"></div> <strong>${state.quantities[state.sequence[1]]}</strong> manik ${seqNames[1]}</li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full color-${state.sequence[2]}"></div> <strong>${state.quantities[state.sequence[2]]}</strong> manik ${seqNames[2]}</li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full color-${state.sequence[3]}"></div> <strong>${state.quantities[state.sequence[3]]}</strong> manik ${seqNames[3]}</li>
+                 </ul>
+             </div>`,
+
+          `<div class="text-center bg-indigo-50 p-6 rounded-2xl border-2 border-indigo-200">
+                <h3 class="text-3xl font-black text-indigo-700 mb-4 tracking-wide">TANTANGAN! 🚀</h3>
+                <p class="text-xl">Berdasarkan ketersediaan manik-manik dan aturan urutan warnanya, <strong>berapa banyak manik-manik maksimal yang dapat dirangkai oleh ${p}?</strong></p>
+              </div>
+              <div class="mt-6 text-sm md:text-base text-gray-600 bg-yellow-50 p-4 rounded-xl border border-yellow-200 font-medium text-center">
+                💡 Gunakan area kreasi di layar selanjutnya untuk membantumu menyusun gelang (sebagai coret-coretan), lalu masukkan total hitunganmu di kotak jawaban!
+              </div>`,
+        ];
+      }
+
+      function typeWriter(element, htmlString, speed = 15) {
+        element.innerHTML = "";
+        isTyping = true;
+        let tokens = htmlString.split(/(<[^>]*>)/);
+        let currentHTML = "";
+        let tokenIndex = 0;
+        let charIndex = 0;
+
+        clearInterval(typeInterval);
+
+        const btnNext = document.getElementById("btn-dialog-next");
+        btnNext.innerText = "Lewati Animasi ⏭️";
+
+        typeInterval = setInterval(() => {
+          if (!isTyping) {
+            element.innerHTML = htmlString;
+            clearInterval(typeInterval);
+            btnNext.innerText =
+              state.dialogStep === dialogs.length - 1
+                ? "Ke Area Game 🚀"
+                : "Selanjutnya";
+            return;
+          }
+
+          if (tokenIndex >= tokens.length) {
+            isTyping = false;
+            clearInterval(typeInterval);
+            btnNext.innerText =
+              state.dialogStep === dialogs.length - 1
+                ? "Ke Area Game 🚀"
+                : "Selanjutnya";
+            return;
+          }
+
+          const token = tokens[tokenIndex];
+
+          if (token.startsWith("<")) {
+            currentHTML += token;
+            element.innerHTML = currentHTML;
+            tokenIndex++;
+          } else {
+            if (charIndex < token.length) {
+              currentHTML += token.charAt(charIndex);
+              element.innerHTML = currentHTML;
+              charIndex++;
+              element.scrollTop = element.scrollHeight;
+            } else {
+              tokenIndex++;
+              charIndex = 0;
+            }
+          }
+        }, speed);
+      }
+
+      function renderDialog() {
+        const content = document.getElementById("dialog-content");
+
+        const btnPrev = document.getElementById("btn-dialog-prev");
+        const btnNext = document.getElementById("btn-dialog-next");
+
+        if (state.dialogStep === 0) btnPrev.classList.add("hidden");
+        else btnPrev.classList.remove("hidden");
+
+        if (state.dialogStep === dialogs.length - 1) {
+          btnNext.classList.remove("bg-indigo-500", "hover:bg-indigo-400");
+          btnNext.classList.add(
+            "bg-green-500",
+            "hover:bg-green-400",
+            "shadow-[0_4px_0_#166534]",
+          );
+        } else {
+          btnNext.classList.remove(
+            "bg-green-500",
+            "hover:bg-green-400",
+            "shadow-[0_4px_0_#166534]",
+          );
+          btnNext.classList.add(
+            "bg-indigo-500",
+            "hover:bg-indigo-400",
+            "shadow-[0_4px_0_#3730a3]",
+          );
+        }
+
+        typeWriter(content, dialogs[state.dialogStep]);
+      }
+
+      function nextDialog() {
+        if (isTyping) {
+          isTyping = false;
+          return;
+        }
+
+        if (state.dialogStep === dialogs.length - 1) {
+          goToScreen("screen-game");
+          return;
+        }
+
+        if (state.dialogStep < dialogs.length - 1) {
+          state.dialogStep++;
+          renderDialog();
+        }
+      }
+
+      function prevDialog() {
+        if (isTyping) isTyping = false;
+        if (state.dialogStep > 0) {
+          state.dialogStep--;
+          renderDialog();
+        }
+      }
+
+      // --- SCREEN 6: GAME WORKSPACE LOGIC ---
+      function initGameUI() {
+        // Set text for rule modal
+        const seqNames = state.sequence.map((id) => getColorName(id));
+        document.getElementById("rule-seq-text").innerText =
+          seqNames.join(" ➔ ");
+
+        // Setup Hint sequence top
+        const hintContainer = document.getElementById("game-sequence-hint");
+        hintContainer.innerHTML = "";
+        state.sequence.forEach((id, idx) => {
+          const dot = document.createElement("div");
+          dot.className = `w-4 h-4 rounded-full color-${id} border border-gray-300`;
+          hintContainer.appendChild(dot);
+          if (idx < 3) {
+            const arrow = document.createElement("span");
+            arrow.innerText = "›";
+            arrow.className = "text-gray-400 leading-none";
+            hintContainer.appendChild(arrow);
+          }
+        });
+
+        renderGameSources();
+        renderWorkspace();
+      }
+
+      function renderGameSources() {
+        const container = document.getElementById("game-sources");
+        container.innerHTML = "";
+
+        const staticOrder = ["merah", "kuning", "hijau", "biru"];
+
+        staticOrder.forEach((colorId) => {
+          const qty = state.remaining[colorId];
+          const wrapper = document.createElement("div");
+          wrapper.className = "flex flex-col items-center group";
+
+          const btn = document.createElement("div");
+          btn.className = `w-14 h-14 md:w-16 md:h-16 rounded-full color-${colorId} manik flex items-center justify-center transition-transform ${qty > 0 ? "cursor-pointer hover:scale-105 active:scale-95" : "opacity-30 cursor-not-allowed grayscale"}`;
+
+          if (qty > 0) {
+            btn.onclick = () => addToBracelet(colorId);
+          }
+
+          const badge = document.createElement("div");
+          badge.className =
+            "mt-2 px-3 py-1 bg-white rounded-lg shadow-sm font-bold text-gray-700 text-sm md:text-base border border-gray-200";
+          badge.innerText = qty;
+
+          wrapper.appendChild(btn);
+          wrapper.appendChild(badge);
+          container.appendChild(wrapper);
+        });
+      }
+
+      function renderWorkspace() {
+        const container = document.getElementById("game-workspace");
+        container.innerHTML = "";
+
+        state.workspaceGelang.forEach((colorId, index) => {
+          const btn = document.createElement("div");
+          btn.className = `w-12 h-12 md:w-14 md:h-14 rounded-full color-${colorId} manik cursor-pointer shrink-0 transition-transform hover:-translate-y-2 relative flex items-center justify-center`;
+          btn.style.marginLeft = index === 0 ? "0" : "-8px";
+          btn.style.zIndex = index;
+
+          if (state.difficulty === "mudah") {
+            const num = document.createElement("span");
+            num.className =
+              "text-white font-black text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]";
+            num.innerText = index + 1;
+            btn.appendChild(num);
+          }
+
+          if (index === state.workspaceGelang.length - 1) {
+            btn.classList.add("bounce-in");
+          }
+
+          btn.onclick = () => removeFromBracelet(index);
+
+          container.appendChild(btn);
+        });
+
+        setTimeout(() => {
+          container.scrollLeft = container.scrollWidth;
+        }, 50);
+      }
+
+      function addToBracelet(colorId) {
+        if (state.workspaceGelang.length > 0) {
+          const lastColor =
+            state.workspaceGelang[state.workspaceGelang.length - 1];
+          if (lastColor === colorId && state.difficulty === "mudah") {
+            showToast(
+              "⚠️ Ups! Aturan: Manik yang bersebelahan tidak boleh berwarna sama!",
+            );
+            return;
+          }
+        }
+
+        state.remaining[colorId]--;
+        state.workspaceGelang.push(colorId);
+
+        renderGameSources();
+        renderWorkspace();
+      }
+
+      function removeFromBracelet(index) {
+        if (index !== state.workspaceGelang.length - 1) {
+          showToast(
+            "Lepaskan manik dari ujung paling luar (kanan) terlebih dahulu!",
+            "warning",
+          );
+          return;
+        }
+
+        const colorId = state.workspaceGelang.pop();
+        state.remaining[colorId]++;
+
+        renderGameSources();
+        renderWorkspace();
+      }
+
+      function resetWorkspace() {
+        state.remaining = { ...state.quantities };
+        state.workspaceGelang = [];
+
+        renderGameSources();
+        renderWorkspace();
+        showToast("🔄 Semua manik-manik telah dikembalikan", "success");
+      }
+
+      // --- CHECK ANSWER & CONCLUSION ---
+      function checkAnswer() {
+        const inputVal = document.getElementById("input-jawaban").value;
+        if (inputVal === "") {
+          showToast("Masukkan jawaban angka terlebih dahulu!");
+          return;
+        }
+
+        const userAns = parseInt(inputVal);
+
+        if (userAns === state.correctAnswer) {
+          // Jawaban Benar
+          document.getElementById("conc-name").innerText = state.playerName;
+          document.getElementById("conc-answer").innerText =
+            state.correctAnswer;
+          goToScreen("screen-conclusion");
+
+          // Konfeti effect via DOM element sederhana
+          createConfetti();
+        } else {
+          // Jawaban Salah
+          showToast(
+            `Hmm, ${userAns} belum tepat. Coba periksa lagi urutan dan aturannya! (Cek Aturan)`,
+            "error",
+          );
+        }
+      }
+
+      // Simple Confetti Effect Function
+      function createConfetti() {
+        const colorsArr = ["#ef4444", "#22c55e", "#eab308", "#3b82f6"];
+        const container = document.getElementById("screen-conclusion");
+        for (let i = 0; i < 50; i++) {
+          const conf = document.createElement("div");
+          conf.style.position = "absolute";
+          conf.style.width = "10px";
+          conf.style.height = "10px";
+          conf.style.backgroundColor =
+            colorsArr[Math.floor(Math.random() * colorsArr.length)];
+          conf.style.left = Math.random() * 100 + "%";
+          conf.style.top = "-10px";
+          conf.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+          conf.style.zIndex = 100;
+          conf.style.transition = "top 3s ease-in, transform 3s ease-in";
+
+          container.appendChild(conf);
+
+          setTimeout(() => {
+            conf.style.top = "120%";
+            conf.style.transform = `rotate(${Math.random() * 360}deg) translateX(${Math.random() * 50 - 25}px)`;
+          }, 10);
+
+          setTimeout(() => conf.remove(), 3000);
+        }
+      }
+    </script>
+  </body>
+</html>
