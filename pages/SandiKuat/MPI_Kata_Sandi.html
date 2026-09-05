@@ -1,0 +1,2160 @@
+<!doctype html>
+<html lang="id" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MPI: Keamanan Digital - Kata Sandi Kuat</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2f318b",
+              secondary: "#3caee4",
+              accent: "#d0e5f2",
+              darkBg: "#111827",
+              darkCard: "#1F2937",
+            },
+            fontFamily: {
+              sans: ["Nunito", "Segoe UI", "Roboto", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome untuk Ikon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Confetti JS untuk efek perayaan -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- HTML2PDF untuk unduh sertifikat -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Nunito", sans-serif;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+
+      /* Animasi Kustom */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      .slide-up {
+        animation: slideUp 0.5s ease-out;
+      }
+      .bounce-hover:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3caee4;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2f318b;
+      }
+
+      .dark ::-webkit-scrollbar-track {
+        background: #1f2937;
+      }
+
+      /* Sembunyikan elemen saat dicetak */
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+        .print-only {
+          display: block !important;
+        }
+        body,
+        .dark body {
+          background: white !important;
+          color: black !important;
+        }
+        #sertifikat-container {
+          box-shadow: none !important;
+          margin: 0 !important;
+          width: 100% !important;
+        }
+      }
+
+      /* Drag & Drop Styles */
+      .draggable {
+        cursor: grab;
+      }
+      .draggable:active {
+        cursor: grabbing;
+      }
+      .dropzone.dragover {
+        background-color: #d0e5f2;
+        border-color: #2f318b;
+      }
+      .dark .dropzone.dragover {
+        background-color: #3caee4;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-gray-200 min-h-screen flex flex-col relative overflow-x-hidden"
+  >
+    <!-- BGM (Audio element) -->
+    <audio id="bgMusic" loop>
+      <!-- Menggunakan musik lofi/ambient yang tenang dari sumber publik. Kosongkan src untuk mencegah error, set via JS -->
+      <source
+        src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-md sticky top-0 z-50 no-print">
+      <div
+        class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-shield-halved text-2xl text-secondary"></i>
+          <h1 class="font-bold text-lg md:text-xl hidden md:block">
+            Jago Keamanan Digital: Sandi Kuat
+          </h1>
+          <h1 class="font-bold text-lg md:text-xl md:hidden">Sandi Kuat</h1>
+        </div>
+        <div class="flex gap-4 items-center">
+          <!-- Progress Bar Top -->
+          <div class="hidden md:flex flex-col items-end mr-4">
+            <span class="text-xs mb-1"
+              >Progres Belajar: <span id="progressText">0%</span></span
+            >
+            <div class="w-32 h-2 bg-white/30 rounded-full overflow-hidden">
+              <div
+                id="progressBar"
+                class="h-full bg-secondary w-0 transition-all duration-500"
+              ></div>
+            </div>
+          </div>
+
+          <button
+            id="btnMusic"
+            onclick="toggleMusic()"
+            class="hover:text-secondary transition tooltip"
+            title="Musik (On/Off)"
+          >
+            <i class="fa-solid fa-music"></i>
+          </button>
+          <button
+            id="btnTheme"
+            onclick="toggleTheme()"
+            class="hover:text-secondary transition tooltip"
+            title="Mode Gelap/Terang"
+          >
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button
+            onclick="goHome()"
+            class="bg-secondary text-primary font-bold px-3 py-1 rounded hover:bg-white transition text-sm"
+          >
+            <i class="fa-solid fa-home"></i> Menu
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 mb-20 relative">
+      <!-- SECTION -2: INTRO (Identitas) -->
+      <section id="sec-intro" class="page-section fade-in">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10 mb-8 border-t-8 border-primary text-center"
+        >
+          <img
+            src="https://api.dicebear.com/7.x/bottts/svg?seed=Cyber&backgroundColor=d0e5f2"
+            alt="Mascot"
+            class="w-32 h-32 mx-auto rounded-full mb-4 border-4 border-secondary shadow-lg"
+          />
+          <h2 class="text-3xl font-bold text-primary dark:text-secondary mb-2">
+            Selamat Datang Pahlawan Digital! 🚀
+          </h2>
+          <p class="text-lg mb-6">
+            Mari belajar membuat kata sandi yang aman untuk melindungi akun
+            pentingmu.
+          </p>
+
+          <!-- Identitas Form -->
+          <div
+            class="max-w-md mx-auto bg-accent/30 dark:bg-gray-800 p-4 rounded-xl mb-6 shadow-inner text-left"
+          >
+            <h3 class="font-bold text-primary dark:text-accent mb-3">
+              <i class="fa-solid fa-id-card"></i> Isi Identitas Diri Dulu Yuk!
+            </h3>
+            <div class="mb-3">
+              <input
+                type="text"
+                id="studentName"
+                placeholder="Nama Lengkapmu..."
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <div class="mb-3">
+              <input
+                type="text"
+                id="studentClass"
+                placeholder="Kelas (Contoh: 7A, VII B)..."
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </div>
+            <button
+              onclick="saveIdentity()"
+              class="w-full bg-primary text-white font-bold py-2 rounded-lg hover:bg-opacity-90 transition shadow"
+            >
+              Mulai Petualangan!
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION -1: MENU UTAMA -->
+      <section id="sec-menu" class="page-section hidden fade-in">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10 mb-8 border-t-8 border-primary text-center"
+        >
+          <h2 class="text-3xl font-bold text-primary dark:text-secondary mb-2">
+            Peta Perjalanan Belajarmu
+          </h2>
+          <p class="text-lg mb-6 text-gray-600 dark:text-gray-400">
+            Selesaikan setiap aktivitas untuk membuka menu selanjutnya secara
+            berurutan!
+          </p>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="menuCards">
+            <!-- Cards will be generated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 1: APERSEPSI -->
+      <section id="sec-apersepsi" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-secondary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Apersepsi
+            </h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <img
+                src="https://img.freepik.com/free-vector/hacker-activity-concept-illustration_114360-1926.jpg?w=740&t=st=1701314000~exp=1701314600~hmac=a4c3b7b"
+                alt="Hacker Illustration"
+                class="rounded-xl shadow-md w-full"
+                onerror="
+                  this.src =
+                    'https://placehold.co/600x400/2f318b/ffffff?text=Ilustrasi+Akun+Dibajak'
+                "
+              />
+            </div>
+            <div class="space-y-6 text-lg">
+              <div
+                class="bg-accent/40 dark:bg-gray-800 p-5 rounded-xl border-l-4 border-primary"
+              >
+                <p class="font-semibold">🤔 Pernahkah kamu membayangkan...</p>
+                <p class="mt-2">
+                  Apa yang terjadi jika kamu memberikan kunci rumahmu kepada
+                  orang asing yang baru kamu kenal di jalan?
+                </p>
+              </div>
+              <div
+                class="bg-red-100 dark:bg-red-900/30 p-5 rounded-xl border-l-4 border-red-500"
+              >
+                <p class="font-semibold text-red-700 dark:text-red-400">
+                  🚨 Di dunia digital, akun media sosial, game, dan emailmu
+                  adalah "Rumah" mu.
+                </p>
+                <p class="mt-2 text-red-900 dark:text-red-200">
+                  Kata sandi (password) adalah kuncinya! Jika kuncimu mudah
+                  ditebak (seperti 123456), pencuri data bisa dengan mudah masuk
+                  dan merusak akunmu.
+                </p>
+              </div>
+              <p
+                class="text-center font-bold text-primary dark:text-secondary text-xl"
+              >
+                Yuk, pelajari cara membuat gembok digital yang tak bisa dibobol
+                siapapun!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: ASESMEN AWAL -->
+      <section id="sec-asesmen-awal" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-primary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-clipboard-question"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Asesmen Awal
+            </h2>
+          </div>
+          <p class="mb-6">
+            Cek dulu yuk, seberapa jauh kamu tahu tentang kata sandi! Jangan
+            takut salah, ini bukan ujian akhir kok.
+          </p>
+
+          <div id="asesmenAwalContainer" class="space-y-6">
+            <!-- Soal akan digenerate via JS -->
+          </div>
+
+          <button
+            onclick="submitAsesmenAwal()"
+            class="mt-8 w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition text-lg shadow-lg"
+          >
+            Cek Jawabanku!
+          </button>
+
+          <!-- Feedback Box -->
+          <div
+            id="feedbackAsesmenAwal"
+            class="hidden mt-6 p-6 rounded-xl text-center fade-in"
+          ></div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: MATERI PEMBELAJARAN -->
+      <section id="sec-materi" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-secondary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-book-open"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Materi: Resep Sandi Anti Bobol
+            </h2>
+          </div>
+
+          <div class="space-y-8 text-lg">
+            <!-- Teks Singkat -->
+            <p>
+              Kata sandi (password) yang kuat ibarat tembok tebal di sekeliling
+              istanamu. Agar tidak mudah ditebak oleh manusia maupun komputer
+              hacker, kata sandi harus memenuhi syarat tertentu.
+            </p>
+
+            <!-- Poin-poin Penting -->
+            <div
+              class="bg-accent/20 dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-accent"
+            >
+              <h3
+                class="font-bold text-xl text-primary dark:text-secondary mb-4"
+              >
+                <i class="fa-solid fa-list-check"></i> 4 Syarat Wajib Sandi
+                Kuat:
+              </h3>
+              <ul class="space-y-3 list-none">
+                <li>
+                  <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                  <b>Panjang:</b> Minimal 8 karakter (semakin panjang semakin
+                  baik, idealnya 12+).
+                </li>
+                <li>
+                  <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                  <b>Kombinasi Huruf:</b> Gunakan huruf Besar (Kapital) dan
+                  kecil.
+                </li>
+                <li>
+                  <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                  <b>Angka:</b> Selipkan angka, jangan hanya di akhir.
+                </li>
+                <li>
+                  <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                  <b>Simbol:</b> Gunakan karakter khusus seperti @, #, $, %, &,
+                  *, !, dll.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Tabel Perbandingan -->
+            <div class="overflow-x-auto">
+              <table
+                class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm"
+              >
+                <thead>
+                  <tr class="bg-primary text-white">
+                    <th class="p-3">Sandi Lemah ❌</th>
+                    <th class="p-3">Sandi Kuat ✅</th>
+                    <th class="p-3">Alasan</th>
+                  </tr>
+                </thead>
+                <tbody class="dark:bg-gray-800">
+                  <tr class="border-b dark:border-gray-700">
+                    <td class="p-3 font-mono text-red-500">12345678</td>
+                    <td class="p-3 font-mono text-green-500">s3P4tu#B1ru</td>
+                    <td class="p-3 text-sm">
+                      Ada kombinasi huruf kapital, kecil, angka & simbol.
+                    </td>
+                  </tr>
+                  <tr class="border-b dark:border-gray-700">
+                    <td class="p-3 font-mono text-red-500">Budi2009</td>
+                    <td class="p-3 font-mono text-green-500">
+                      K0m!kFav0ritku*
+                    </td>
+                    <td class="p-3 text-sm">
+                      Tidak pakai nama sendiri atau tanggal lahir. Panjang
+                      memadai.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-mono text-red-500">password</td>
+                    <td class="p-3 font-mono text-green-500">M@ngg4Man1s!</td>
+                    <td class="p-3 text-sm">
+                      Sulit ditebak kamus, mudah diingat dengan frasa (Mangga
+                      Manis).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Kotak Info (Tahukah kamu, dll) -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div
+                class="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-xl border-l-4 border-blue-500"
+              >
+                <h4
+                  class="font-bold text-blue-700 dark:text-blue-300 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-circle-info"></i> Tahukah Kamu?
+                </h4>
+                <p class="text-sm mt-2">
+                  Hacker menggunakan program komputer (Brute Force) yang bisa
+                  menebak jutaan kombinasi kata sandi dalam 1 detik! Sandi
+                  "123456" bisa dibobol kurang dari 1 milidetik.
+                </p>
+              </div>
+              <div
+                class="bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-xl border-l-4 border-yellow-500"
+              >
+                <h4
+                  class="font-bold text-yellow-700 dark:text-yellow-300 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-star"></i> Fakta Menarik
+                </h4>
+                <p class="text-sm mt-2">
+                  Menurut riset, kata sandi yang paling banyak digunakan di
+                  Indonesia tahun lalu adalah <b>"admin"</b> dan <b>"12345"</b>.
+                  Jangan jadi salah satunya ya!
+                </p>
+              </div>
+              <div
+                class="bg-red-100 dark:bg-red-900/30 p-4 rounded-xl border-l-4 border-red-500 md:col-span-2"
+              >
+                <h4
+                  class="font-bold text-red-700 dark:text-red-300 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-triangle-exclamation"></i> INFO PENTING!
+                </h4>
+                <p class="text-sm mt-2">
+                  Jangan pernah memberikan kata sandimu kepada SIAPAPUN,
+                  termasuk sahabat atau pacarmu. Pihak resmi (seperti admin
+                  game/sekolah) juga TIDAK AKAN PERNAH menanyakan kata sandimu.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: SIMULASI / AKTIVITAS -->
+      <section id="sec-simulasi" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-primary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Simulasi: Sortir Sandi
+            </h2>
+          </div>
+
+          <p class="mb-6 text-lg">
+            Pindahkan (Drag) kartu kata sandi di bawah ini ke kotak yang benar!
+            Apakah sandi tersebut <b>KUAT</b> atau <b>LEMAH</b>?
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Dropzones -->
+            <div
+              class="bg-red-50 dark:bg-red-900/20 border-2 border-dashed border-red-400 rounded-xl p-4 text-center dropzone min-h-[150px]"
+              id="zone-lemah"
+              ondragover="allowDrop(event)"
+              ondrop="drop(event, 'lemah')"
+            >
+              <h3 class="font-bold text-red-600 dark:text-red-400 text-xl mb-3">
+                <i class="fa-solid fa-shield-virus"></i> SANDI LEMAH
+              </h3>
+              <!-- Dropped items go here -->
+            </div>
+
+            <div
+              class="bg-green-50 dark:bg-green-900/20 border-2 border-dashed border-green-400 rounded-xl p-4 text-center dropzone min-h-[150px]"
+              id="zone-kuat"
+              ondragover="allowDrop(event)"
+              ondrop="drop(event, 'kuat')"
+            >
+              <h3
+                class="font-bold text-green-600 dark:text-green-400 text-xl mb-3"
+              >
+                <i class="fa-solid fa-shield-check"></i> SANDI KUAT
+              </h3>
+              <!-- Dropped items go here -->
+            </div>
+          </div>
+
+          <!-- Draggable Items -->
+          <div
+            class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl border border-gray-300 dark:border-gray-600"
+          >
+            <h4 class="font-bold mb-4 text-center">
+              Tarik kartu di bawah ini:
+            </h4>
+            <div
+              class="flex flex-wrap gap-4 justify-center"
+              id="draggableContainer"
+            >
+              <div
+                class="draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="pw1"
+                data-type="lemah"
+              >
+                aku123
+              </div>
+              <div
+                class="draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="pw2"
+                data-type="kuat"
+              >
+                B4ks0_Urat!
+              </div>
+              <div
+                class="draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="pw3"
+                data-type="lemah"
+              >
+                iloveyou
+              </div>
+              <div
+                class="draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="pw4"
+                data-type="kuat"
+              >
+                M@k@n_N4s!
+              </div>
+              <div
+                class="draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="pw5"
+                data-type="lemah"
+              >
+                qwertyuiop
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <button
+              onclick="checkSimulasi()"
+              class="bg-secondary text-primary font-bold py-2 px-8 rounded-xl hover:bg-primary hover:text-white transition shadow-lg"
+            >
+              Cek Jawabanku
+            </button>
+            <button
+              onclick="resetSimulasi()"
+              class="bg-gray-400 text-white font-bold py-2 px-4 rounded-xl hover:bg-gray-500 transition ml-2"
+            >
+              Ulangi
+            </button>
+          </div>
+
+          <!-- Growth Mindset Feedback Box -->
+          <div
+            id="simulasiFeedback"
+            class="hidden mt-6 p-4 rounded-xl text-center text-lg fade-in font-semibold"
+          ></div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: KUIS INTERAKTIF -->
+      <section id="sec-kuis" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex justify-between items-center mb-4 border-b-2 border-accent pb-3"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="bg-primary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+              >
+                <i class="fa-solid fa-puzzle-piece"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-primary dark:text-accent">
+                Kuis HOTS
+              </h2>
+            </div>
+            <div
+              class="bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300 font-mono font-bold px-4 py-2 rounded-lg flex items-center gap-2"
+            >
+              <i class="fa-solid fa-stopwatch"></i>
+              <span id="quizTimer">05:00</span>
+            </div>
+          </div>
+
+          <div id="kuisIntro" class="text-center py-10">
+            <p class="text-lg mb-6">
+              Uji pemahaman mendalammu (HOTS) tentang keamanan akun. Waktu
+              pengerjaan 5 menit.
+            </p>
+            <button
+              onclick="startKuis()"
+              class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:bg-opacity-90 transition text-lg shadow-lg"
+            >
+              Mulai Kuis Sekarang!
+            </button>
+          </div>
+
+          <div id="kuisArea" class="hidden">
+            <div
+              class="flex justify-between text-sm text-gray-500 mb-2 font-bold"
+            >
+              <span>Soal <span id="currentKuisNum">1</span>/10</span>
+            </div>
+            <div
+              class="w-full bg-gray-200 rounded-full h-2.5 mb-6 dark:bg-gray-700"
+            >
+              <div
+                id="kuisProgressBar"
+                class="bg-secondary h-2.5 rounded-full"
+                style="width: 10%"
+              ></div>
+            </div>
+
+            <div id="kuisQuestionText" class="text-xl font-semibold mb-6"></div>
+            <div id="kuisOptions" class="space-y-3">
+              <!-- Options injected here -->
+            </div>
+
+            <div
+              id="kuisPembahasan"
+              class="hidden mt-6 p-4 bg-accent/40 dark:bg-gray-800 rounded-xl border-l-4 border-primary text-left fade-in"
+            >
+              <h4
+                class="font-bold flex items-center gap-2 text-primary dark:text-secondary mb-1"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i> Pembahasan:
+              </h4>
+              <p id="kuisPembahasanText" class="text-sm"></p>
+            </div>
+
+            <div class="mt-8 flex justify-end">
+              <button
+                id="btnNextKuis"
+                onclick="nextKuisQuestion()"
+                class="hidden bg-secondary text-primary font-bold py-2 px-6 rounded-xl hover:bg-primary hover:text-white transition shadow"
+              >
+                Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button
+                id="btnFinishKuis"
+                onclick="finishKuis()"
+                class="hidden bg-green-500 text-white font-bold py-2 px-6 rounded-xl hover:bg-green-600 transition shadow"
+              >
+                Selesai
+              </button>
+            </div>
+          </div>
+
+          <div id="kuisResult" class="hidden text-center py-10 fade-in">
+            <h3 class="text-3xl font-bold mb-2">Kuis Selesai!</h3>
+            <p class="text-xl mb-4">Skor Kamu:</p>
+            <div
+              class="text-6xl font-black text-primary dark:text-secondary mb-6"
+              id="kuisFinalScore"
+            >
+              0
+            </div>
+            <p id="kuisPesan" class="text-lg italic mb-6"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: ASESMEN AKHIR -->
+      <section id="sec-asesmen-akhir" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-primary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Asesmen Akhir
+            </h2>
+          </div>
+
+          <div id="akhirIntro">
+            <p class="mb-6 text-lg">
+              Ini adalah tantangan terakhir! Buktikan bahwa kamu sudah menjadi
+              ahli keamanan digital. Nilai ini akan tercetak di sertifikatmu.
+            </p>
+            <button
+              onclick="startAsesmenAkhir()"
+              class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition text-lg shadow-lg"
+            >
+              Mulai Asesmen Akhir
+            </button>
+          </div>
+
+          <div id="akhirArea" class="hidden space-y-8">
+            <!-- Soal digenerate via JS sekaligus -->
+          </div>
+
+          <button
+            id="btnSubmitAkhir"
+            onclick="submitAsesmenAkhir()"
+            class="hidden mt-8 w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-opacity-90 transition text-lg shadow-lg"
+          >
+            Kumpulkan Jawaban
+          </button>
+
+          <!-- Hasil Akhir -->
+          <div id="akhirResult" class="hidden text-center py-10 fade-in">
+            <div id="badgeIcon" class="text-6xl mb-4"></div>
+            <h3 class="text-3xl font-bold mb-2">Penilaian Selesai!</h3>
+            <p class="text-xl mb-2">Nilai Akhirmu:</p>
+            <div
+              class="text-6xl font-black text-primary dark:text-secondary mb-2"
+              id="akhirFinalScore"
+            >
+              0
+            </div>
+            <div
+              class="inline-block px-4 py-1 rounded-full text-white font-bold text-lg mb-6"
+              id="akhirPredikatBadge"
+            ></div>
+
+            <div
+              class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-left bg-gray-100 dark:bg-gray-800 p-4 rounded-xl max-w-lg mx-auto"
+            >
+              <div class="p-2 bg-green-200 dark:bg-green-900/50 rounded">
+                90-100<br /><b>Sangat Baik</b>
+              </div>
+              <div class="p-2 bg-blue-200 dark:bg-blue-900/50 rounded">
+                80-89<br /><b>Baik</b>
+              </div>
+              <div class="p-2 bg-yellow-200 dark:bg-yellow-900/50 rounded">
+                70-79<br /><b>Cukup</b>
+              </div>
+              <div class="p-2 bg-red-200 dark:bg-red-900/50 rounded">
+                &lt;70<br /><b>Perlu Bimbingan</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 7: REFLEKSI -->
+      <section id="sec-refleksi" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10"
+        >
+          <div
+            class="flex items-center gap-3 mb-6 border-b-2 border-accent pb-3"
+          >
+            <div
+              class="bg-secondary text-white w-12 h-12 flex items-center justify-center rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-mirror"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-primary dark:text-accent">
+              Refleksi Belajar
+            </h2>
+          </div>
+          <p class="mb-6">
+            Luangkan waktu sejenak untuk merenungkan apa yang sudah kamu
+            pelajari hari ini.
+          </p>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block font-bold mb-2 text-primary dark:text-accent"
+                >1. Saya sudah memahami...</label
+              >
+              <textarea
+                id="ref1"
+                class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-secondary focus:outline-none"
+                rows="2"
+                placeholder="Ketik jawabanmu di sini..."
+              ></textarea>
+            </div>
+            <div>
+              <label class="block font-bold mb-2 text-primary dark:text-accent"
+                >2. Hal yang paling menarik adalah...</label
+              >
+              <textarea
+                id="ref2"
+                class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-secondary focus:outline-none"
+                rows="2"
+                placeholder="Ketik jawabanmu di sini..."
+              ></textarea>
+            </div>
+            <div>
+              <label class="block font-bold mb-2 text-primary dark:text-accent"
+                >3. Hal yang masih membingungkan adalah...</label
+              >
+              <textarea
+                id="ref3"
+                class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-secondary focus:outline-none"
+                rows="2"
+                placeholder="Ketik jawabanmu di sini..."
+              ></textarea>
+            </div>
+            <div>
+              <label class="block font-bold mb-2 text-primary dark:text-accent"
+                >4. Rencana saya setelah belajar materi ini adalah...</label
+              >
+              <textarea
+                id="ref4"
+                class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-secondary focus:outline-none"
+                rows="2"
+                placeholder="Misal: Segera mengganti kata sandi IG-ku..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <button
+              onclick="simpanRefleksi()"
+              class="bg-primary text-white font-bold py-2 px-8 rounded-xl hover:bg-opacity-90 transition shadow-lg"
+            >
+              Simpan Refleksi
+            </button>
+            <p id="refleksiSaved" class="text-green-500 font-bold mt-2 hidden">
+              <i class="fa-solid fa-check"></i> Refleksi berhasil disimpan!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 8: SERTIFIKAT -->
+      <section id="sec-sertifikat" class="page-section hidden slide-up">
+        <div
+          class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-6 md:p-10 text-center"
+        >
+          <h2
+            class="text-2xl font-bold text-primary dark:text-accent mb-6 no-print"
+          >
+            Penghargaanmu
+          </h2>
+
+          <!-- Certificate Container -->
+          <div
+            id="sertifikat-container"
+            class="relative bg-white text-gray-800 p-8 md:p-12 border-8 border-double border-primary max-w-4xl mx-auto shadow-2xl rounded-lg mb-8 overflow-hidden print-only-bg"
+            style="
+              background-image: url(&quot;https://www.transparenttextures.com/patterns/cubes.png&quot;);
+            "
+          >
+            <!-- Ornamen -->
+            <div
+              class="absolute top-0 left-0 w-32 h-32 bg-secondary rounded-br-full opacity-20"
+            ></div>
+            <div
+              class="absolute bottom-0 right-0 w-32 h-32 bg-primary rounded-tl-full opacity-20"
+            ></div>
+
+            <div class="relative z-10">
+              <div class="flex justify-center mb-4">
+                <i class="fa-solid fa-award text-6xl text-yellow-500"></i>
+              </div>
+              <h1
+                class="text-3xl md:text-5xl font-black text-primary mb-2 uppercase tracking-wider font-serif"
+              >
+                Sertifikat Pencapaian
+              </h1>
+              <p class="text-lg text-gray-600 mb-6 uppercase tracking-widest">
+                Diberikan Kepada:
+              </p>
+
+              <h2
+                id="certName"
+                class="text-3xl md:text-4xl font-bold border-b-2 border-gray-300 inline-block px-10 pb-2 mb-4 text-blue-900"
+              >
+                Nama Siswa
+              </h2>
+              <p
+                id="certClass"
+                class="text-xl text-gray-700 font-semibold mb-6"
+              >
+                Kelas
+              </p>
+
+              <p class="text-gray-600 leading-relaxed mb-6 max-w-2xl mx-auto">
+                Telah berhasil menyelesaikan materi pembelajaran interaktif dan
+                lulus asesmen dengan sangat memuaskan pada topik:
+              </p>
+              <h3
+                class="text-2xl font-bold text-secondary bg-blue-50 py-2 px-6 rounded-full inline-block mb-6 shadow-sm border border-blue-100"
+              >
+                "Membuat Kata Sandi Yang Aman"
+              </h3>
+
+              <div
+                class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 mt-4"
+              >
+                <div class="text-center">
+                  <p class="text-gray-500 text-sm">Nilai Akhir</p>
+                  <p id="certScore" class="text-4xl font-black text-primary">
+                    0
+                  </p>
+                  <p
+                    id="certPredikat"
+                    class="font-bold text-sm bg-yellow-100 text-yellow-800 px-2 rounded mt-1"
+                  >
+                    Predikat
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p class="text-gray-500 text-sm mb-2">Tanggal Diselesaikan</p>
+                  <p
+                    id="certDate"
+                    class="font-bold text-lg border-b border-gray-400 inline-block w-40 text-gray-800"
+                  >
+                    Tanggal
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Sistem Pembelajaran Digital
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-4 no-print mt-8">
+            <button
+              onclick="downloadPDF()"
+              class="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-600 transition shadow"
+            >
+              <i class="fa-solid fa-file-pdf"></i> Unduh PDF
+            </button>
+            <button
+              onclick="window.print()"
+              class="bg-blue-500 text-white font-bold py-2 px-6 rounded hover:bg-blue-600 transition shadow"
+            >
+              <i class="fa-solid fa-print"></i> Cetak
+            </button>
+            <button
+              onclick="ulangiMateri()"
+              class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded hover:bg-gray-300 transition shadow"
+            >
+              <i class="fa-solid fa-rotate-left"></i> Ulangi Materi
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Navigation Footer (Prev/Next) -->
+    <footer
+      class="bg-white dark:bg-darkCard border-t dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] fixed bottom-0 w-full z-40 no-print transition-colors"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <button
+          id="btnPrev"
+          onclick="navigate('prev')"
+          class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition invisible"
+        >
+          <i class="fa-solid fa-arrow-left mr-2"></i> Sebelumnya
+        </button>
+        <div class="text-sm text-gray-500 hidden md:block">
+          neoguru | Pembelajaran Mendalam
+        </div>
+        <button
+          id="btnNext"
+          onclick="navigate('next')"
+          class="bg-secondary text-primary px-6 py-2 rounded-lg font-bold hover:bg-primary hover:text-white transition shadow-md hidden"
+        >
+          Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+      // --- DATA & STATE ---
+      const menuItems = [
+        {
+          id: "sec-apersepsi",
+          title: "Apersepsi",
+          icon: "fa-lightbulb",
+          color: "bg-yellow-400",
+        },
+        {
+          id: "sec-asesmen-awal",
+          title: "Asesmen Awal",
+          icon: "fa-clipboard-question",
+          color: "bg-blue-400",
+        },
+        {
+          id: "sec-materi",
+          title: "Materi Pembelajaran",
+          icon: "fa-book-open",
+          color: "bg-green-400",
+        },
+        {
+          id: "sec-simulasi",
+          title: "Simulasi Interaktif",
+          icon: "fa-gamepad",
+          color: "bg-purple-400",
+        },
+        {
+          id: "sec-kuis",
+          title: "Kuis HOTS",
+          icon: "fa-puzzle-piece",
+          color: "bg-red-400",
+        },
+        {
+          id: "sec-asesmen-akhir",
+          title: "Asesmen Akhir",
+          icon: "fa-graduation-cap",
+          color: "bg-indigo-400",
+        },
+        {
+          id: "sec-refleksi",
+          title: "Refleksi",
+          icon: "fa-mirror",
+          color: "bg-teal-400",
+        },
+        {
+          id: "sec-sertifikat",
+          title: "Sertifikat",
+          icon: "fa-award",
+          color: "bg-orange-400",
+        },
+      ];
+
+      let state = {
+        name: "",
+        kelas: "",
+        currentIndex: -2, // -2: Intro, -1: Menu, 0-7: Konten
+        maxUnlockedIndex: 0, // Indeks menu maksimal yang sudah terbuka (Linear Progress)
+        musicOn: false,
+        darkOn: false,
+      };
+
+      // Data Soal Asesmen Awal
+      const dataAsesmenAwal = [
+        {
+          q: "Menurutmu, apa fungsi utama dari kata sandi?",
+          options: [
+            "Agar terlihat keren",
+            "Sebagai kunci gembok akun agar tidak dicuri orang",
+            "Untuk menghias profil",
+            "Agar admin bisa membaca pesan kita",
+          ],
+          ans: 1,
+        },
+        {
+          q: "Sandi mana yang menurutmu paling aman dari daftar ini?",
+          options: [
+            "123456",
+            "tanggal lahirku",
+            "namahewanpeliharaan",
+            "K0c1ng_Gar0ng!",
+          ],
+          ans: 3,
+        },
+        {
+          q: "Jika ada teman dekatmu meminjam akun game dan meminta kata sandi, apa yang kamu lakukan?",
+          options: [
+            "Berikan saja, dia kan teman",
+            "Berikan, tapi nanti diganti",
+            "Tolak dengan sopan, karena sandi itu rahasia pribadi",
+            "Minta bayaran",
+          ],
+          ans: 2,
+        },
+        {
+          q: "Apa itu 'Hacker' dalam konteks akun digital?",
+          options: [
+            "Orang yang membantu memperbaiki HP",
+            "Programmer pembuat game",
+            "Orang jahat yang mencoba mencuri data/akun kita",
+            "Polisi internet",
+          ],
+          ans: 2,
+        },
+        {
+          q: "Berapa panjang minimal kata sandi yang disarankan?",
+          options: [
+            "4 karakter",
+            "6 karakter",
+            "8 karakter atau lebih",
+            "Tidak ada batasan",
+          ],
+          ans: 2,
+        },
+      ];
+
+      // Data Soal Kuis HOTS
+      const dataKuis = [
+        {
+          q: "Andi membuat sandi 'Andi2010' karena mudah diingat (nama & tahun lahirnya). Mengapa secara logika keamanan ini sangat berbahaya?",
+          options: [
+            "Karena terlalu pendek",
+            "Karena mudah ditebak oleh siapapun yang mengenal Andi dari media sosialnya",
+            "Karena tidak ada simbol",
+            "Karena huruf A menggunakan huruf kapital",
+          ],
+          ans: 1,
+          bahas:
+            "Informasi pribadi seperti nama, tanggal lahir, nama sekolah sangat mudah dicari oleh hacker melalui media sosialmu. Jangan gunakan info publik untuk sandi rahasia.",
+        },
+        {
+          q: "Siska mendapat email yang seolah-olah dari Instagram mengatakan akunnya akan dihapus jika tidak login melalui link yang diberikan. Apa tindakan (HOTS) yang paling tepat?",
+          options: [
+            "Panik dan segera login lewat link tersebut",
+            "Abaikan dan hapus email, karena Instagram asli tidak meminta password lewat email/link sembarangan",
+            "Balas email tersebut dan marah-marah",
+            "Forward email ke teman-teman",
+          ],
+          ans: 1,
+          bahas:
+            "Ini disebut Phishing (mengelabui). Layanan resmi tidak pernah meminta login lewat link ancaman di email.",
+        },
+        {
+          q: "Budi memiliki akun Email, Instagram, dan Mobile Legends. Ia menggunakan sandi 'SuperBudi99!' untuk ketiganya agar tidak lupa. Jika database Mobile Legends bocor (di-hack), apa risiko terbesar yang dihadapi Budi?",
+          options: [
+            "Hanya akun ML yang hilang",
+            "Budi harus ganti nama",
+            "Hacker bisa mencoba sandi yang sama ke Email dan Instagram Budi, sehingga semua akunnya diretas",
+            "Tidak ada risiko karena ada tanda seru (!)",
+          ],
+          ans: 2,
+          bahas:
+            "Menggunakan 1 sandi untuk banyak akun sangat fatal. Jika 1 bocor, hacker akan mencoba sandi tersebut di platform lain (Credential Stuffing).",
+        },
+        {
+          q: "Dalam teknik 'Brute Force', komputer hacker mencoba kombinasi sandi dengan kecepatan tinggi. Mengapa menambah 1 simbol khusus (!,@,#) membuat waktu pembobolan meningkat drastis?",
+          options: [
+            "Karena simbol memperlambat koneksi internet",
+            "Karena komputer tidak bisa membaca simbol",
+            "Karena jumlah kemungkinan kombinasi karakter yang harus ditebak komputer bertambah berlipat ganda",
+            "Karena simbol merusak keyboard hacker",
+          ],
+          ans: 2,
+          bahas:
+            "Matematika peluang: Menambah variasi karakter (huruf, angka, simbol) mengalikan jumlah total kombinasi, membuat komputer butuh waktu bertahun-tahun untuk menebaknya.",
+        },
+        {
+          q: "Manakah strategi membuat sandi yang paling direkomendasikan pakar keamanan (Passphrase)?",
+          options: [
+            "Mengganti huruf jadi angka (Al4y): 4n4kG4ul",
+            "Menggunakan singkatan acak: xqzw12p",
+            "Menggunakan kalimat panjang yang tidak masuk akal tapi mudah dibayangkan: 'KudaBiruMakanBurger!2'",
+            "Menggunakan tanggal lahir terbalik: 20100512",
+          ],
+          ans: 2,
+          bahas:
+            "Passphrase (Frasa Sandi) seperti 'KudaBiruMakanBurger!2' sangat panjang sehingga kebal Brute Force, tapi mudah diingat oleh otak manusia.",
+        },
+        {
+          q: "Kamu sedang berada di warnet/komputer sekolah. Setelah selesai membuka email, hal terpenting yang wajib dilakukan adalah...",
+          options: [
+            "Mematikan layar monitor",
+            "Langsung pulang",
+            "Klik Log Out / Keluar, lalu tutup browser",
+            "Menghapus history download",
+          ],
+          ans: 2,
+          bahas:
+            "Selalu Log Out (Keluar) di perangkat umum. Jika hanya ditutup (X), akunmu mungkin masih dalam keadaan login saat orang lain membuka web tersebut.",
+        },
+        {
+          q: "Fitur keamanan tambahan di mana kita harus memasukkan kode OTP dari SMS/WhatsApp setelah memasukkan password disebut...",
+          options: [
+            "Anti-Virus",
+            "Two-Factor Authentication (2FA) / Autentikasi Dua Langkah",
+            "Incognito Mode",
+            "Firewall",
+          ],
+          ans: 1,
+          bahas:
+            "2FA ibarat gembok kedua. Walaupun hacker tahu passwordmu, mereka tidak bisa masuk karena tidak memiliki HP-mu untuk menerima kode OTP.",
+        },
+        {
+          q: "Rina ingin menulis passwordnya di sebuah buku agar tidak lupa. Di mana tempat terburuk untuk menyimpan buku tersebut?",
+          options: [
+            "Di dalam laci meja belajarnya yang terkunci",
+            "Di brankas ayah",
+            "Di tempel di layar monitor komputernya pakai sticky notes",
+            "Di dalam dompet rahasia",
+          ],
+          ans: 2,
+          bahas:
+            "Menempelkan sandi di monitor/bawah keyboard membuat keamanan digitalmu runtuh oleh penglihatan fisik orang sekitar.",
+        },
+        {
+          q: "Jika ada website tidak dikenal menawarkan 'Diamond ML Gratis' dengan syarat login akun, logika berpikir yang benar adalah...",
+          options: [
+            "Coba saja pakai akun kecil (smurf)",
+            "Pasti penipuan (Scam) untuk mencuri akun (Phishing)",
+            "Lumayan, siapa tahu beneran",
+            "Tanya admin ML",
+          ],
+          ans: 1,
+          bahas:
+            "Tidak ada yang gratis di internet. Penawaran menggiurkan (hadiah/diamond/koin gratis) adalah umpan nomor 1 pencurian akun anak-anak.",
+        },
+        {
+          q: "Apa ciri utama dari kata sandi yang 'Kuat' menurut standar modern?",
+          options: [
+            "Hanya terdiri dari angka agar cepat diketik",
+            "Kombinasi panjang kata, angka, huruf besar/kecil, dan simbol yang tidak memiliki makna kamus langsung",
+            "Nama idola K-Pop + tanggal lahirnya",
+            "Sandi yang diberikan oleh pacar",
+          ],
+          ans: 1,
+          bahas:
+            "Kombinasi acak/panjang yang terdiri dari berbagai jenis karakter (Upper, Lower, Number, Symbol) adalah standar sandi kuat.",
+        },
+      ];
+
+      // Data Asesmen Akhir (Campuran & Baru)
+      const dataAkhir = [
+        {
+          q: "Kata sandi minimal sebaiknya terdiri dari berapa karakter?",
+          options: ["4", "6", "8", "12"],
+          ans: 2,
+        },
+        {
+          q: "Kombinasi sandi manakah yang paling aman di bawah ini?",
+          options: [
+            "akucintakamu",
+            "B4w4ng_M3rah#1",
+            "qwerty12345",
+            "Budi2008",
+          ],
+          ans: 1,
+        },
+        {
+          q: "Menggunakan kata sandi yang sama untuk semua akun medsos adalah tindakan yang...",
+          options: [
+            "Sangat cerdas karena praktis",
+            "Sangat berbahaya karena jika 1 bobol, semua bobol",
+            "Biasa saja, banyak yang melakukan",
+            "Aman jika sandinya panjang",
+          ],
+          ans: 1,
+        },
+        {
+          q: "Apa nama teknik peretasan dengan cara menebak sandi secara otomatis menggunakan komputer?",
+          options: ["Phishing", "Spamming", "Brute Force", "Carding"],
+          ans: 2,
+        },
+        {
+          q: "Jika kamu menerima link aneh di grup WA yang meminta login IG, apa yang kamu lakukan?",
+          options: [
+            "Klik dan login",
+            "Share ke teman lain",
+            "Abaikan dan hapus",
+            "Marah ke pengirim",
+          ],
+          ans: 2,
+        },
+        {
+          q: "2FA (Two Factor Authentication) berfungsi untuk...",
+          options: [
+            "Membuat HP cepat",
+            "Menambah lapis keamanan kedua (kode OTP)",
+            "Menghapus virus",
+            "Mengubah font kata sandi",
+          ],
+          ans: 1,
+        },
+        {
+          q: "Kata sandi 'P@ssw0rd' sebenarnya kurang kuat karena...",
+          options: [
+            "Terlalu panjang",
+            "Tidak ada huruf besar",
+            "Kata 'password' sudah sangat umum dan ada di daftar tebakan hacker",
+            "Terlalu banyak simbol",
+          ],
+          ans: 2,
+        },
+        {
+          q: "Menggunakan nama hewan peliharaan sebagai kata sandi berbahaya karena...",
+          options: [
+            "Hewan tidak bisa baca",
+            "Mudah dicari tahu hacker lewat postingan/foto medsos kita",
+            "Dilarang oleh polisi",
+            "Melanggar hak asasi hewan",
+          ],
+          ans: 1,
+        },
+        {
+          q: "Apa yang harus kamu lakukan jika merasa akunmu baru saja diretas?",
+          options: [
+            "Diam saja",
+            "Buat akun baru",
+            "Segera gunakan fitur 'Lupa Kata Sandi' melalui email untuk mengambil alih dan ganti sandi baru",
+            "Lapor RT setempat",
+          ],
+          ans: 2,
+        },
+        {
+          q: "Manakah dari berikut yang merupakan 'Passphrase' (Frasa Sandi)?",
+          options: [
+            "x!9$Lp",
+            "KucingTidurDiAtasKulkas3!",
+            "12345678",
+            "adminadmin",
+          ],
+          ans: 1,
+        },
+      ];
+
+      // --- INIT & UTILS ---
+      window.onload = () => {
+        // Render soal saat load agar dipastikan muncul
+        renderAsesmenAwal();
+        renderAsesmenAkhir();
+
+        // Cek lokal storage untuk identitas & progress
+        if (localStorage.getItem("mpiName")) {
+          state.name = localStorage.getItem("mpiName");
+          state.kelas = localStorage.getItem("mpiClass");
+          state.maxUnlockedIndex =
+            parseInt(localStorage.getItem("mpiMaxUnlocked")) || 0;
+
+          initMenuCards();
+          jumpTo(-1); // Jika sudah pernah isi nama, langsung lompat ke menu
+        } else {
+          initMenuCards();
+          jumpTo(-2); // Jika belum, tampilkan Intro/Form
+        }
+        updateProgress();
+      };
+
+      function toggleTheme() {
+        state.darkOn = !state.darkOn;
+        if (state.darkOn) {
+          document.documentElement.classList.add("dark");
+          document.getElementById("btnTheme").innerHTML =
+            '<i class="fa-solid fa-sun text-yellow-300"></i>';
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.getElementById("btnTheme").innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+        }
+      }
+
+      function toggleMusic() {
+        const audio = document.getElementById("bgMusic");
+        state.musicOn = !state.musicOn;
+        if (state.musicOn) {
+          audio.play().catch((e) => console.log("Auto-play prevented"));
+          document.getElementById("btnMusic").innerHTML =
+            '<i class="fa-solid fa-volume-high text-secondary"></i>';
+        } else {
+          audio.pause();
+          document.getElementById("btnMusic").innerHTML =
+            '<i class="fa-solid fa-music"></i>';
+        }
+      }
+
+      function initMenuCards() {
+        const container = document.getElementById("menuCards");
+        container.innerHTML = "";
+        menuItems.forEach((item, index) => {
+          const isLocked = index > state.maxUnlockedIndex;
+          const card = document.createElement("button");
+
+          if (isLocked) {
+            card.className = `flex flex-col items-center justify-center p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 opacity-60 cursor-not-allowed group relative`;
+            card.disabled = true;
+            card.innerHTML = `
+                        <div class="absolute top-2 right-3 text-gray-400"><i class="fa-solid fa-lock"></i></div>
+                        <div class="bg-gray-300 dark:bg-gray-700 w-12 h-12 rounded-full flex items-center justify-center text-gray-500 text-xl mb-3 shadow-inner">
+                            <i class="fa-solid ${item.icon}"></i>
+                        </div>
+                        <span class="font-bold text-sm text-gray-500 dark:text-gray-400">${item.title}</span>
+                    `;
+          } else {
+            card.className = `flex flex-col items-center justify-center p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-secondary transition-all shadow hover:shadow-md bg-gray-50 dark:bg-gray-800 cursor-pointer group`;
+            card.disabled = false;
+            card.onclick = () => jumpTo(index);
+            card.innerHTML = `
+                        <div class="${item.color} w-12 h-12 rounded-full flex items-center justify-center text-white text-xl mb-3 group-hover:scale-110 transition-transform shadow-inner">
+                            <i class="fa-solid ${item.icon}"></i>
+                        </div>
+                        <span class="font-bold text-sm text-gray-700 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-secondary">${item.title}</span>
+                    `;
+          }
+
+          container.appendChild(card);
+        });
+      }
+
+      function saveIdentity() {
+        const nama = document.getElementById("studentName").value.trim();
+        const kelas = document.getElementById("studentClass").value.trim();
+
+        if (!nama || !kelas) {
+          alert("Hei pahlawan! Isi nama dan kelasmu dulu ya.");
+          return;
+        }
+
+        state.name = nama;
+        state.kelas = kelas;
+        localStorage.setItem("mpiName", nama);
+        localStorage.setItem("mpiClass", kelas);
+
+        // Ganti tombol jadi indikator sukses
+        const btn = document.querySelector("#sec-intro button.bg-primary");
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> Siap Belajar!`;
+        btn.classList.add("bg-green-500");
+
+        // Otomatis ke halaman menu setelah 1 detik
+        setTimeout(() => jumpTo(-1), 1000);
+      }
+
+      // --- NAVIGATION & PROGRESS ---
+      function unlockNext(currentIndex) {
+        // Membuka menu selanjutnya secara linier
+        if (currentIndex + 1 > state.maxUnlockedIndex) {
+          state.maxUnlockedIndex = currentIndex + 1;
+          localStorage.setItem("mpiMaxUnlocked", state.maxUnlockedIndex);
+          initMenuCards(); // Perbarui tampilan gembok di menu
+        }
+        updateNavButtons(); // Munculkan tombol next di footer
+      }
+
+      function updateNavButtons() {
+        const btnPrev = document.getElementById("btnPrev");
+        const btnNext = document.getElementById("btnNext");
+
+        if (state.currentIndex === -2) {
+          // Intro
+          btnPrev.classList.add("invisible");
+          btnNext.classList.add("hidden");
+          document.querySelector("footer").classList.add("hidden");
+        } else if (state.currentIndex === -1) {
+          // Menu Utama
+          btnPrev.classList.add("invisible");
+          btnNext.classList.add("hidden");
+          document.querySelector("footer").classList.remove("hidden");
+        } else {
+          // Konten Pembelajaran
+          document.querySelector("footer").classList.remove("hidden");
+
+          if (state.currentIndex > 0) {
+            btnPrev.classList.remove("invisible");
+          } else {
+            btnPrev.classList.add("invisible");
+          }
+
+          if (state.currentIndex < menuItems.length - 1) {
+            // Cek apakah halaman ini butuh aksi (kuis/simulasi) untuk diselesaikan
+            const requiresAction = [1, 3, 4, 5, 6].includes(state.currentIndex);
+            const isCompleted = state.maxUnlockedIndex > state.currentIndex;
+
+            // Jika butuh aksi tapi belum diselesaikan, Sembunyikan 'Next'
+            if (requiresAction && !isCompleted) {
+              btnNext.classList.add("hidden");
+            } else {
+              btnNext.classList.remove("hidden");
+            }
+          } else {
+            btnNext.classList.add("hidden"); // Di sertifikat hide next
+          }
+        }
+
+        updateProgress();
+        window.scrollTo(0, 0);
+      }
+
+      function jumpTo(index) {
+        if (!state.name && index > -2) {
+          alert("Isi nama dulu di halaman utama!");
+          jumpTo(-2);
+          return;
+        }
+
+        // Hide all
+        document.getElementById("sec-intro").classList.add("hidden");
+        document.getElementById("sec-menu").classList.add("hidden");
+        menuItems.forEach((item) => {
+          document.getElementById(item.id).classList.add("hidden");
+        });
+
+        state.currentIndex = index;
+
+        if (index === -2) {
+          document.getElementById("sec-intro").classList.remove("hidden");
+        } else if (index === -1) {
+          document.getElementById("sec-menu").classList.remove("hidden");
+        } else {
+          const secId = menuItems[index].id;
+          document.getElementById(secId).classList.remove("hidden");
+
+          if (secId === "sec-sertifikat") {
+            generateCertificate();
+          }
+        }
+        updateNavButtons();
+      }
+
+      function navigate(dir) {
+        if (dir === "prev" && state.currentIndex > 0) {
+          jumpTo(state.currentIndex - 1);
+        } else if (
+          dir === "next" &&
+          state.currentIndex < menuItems.length - 1
+        ) {
+          // Jika sedang di materi bacaan (Apersepsi/Materi), next akan membuka menu selanjutnya otomatis
+          if (state.currentIndex === 0 || state.currentIndex === 2) {
+            unlockNext(state.currentIndex);
+          }
+          jumpTo(state.currentIndex + 1);
+        }
+      }
+
+      function goHome() {
+        jumpTo(-1);
+      }
+
+      function updateProgress() {
+        if (state.currentIndex < 0) {
+          document.getElementById("progressText").innerText = "0%";
+          document.getElementById("progressBar").style.width = "0%";
+          return;
+        }
+        // Rumus progress berdasarkan stage
+        const pct = Math.round(
+          ((state.currentIndex + 1) / menuItems.length) * 100,
+        );
+        document.getElementById("progressText").innerText = pct + "%";
+        document.getElementById("progressBar").style.width = pct + "%";
+      }
+
+      // --- SECTION 2: ASESMEN AWAL ---
+      function renderAsesmenAwal() {
+        const container = document.getElementById("asesmenAwalContainer");
+        let html = "";
+        dataAsesmenAwal.forEach((item, index) => {
+          html += `
+                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 mb-4 shadow-sm">
+                    <p class="font-bold mb-3">${index + 1}. ${item.q}</p>
+                    <div class="space-y-2">
+                        ${item.options
+                          .map(
+                            (opt, i) => `
+                            <label class="flex items-center gap-2 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer transition">
+                                <input type="radio" name="awal_q${index}" value="${i}" class="w-4 h-4 text-primary focus:ring-secondary">
+                                <span>${opt}</span>
+                            </label>
+                        `,
+                          )
+                          .join("")}
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+      }
+
+      function submitAsesmenAwal() {
+        let score = 0;
+        let answered = 0;
+        dataAsesmenAwal.forEach((item, index) => {
+          const selected = document.querySelector(
+            `input[name="awal_q${index}"]:checked`,
+          );
+          if (selected) {
+            answered++;
+            if (parseInt(selected.value) === item.ans) score += 20;
+          }
+        });
+
+        if (answered < dataAsesmenAwal.length) {
+          alert("Jawab semua soal dulu ya!");
+          return;
+        }
+
+        const feedbackBox = document.getElementById("feedbackAsesmenAwal");
+        feedbackBox.classList.remove("hidden");
+
+        if (score >= 80) {
+          feedbackBox.className =
+            "mt-6 p-6 rounded-xl text-center fade-in bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-2 border-green-500";
+          feedbackBox.innerHTML = `<h3 class="text-2xl font-bold mb-2">Skor: ${score} - Hebat!</h3><p>Pengetahuan dasarmu sudah mantap. Yuk kita perdalam lagi materinya!</p>`;
+        } else {
+          feedbackBox.className =
+            "mt-6 p-6 rounded-xl text-center fade-in bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-2 border-yellow-500";
+          feedbackBox.innerHTML = `<h3 class="text-2xl font-bold mb-2">Skor: ${score} - Good Try!</h3><p>Tidak apa-apa masih belum sempurna, karena kita memang akan belajar cara amannya di materi berikutnya. Semangat!</p>`;
+        }
+
+        // Scroll to feedback
+        feedbackBox.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        // Buka progres ke menu selanjutnya
+        unlockNext(1);
+      }
+
+      // --- SECTION 4: SIMULASI (DRAG & DROP) ---
+      let simulasiScore = 0;
+      let dragCount = 0;
+
+      function allowDrop(ev) {
+        ev.preventDefault();
+        ev.currentTarget.classList.add("dragover");
+      }
+
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.target.style.opacity = "0.5";
+      }
+
+      document.addEventListener("dragend", function (ev) {
+        if (ev.target.className.includes("draggable"))
+          ev.target.style.opacity = "1";
+        document
+          .querySelectorAll(".dropzone")
+          .forEach((el) => el.classList.remove("dragover"));
+      });
+
+      function drop(ev, targetType) {
+        ev.preventDefault();
+        ev.currentTarget.classList.remove("dragover");
+
+        // Pastikan drop di dalam zona, bukan pada elemen di dalamnya
+        let dropTarget = ev.target;
+        while (
+          !dropTarget.classList.contains("dropzone") &&
+          dropTarget.parentElement
+        ) {
+          dropTarget = dropTarget.parentElement;
+        }
+
+        if (dropTarget.classList.contains("dropzone")) {
+          var data = ev.dataTransfer.getData("text");
+          var draggedElement = document.getElementById(data);
+
+          if (draggedElement) {
+            dropTarget.appendChild(draggedElement);
+            draggedElement.dataset.droppedIn = targetType; // Catat ditaruh di mana
+            dragCount = document.querySelectorAll(
+              ".dropzone .draggable",
+            ).length;
+          }
+        }
+      }
+
+      function checkSimulasi() {
+        const items = document.querySelectorAll(".draggable");
+        if (dragCount < 5) {
+          alert("Tarik semua kata sandi ke dalam kotak dulu ya!");
+          return;
+        }
+
+        let correct = 0;
+        items.forEach((item) => {
+          const trueType = item.dataset.type;
+          const droppedType = item.dataset.droppedIn;
+
+          if (trueType === droppedType) {
+            correct++;
+            item.className =
+              "draggable bg-green-200 dark:bg-green-800 font-mono p-3 rounded shadow cursor-grab border-2 border-green-500 m-2 inline-block";
+          } else {
+            item.className =
+              "draggable bg-red-200 dark:bg-red-800 font-mono p-3 rounded shadow cursor-grab border-2 border-red-500 m-2 inline-block";
+          }
+        });
+
+        const fb = document.getElementById("simulasiFeedback");
+        fb.classList.remove("hidden");
+
+        if (correct === 5) {
+          fb.className =
+            "mt-6 p-4 rounded-xl text-center text-lg fade-in font-bold bg-green-100 text-green-800 border border-green-400";
+          fb.innerHTML = `Luar Biasa! 🎉 Kamu berhasil menyortir semuanya dengan benar.`;
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+          // Buka progres ke menu selanjutnya
+          unlockNext(3);
+        } else {
+          fb.className =
+            "mt-6 p-4 rounded-xl text-center text-lg fade-in font-bold bg-blue-100 text-blue-800 border border-blue-400";
+          fb.innerHTML = `Wah, hampir benar! Kamu betul ${correct} dari 5. <br> <span class="text-sm font-normal mt-2 block">Ingat (Growth Mindset): Kesalahan adalah bukti bahwa kamu sedang belajar. Cek warna merah, sandi yang kuat butuh HURUF BESAR, KECIL, ANGKA, dan SIMBOL. Yuk coba lagi!</span>`;
+        }
+      }
+
+      function resetSimulasi() {
+        const container = document.getElementById("draggableContainer");
+        const items = document.querySelectorAll(".draggable");
+        items.forEach((item) => {
+          item.className =
+            "draggable bg-white dark:bg-gray-700 font-mono p-3 rounded shadow cursor-grab border border-gray-200 m-2 inline-block";
+          delete item.dataset.droppedIn;
+          container.appendChild(item);
+        });
+        document.getElementById("simulasiFeedback").classList.add("hidden");
+        dragCount = 0;
+      }
+
+      // --- SECTION 5: KUIS HOTS ---
+      let currentKuisIndex = 0;
+      let kuisScoreVal = 0;
+      let kuisTimerInterval;
+      let kuisTimeLeft = 300; // 5 menit
+
+      function formatTime(seconds) {
+        const m = Math.floor(seconds / 60)
+          .toString()
+          .padStart(2, "0");
+        const s = (seconds % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+      }
+
+      function startKuis() {
+        document.getElementById("kuisIntro").classList.add("hidden");
+        document.getElementById("kuisArea").classList.remove("hidden");
+        document.getElementById("kuisResult").classList.add("hidden");
+
+        currentKuisIndex = 0;
+        kuisScoreVal = 0;
+        kuisTimeLeft = 300;
+
+        // Mulai Timer
+        document.getElementById("quizTimer").innerText =
+          formatTime(kuisTimeLeft);
+        clearInterval(kuisTimerInterval);
+        kuisTimerInterval = setInterval(() => {
+          kuisTimeLeft--;
+          document.getElementById("quizTimer").innerText =
+            formatTime(kuisTimeLeft);
+          if (kuisTimeLeft <= 0) {
+            clearInterval(kuisTimerInterval);
+            finishKuis(true); // timeout
+          }
+        }, 1000);
+
+        loadKuisQuestion();
+      }
+
+      function loadKuisQuestion() {
+        const q = dataKuis[currentKuisIndex];
+        document.getElementById("currentKuisNum").innerText =
+          currentKuisIndex + 1;
+        document.getElementById("kuisProgressBar").style.width =
+          `${((currentKuisIndex + 1) / dataKuis.length) * 100}%`;
+
+        document.getElementById("kuisQuestionText").innerText = q.q;
+
+        const optionsContainer = document.getElementById("kuisOptions");
+        optionsContainer.innerHTML = "";
+
+        q.options.forEach((opt, i) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "w-full text-left p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-accent dark:hover:bg-gray-700 transition shadow-sm font-semibold";
+          btn.innerText = opt;
+          btn.onclick = () => selectKuisAnswer(i, btn);
+          optionsContainer.appendChild(btn);
+        });
+
+        // Sembunyikan bahasan dan tombol next
+        document.getElementById("kuisPembahasan").classList.add("hidden");
+        document.getElementById("btnNextKuis").classList.add("hidden");
+        document.getElementById("btnFinishKuis").classList.add("hidden");
+      }
+
+      function selectKuisAnswer(selectedIndex, btnElement) {
+        // Disable all buttons
+        const btns = document
+          .getElementById("kuisOptions")
+          .querySelectorAll("button");
+        btns.forEach((b) => {
+          b.disabled = true;
+          b.classList.remove("hover:bg-accent");
+          b.classList.add("opacity-70");
+        });
+
+        const q = dataKuis[currentKuisIndex];
+        const isCorrect = selectedIndex === q.ans;
+
+        if (isCorrect) {
+          kuisScoreVal += 10;
+          btnElement.classList.replace("bg-gray-50", "bg-green-500");
+          btnElement.classList.replace("dark:bg-gray-800", "bg-green-500");
+          btnElement.classList.add("text-white");
+        } else {
+          btnElement.classList.replace("bg-gray-50", "bg-red-500");
+          btnElement.classList.replace("dark:bg-gray-800", "bg-red-500");
+          btnElement.classList.add("text-white");
+          // Highlight correct
+          btns[q.ans].classList.replace("bg-gray-50", "bg-green-500");
+          btns[q.ans].classList.replace("dark:bg-gray-800", "bg-green-500");
+          btns[q.ans].classList.add("text-white");
+        }
+
+        // Tampilkan Pembahasan
+        document.getElementById("kuisPembahasanText").innerText = q.bahas;
+        document.getElementById("kuisPembahasan").classList.remove("hidden");
+
+        if (currentKuisIndex < dataKuis.length - 1) {
+          document.getElementById("btnNextKuis").classList.remove("hidden");
+        } else {
+          document.getElementById("btnFinishKuis").classList.remove("hidden");
+        }
+      }
+
+      function nextKuisQuestion() {
+        currentKuisIndex++;
+        loadKuisQuestion();
+      }
+
+      function finishKuis(isTimeout = false) {
+        clearInterval(kuisTimerInterval);
+        document.getElementById("kuisArea").classList.add("hidden");
+        document.getElementById("kuisResult").classList.remove("hidden");
+
+        document.getElementById("kuisFinalScore").innerText = kuisScoreVal;
+
+        let msg = "";
+        if (isTimeout) msg = "Waktu Habis! ";
+
+        if (kuisScoreVal >= 80) {
+          msg += "Analisa logikamu (HOTS) luar biasa tajam!";
+        } else {
+          msg += "Terus asah nalurimu dalam menjaga keamanan digital.";
+        }
+        document.getElementById("kuisPesan").innerText = msg;
+
+        // Buka progres ke menu selanjutnya
+        unlockNext(4);
+      }
+
+      // --- SECTION 6: ASESMEN AKHIR ---
+      function startAsesmenAkhir() {
+        document.getElementById("akhirIntro").classList.add("hidden");
+        const area = document.getElementById("akhirArea");
+        area.classList.remove("hidden");
+        document.getElementById("btnSubmitAkhir").classList.remove("hidden");
+      }
+
+      function renderAsesmenAkhir() {
+        const container = document.getElementById("akhirArea");
+        let html = "";
+        dataAkhir.forEach((item, index) => {
+          html += `
+                <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <p class="font-bold mb-4 text-lg">${index + 1}. ${item.q}</p>
+                    <div class="space-y-2">
+                        ${item.options
+                          .map(
+                            (opt, i) => `
+                            <label class="flex items-center gap-3 p-3 rounded border border-transparent hover:bg-white dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 cursor-pointer transition">
+                                <input type="radio" name="akhir_q${index}" value="${i}" class="w-5 h-5 text-primary focus:ring-secondary">
+                                <span>${opt}</span>
+                            </label>
+                        `,
+                          )
+                          .join("")}
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+      }
+
+      function submitAsesmenAkhir() {
+        let score = 0;
+        let answered = 0;
+
+        // Reset visual validasi
+        for (let index = 0; index < dataAkhir.length; index++) {
+          const box = document
+            .querySelector(`input[name="akhir_q${index}"]`)
+            .closest(".bg-gray-50, .dark\\:bg-gray-800");
+          box.classList.remove("border-red-500", "border-2");
+        }
+
+        dataAkhir.forEach((item, index) => {
+          const selected = document.querySelector(
+            `input[name="akhir_q${index}"]:checked`,
+          );
+          if (selected) {
+            answered++;
+            if (parseInt(selected.value) === item.ans) score += 10;
+          } else {
+            // Tandai yang belum dijawab
+            const box = document
+              .querySelector(`input[name="akhir_q${index}"]`)
+              .closest(".bg-gray-50, .dark\\:bg-gray-800");
+            box.classList.add("border-red-500", "border-2");
+          }
+        });
+
+        if (answered < dataAkhir.length) {
+          alert("Harap jawab semua soal! Cek kotak yang berwarna merah.");
+          return;
+        }
+
+        state.asesmenAkhirScore = score;
+
+        // Buka progres ke menu selanjutnya
+        unlockNext(5);
+
+        document.getElementById("akhirArea").classList.add("hidden");
+        document.getElementById("btnSubmitAkhir").classList.add("hidden");
+
+        const resultBox = document.getElementById("akhirResult");
+        resultBox.classList.remove("hidden");
+        document.getElementById("akhirFinalScore").innerText = score;
+
+        const predikatEl = document.getElementById("akhirPredikatBadge");
+        const iconEl = document.getElementById("badgeIcon");
+
+        if (score >= 90) {
+          predikatEl.innerText = "Sangat Baik";
+          predikatEl.className =
+            "inline-block px-6 py-2 rounded-full text-white font-bold text-xl mb-6 bg-green-500 shadow-lg";
+          iconEl.innerHTML =
+            '<i class="fa-solid fa-medal text-yellow-500"></i>';
+          // Efek Konfeti
+          var duration = 3 * 1000;
+          var end = Date.now() + duration;
+          (function frame() {
+            confetti({
+              particleCount: 5,
+              angle: 60,
+              spread: 55,
+              origin: { x: 0 },
+              colors: ["#2f318b", "#3caee4", "#d0e5f2"],
+            });
+            confetti({
+              particleCount: 5,
+              angle: 120,
+              spread: 55,
+              origin: { x: 1 },
+              colors: ["#2f318b", "#3caee4", "#d0e5f2"],
+            });
+            if (Date.now() < end) requestAnimationFrame(frame);
+          })();
+        } else if (score >= 80) {
+          predikatEl.innerText = "Baik";
+          predikatEl.className =
+            "inline-block px-6 py-2 rounded-full text-white font-bold text-xl mb-6 bg-blue-500 shadow-lg";
+          iconEl.innerHTML =
+            '<i class="fa-solid fa-thumbs-up text-blue-500"></i>';
+        } else if (score >= 70) {
+          predikatEl.innerText = "Cukup";
+          predikatEl.className =
+            "inline-block px-6 py-2 rounded-full text-white font-bold text-xl mb-6 bg-yellow-500 shadow-lg";
+          iconEl.innerHTML =
+            '<i class="fa-solid fa-face-smile text-yellow-500"></i>';
+        } else {
+          predikatEl.innerText = "Perlu Bimbingan";
+          predikatEl.className =
+            "inline-block px-6 py-2 rounded-full text-white font-bold text-xl mb-6 bg-red-500 shadow-lg";
+          iconEl.innerHTML = '<i class="fa-solid fa-book text-red-500"></i>';
+        }
+      }
+
+      // --- SECTION 7: REFLEKSI ---
+      function simpanRefleksi() {
+        const r1 = document.getElementById("ref1").value;
+        const r2 = document.getElementById("ref2").value;
+        const r3 = document.getElementById("ref3").value;
+        const r4 = document.getElementById("ref4").value;
+
+        if (!r1 || !r2 || !r3 || !r4) {
+          alert("Isi semua kotak refleksi ya, agar pembelajaranmu bermakna.");
+          return;
+        }
+
+        document.getElementById("refleksiSaved").classList.remove("hidden");
+
+        // Buka progres ke menu selanjutnya
+        unlockNext(6);
+
+        setTimeout(() => {
+          document.getElementById("refleksiSaved").classList.add("hidden");
+          // Auto next to sertifikat
+          navigate("next");
+        }, 1500);
+      }
+
+      // --- SECTION 8: SERTIFIKAT ---
+      function generateCertificate() {
+        document.getElementById("certName").innerText =
+          state.name.toUpperCase();
+        document.getElementById("certClass").innerText = state.kelas;
+        document.getElementById("certScore").innerText =
+          state.asesmenAkhirScore || 0;
+
+        // Format Tanggal
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        document.getElementById("certDate").innerText =
+          new Date().toLocaleDateString("id-ID", options);
+
+        const predikatEl = document.getElementById("certPredikat");
+        let sc = state.asesmenAkhirScore || 0;
+        if (sc >= 90) {
+          predikatEl.innerText = "Lulus - Sangat Baik";
+          predikatEl.className =
+            "font-bold text-sm bg-green-100 text-green-800 px-2 py-1 rounded mt-2 inline-block border border-green-300";
+        } else if (sc >= 80) {
+          predikatEl.innerText = "Lulus - Baik";
+          predikatEl.className =
+            "font-bold text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block border border-blue-300";
+        } else if (sc >= 70) {
+          predikatEl.innerText = "Lulus - Cukup";
+          predikatEl.className =
+            "font-bold text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded mt-2 inline-block border border-yellow-300";
+        } else {
+          predikatEl.innerText = "Belum Lulus - Ulangi Materi";
+          predikatEl.className =
+            "font-bold text-sm bg-red-100 text-red-800 px-2 py-1 rounded mt-2 inline-block border border-red-300";
+        }
+      }
+
+      function downloadPDF() {
+        const element = document.getElementById("sertifikat-container");
+
+        // Pastikan mode terang sebelum render PDF agar desainnya tidak hancur
+        const wasDark = document.documentElement.classList.contains("dark");
+        if (wasDark) document.documentElement.classList.remove("dark");
+
+        const opt = {
+          margin: 10,
+          filename: `Sertifikat_KeamananDigital_${state.name.replace(/\s+/g, "_")}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+        };
+
+        // Loading state on button
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+        btn.disabled = true;
+
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .save()
+          .then(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            // Kembalikan dark mode jika tadinya aktif
+            if (wasDark) document.documentElement.classList.add("dark");
+          });
+      }
+
+      function ulangiMateri() {
+        if (confirm("Apakah kamu yakin ingin mengulang dari materi awal?")) {
+          jumpTo(0); // Kembali ke Apersepsi
+        }
+      }
+    </script>
+  </body>
+</html>
