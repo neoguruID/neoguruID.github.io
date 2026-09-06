@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Pembelajaran: Pengenalan Hardware Komputer</title>
+
+    <!-- Menggunakan Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Menggunakan FontAwesome untuk ikon visual -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Menggunakan Google Fonts untuk tipografi yang lebih modern -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Konfigurasi font utama */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f3f4f6;
+        overflow-x: hidden;
+      }
+
+      /* Animasi Transisi Halus */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Styling khusus untuk area Drag and Drop */
+      .drag-item {
+        cursor: grab;
+        transition: all 0.2s;
+        touch-action: none; /* Mencegah layar ter-scroll saat mencoba men-drag di HP */
+      }
+      .drag-item:active {
+        cursor: grabbing;
+        transform: scale(0.95);
+      }
+      .drag-item.selected {
+        /* Highlight saat diklik (untuk mode HP) */
+        border: 2px solid #3b82f6;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        transform: scale(1.05);
+      }
+      .drop-zone {
+        transition: all 0.3s;
+        min-height: 120px;
+      }
+      .drop-zone.drag-over {
+        background-color: #e0f2fe;
+        border-color: #3b82f6;
+      }
+
+      /* Menyembunyikan scrollbar tapi tetap bisa scroll (estetika) */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
+  </head>
+  <body class="text-slate-800 h-screen flex flex-col">
+    <!-- HEADER / NAVBAR -->
+    <header class="bg-blue-600 text-white shadow-md p-4 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <i class="fas fa-microchip"></i> Dunia Hardware
+        </h1>
+        <nav id="main-nav" class="hidden md:flex gap-4 text-sm font-medium">
+          <!-- Navigasi ini akan diatur via JS untuk menampilkan indikator progress -->
+          <span
+            class="nav-indicator px-3 py-1 bg-white text-blue-600 rounded-full"
+            id="nav-home"
+            >Beranda</span
+          >
+          <span class="nav-indicator px-3 py-1 rounded-full" id="nav-materi"
+            >Materi</span
+          >
+          <span class="nav-indicator px-3 py-1 rounded-full" id="nav-sim1"
+            >Simulasi 1</span
+          >
+          <span class="nav-indicator px-3 py-1 rounded-full" id="nav-sim2"
+            >Simulasi 2</span
+          >
+          <span class="nav-indicator px-3 py-1 rounded-full" id="nav-quiz"
+            >Kuis</span
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main
+      class="flex-grow w-full max-w-5xl mx-auto p-4 md:p-6 relative overflow-y-auto"
+    >
+      <!-- ========================================== -->
+      <!-- SCREEN 1: BERANDA / SAMPUL (HOME SCREEN APP)-->
+      <!-- ========================================== -->
+      <section
+        id="screen-home"
+        class="fade-in flex flex-col items-center justify-center min-h-[80vh]"
+      >
+        <div
+          class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl w-full max-w-md mx-auto text-center border-4 border-slate-50 relative overflow-hidden"
+        >
+          <!-- Elemen dekoratif -->
+          <div
+            class="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-bl-full -z-10 opacity-50"
+          ></div>
+
+          <div class="text-blue-500 text-6xl mb-4 mt-2 drop-shadow-md">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h2
+            class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-1 tracking-tight"
+          >
+            Dunia Hardware
+          </h2>
+          <p class="text-slate-500 mb-8 font-medium text-sm">
+            Media Interaktif Kelas 7 SMP
+          </p>
+
+          <!-- Grid Menu mirip Homescreen -->
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <!-- Tombol Utama: Mulai Belajar -->
+            <button
+              onclick="
+                goToScreen('screen-materi');
+                playSound('click');
+              "
+              class="col-span-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-2xl shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center justify-center gap-2 group border border-blue-400"
+            >
+              <div
+                class="bg-white/20 p-3 rounded-full group-hover:scale-110 transition-transform"
+              >
+                <i class="fas fa-play text-2xl"></i>
+              </div>
+              <span class="font-bold text-lg tracking-wide">Mulai Belajar</span>
+            </button>
+
+            <!-- Tombol Popup: Petunjuk -->
+            <button
+              onclick="
+                openModal('modal-petunjuk');
+                playSound('click');
+              "
+              class="bg-slate-50 text-slate-700 p-4 rounded-2xl hover:bg-blue-50 hover:text-blue-600 transition-all flex flex-col items-center justify-center gap-2 border-2 border-slate-100 shadow-sm"
+            >
+              <div class="text-blue-400">
+                <i class="fas fa-book text-3xl"></i>
+              </div>
+              <span class="font-semibold text-sm">Petunjuk</span>
+            </button>
+
+            <!-- Tombol Popup: Tentang -->
+            <button
+              onclick="
+                openModal('modal-tentang');
+                playSound('click');
+              "
+              class="bg-slate-50 text-slate-700 p-4 rounded-2xl hover:bg-blue-50 hover:text-blue-600 transition-all flex flex-col items-center justify-center gap-2 border-2 border-slate-100 shadow-sm"
+            >
+              <div class="text-blue-400">
+                <i class="fas fa-info-circle text-3xl"></i>
+              </div>
+              <span class="font-semibold text-sm">Tentang</span>
+            </button>
+
+            <!-- Tombol Link Keluar -->
+            <a
+              href="https://neoguru.my.id"
+              target="_blank"
+              onclick="playSound('click')"
+              class="col-span-2 bg-slate-100 text-slate-500 p-3 rounded-2xl hover:bg-slate-200 hover:text-slate-700 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+            >
+              <i class="fas fa-sign-out-alt"></i> Kembali ke Neoguru
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 2: MODUL MATERI                     -->
+      <!-- ========================================== -->
+      <section id="screen-materi" class="hidden fade-in flex-col h-full">
+        <div
+          class="bg-white rounded-2xl shadow-lg p-6 mb-4 flex-grow flex flex-col"
+        >
+          <h2 class="text-2xl font-bold mb-4 border-b pb-2">
+            <i class="fas fa-book-open text-blue-500"></i> Materi Hardware
+          </h2>
+
+          <!-- Tab Navigasi Materi -->
+          <div class="flex overflow-x-auto gap-2 mb-6 pb-2" id="material-tabs">
+            <button
+              onclick="openTab('tab-intro')"
+              class="mat-tab active bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold whitespace-nowrap"
+            >
+              Apa itu Hardware?
+            </button>
+            <button
+              onclick="openTab('tab-input')"
+              class="mat-tab bg-slate-100 text-slate-600 px-4 py-2 rounded-lg font-semibold whitespace-nowrap hover:bg-slate-200"
+            >
+              Perangkat Input
+            </button>
+            <button
+              onclick="openTab('tab-process')"
+              class="mat-tab bg-slate-100 text-slate-600 px-4 py-2 rounded-lg font-semibold whitespace-nowrap hover:bg-slate-200"
+            >
+              Perangkat Proses
+            </button>
+            <button
+              onclick="openTab('tab-output')"
+              class="mat-tab bg-slate-100 text-slate-600 px-4 py-2 rounded-lg font-semibold whitespace-nowrap hover:bg-slate-200"
+            >
+              Perangkat Output
+            </button>
+            <button
+              onclick="openTab('tab-storage')"
+              class="mat-tab bg-slate-100 text-slate-600 px-4 py-2 rounded-lg font-semibold whitespace-nowrap hover:bg-slate-200"
+            >
+              Perangkat Storage
+            </button>
+          </div>
+
+          <!-- Konten Tabs -->
+          <div class="flex-grow">
+            <!-- Tab Intro -->
+            <div id="tab-intro" class="tab-content fade-in">
+              <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div
+                  class="w-full md:w-1/3 flex justify-center text-8xl text-slate-400"
+                >
+                  <i class="fas fa-computer"></i>
+                </div>
+                <div
+                  class="w-full md:w-2/3 text-lg leading-relaxed text-slate-700"
+                >
+                  <p class="mb-4">
+                    <b>Hardware (Perangkat Keras)</b> adalah semua komponen
+                    fisik pada komputer yang dapat dilihat dan disentuh.
+                  </p>
+                  <p>
+                    Hardware dibagi menjadi 4 kelompok utama berdasarkan
+                    fungsinya:
+                  </p>
+                  <ol class="list-decimal pl-6 mt-2 space-y-2">
+                    <li><b>Input Device</b> (Memasukkan data)</li>
+                    <li><b>Process Device</b> (Memproses data)</li>
+                    <li><b>Output Device</b> (Menampilkan hasil)</li>
+                    <li><b>Storage Device</b> (Menyimpan data)</li>
+                  </ol>
+                  <p class="mt-4 text-blue-600 font-medium animate-pulse">
+                    <i class="fas fa-hand-pointer"></i> Klik tab di atas untuk
+                    mempelajari masing-masing kelompok!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Input -->
+            <div id="tab-input" class="tab-content hidden fade-in">
+              <h3 class="text-xl font-bold text-green-600 mb-2">
+                <i class="fas fa-keyboard"></i> Perangkat Masukan (Input Device)
+              </h3>
+              <p class="mb-4 text-slate-600">
+                Berfungsi untuk memasukkan data atau perintah ke dalam komputer.
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                  class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-mouse text-4xl text-green-500 mb-2"></i>
+                  <h4 class="font-bold">Mouse</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Menggerakkan kursor dan klik
+                  </p>
+                </div>
+                <div
+                  class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-keyboard text-4xl text-green-500 mb-2"></i>
+                  <h4 class="font-bold">Keyboard</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Mengetik teks dan angka
+                  </p>
+                </div>
+                <div
+                  class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-microphone text-4xl text-green-500 mb-2"></i>
+                  <h4 class="font-bold">Microphone</h4>
+                  <p class="text-xs text-slate-500 mt-1">Memasukkan suara</p>
+                </div>
+                <div
+                  class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-print text-4xl text-green-500 mb-2"></i>
+                  <h4 class="font-bold">Scanner</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Memindai dokumen fisik ke digital
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Process -->
+            <div id="tab-process" class="tab-content hidden fade-in">
+              <h3 class="text-xl font-bold text-red-600 mb-2">
+                <i class="fas fa-microchip"></i> Perangkat Pemroses (Process
+                Device)
+              </h3>
+              <p class="mb-4 text-slate-600">
+                Berfungsi sebagai "otak" komputer untuk memproses instruksi dan
+                data.
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                  class="bg-red-50 border border-red-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-microchip text-4xl text-red-500 mb-2"></i>
+                  <h4 class="font-bold">CPU / Prosesor</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Otak utama yang memproses data
+                  </p>
+                </div>
+                <div
+                  class="bg-red-50 border border-red-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-memory text-4xl text-red-500 mb-2"></i>
+                  <h4 class="font-bold">RAM</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Penyimpanan sementara saat komputer menyala
+                  </p>
+                </div>
+                <div
+                  class="bg-red-50 border border-red-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-chess-board text-4xl text-red-500 mb-2"></i>
+                  <h4 class="font-bold">Motherboard</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Papan induk penghubung semua komponen
+                  </p>
+                </div>
+                <div
+                  class="bg-red-50 border border-red-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-video text-4xl text-red-500 mb-2"></i>
+                  <h4 class="font-bold">VGA Card</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Memproses grafis / visual
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Output -->
+            <div id="tab-output" class="tab-content hidden fade-in">
+              <h3 class="text-xl font-bold text-purple-600 mb-2">
+                <i class="fas fa-display"></i> Perangkat Keluaran (Output
+                Device)
+              </h3>
+              <p class="mb-4 text-slate-600">
+                Berfungsi menampilkan atau menghasilkan informasi yang telah
+                diproses.
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                  class="bg-purple-50 border border-purple-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-tv text-4xl text-purple-500 mb-2"></i>
+                  <h4 class="font-bold">Monitor</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Menampilkan visual/gambar dari komputer
+                  </p>
+                </div>
+                <div
+                  class="bg-purple-50 border border-purple-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-print text-4xl text-purple-500 mb-2"></i>
+                  <h4 class="font-bold">Printer</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Mencetak dokumen digital ke kertas
+                  </p>
+                </div>
+                <div
+                  class="bg-purple-50 border border-purple-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-volume-up text-4xl text-purple-500 mb-2"></i>
+                  <h4 class="font-bold">Speaker</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Menghasilkan suara/audio
+                  </p>
+                </div>
+                <div
+                  class="bg-purple-50 border border-purple-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-projector text-4xl text-purple-500 mb-2"></i>
+                  <h4 class="font-bold">Proyektor</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Menampilkan layar ke dinding/layar besar
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Storage -->
+            <div id="tab-storage" class="tab-content hidden fade-in">
+              <h3 class="text-xl font-bold text-yellow-600 mb-2">
+                <i class="fas fa-hard-drive"></i> Perangkat Penyimpanan (Storage
+                Device)
+              </h3>
+              <p class="mb-4 text-slate-600">
+                Berfungsi menyimpan data dan sistem operasi secara permanen.
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                  class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-hdd text-4xl text-yellow-500 mb-2"></i>
+                  <h4 class="font-bold">Hardisk (HDD)</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Penyimpanan kapasitas besar menggunakan piringan magnetik
+                  </p>
+                </div>
+                <div
+                  class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i
+                    class="fas fa-solid fa-sd-card text-4xl text-yellow-500 mb-2"
+                  ></i>
+                  <h4 class="font-bold">SSD</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Penyimpanan cepat tanpa komponen bergerak
+                  </p>
+                </div>
+                <div
+                  class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i class="fas fa-usb text-4xl text-yellow-500 mb-2"></i>
+                  <h4 class="font-bold">Flashdisk</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Penyimpanan portabel kecil melalui port USB
+                  </p>
+                </div>
+                <div
+                  class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-center shadow-sm hover:shadow-md transition"
+                >
+                  <i
+                    class="fas fa-compact-disc text-4xl text-yellow-500 mb-2"
+                  ></i>
+                  <h4 class="font-bold">CD/DVD</h4>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Penyimpanan berbentuk kepingan optik
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigasi Bawah -->
+        <div class="flex justify-between items-center mt-auto">
+          <button
+            onclick="
+              goToScreen('screen-home');
+              playSound('click');
+            "
+            class="px-6 py-2 bg-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-400 transition-colors"
+          >
+            <i class="fas fa-arrow-left"></i> Beranda
+          </button>
+          <button
+            onclick="
+              goToScreen('screen-sim1');
+              playSound('click');
+            "
+            class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+          >
+            Lanjut Simulasi 1 <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 3: SIMULASI 1 (DRAG KATEGORI)       -->
+      <!-- ========================================== -->
+      <section id="screen-sim1" class="hidden fade-in flex-col h-full">
+        <div
+          class="bg-white rounded-2xl shadow-lg p-6 mb-4 flex-grow flex flex-col"
+        >
+          <div class="flex justify-between items-center mb-4 border-b pb-2">
+            <h2 class="text-xl md:text-2xl font-bold">
+              <i class="fas fa-gamepad text-blue-500"></i> Simulasi 1:
+              Kelompokkan Hardware
+            </h2>
+            <span
+              class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold"
+              ><i class="fas fa-info-circle"></i> Drag & Drop / Klik &
+              Pindah</span
+            >
+          </div>
+
+          <p class="mb-4 text-slate-600 font-medium">
+            Tarik (atau klik) perangkat di bawah ini, lalu letakkan ke kotak
+            kategori yang benar!
+          </p>
+
+          <!-- Area Pool Item (Sumber) -->
+          <div
+            class="bg-slate-100 p-4 rounded-xl min-h-[100px] flex flex-wrap gap-3 justify-center mb-6 border-2 border-dashed border-slate-300 drop-zone"
+            id="sim1-pool"
+            data-type="pool"
+          >
+            <!-- Item akan digenerate via JS -->
+          </div>
+
+          <!-- Area Drop Zones (Tujuan) -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 flex-grow"
+          >
+            <!-- Input Zone -->
+            <div
+              class="bg-green-50 border-2 border-green-300 rounded-xl flex flex-col"
+            >
+              <div
+                class="bg-green-300 text-green-900 font-bold p-2 text-center rounded-t-lg"
+              >
+                <i class="fas fa-keyboard"></i> INPUT
+              </div>
+              <div
+                class="p-3 flex-grow drop-zone flex flex-wrap gap-2 content-start"
+                data-type="input"
+                id="zone-input"
+              ></div>
+            </div>
+            <!-- Process Zone -->
+            <div
+              class="bg-red-50 border-2 border-red-300 rounded-xl flex flex-col"
+            >
+              <div
+                class="bg-red-300 text-red-900 font-bold p-2 text-center rounded-t-lg"
+              >
+                <i class="fas fa-microchip"></i> PROCESS
+              </div>
+              <div
+                class="p-3 flex-grow drop-zone flex flex-wrap gap-2 content-start"
+                data-type="process"
+                id="zone-process"
+              ></div>
+            </div>
+            <!-- Output Zone -->
+            <div
+              class="bg-purple-50 border-2 border-purple-300 rounded-xl flex flex-col"
+            >
+              <div
+                class="bg-purple-300 text-purple-900 font-bold p-2 text-center rounded-t-lg"
+              >
+                <i class="fas fa-display"></i> OUTPUT
+              </div>
+              <div
+                class="p-3 flex-grow drop-zone flex flex-wrap gap-2 content-start"
+                data-type="output"
+                id="zone-output"
+              ></div>
+            </div>
+            <!-- Storage Zone -->
+            <div
+              class="bg-yellow-50 border-2 border-yellow-300 rounded-xl flex flex-col"
+            >
+              <div
+                class="bg-yellow-300 text-yellow-900 font-bold p-2 text-center rounded-t-lg"
+              >
+                <i class="fas fa-hard-drive"></i> STORAGE
+              </div>
+              <div
+                class="p-3 flex-grow drop-zone flex flex-wrap gap-2 content-start"
+                data-type="storage"
+                id="zone-storage"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Feedback Area Sim 1 -->
+          <div
+            id="sim1-feedback"
+            class="mt-4 text-center font-bold text-lg hidden p-2 rounded-lg"
+          ></div>
+        </div>
+
+        <!-- Navigasi Bawah -->
+        <div class="flex justify-between items-center mt-auto">
+          <button
+            onclick="
+              goToScreen('screen-materi');
+              playSound('click');
+            "
+            class="px-4 py-2 bg-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-400"
+          >
+            <i class="fas fa-arrow-left"></i> Materi
+          </button>
+          <div class="flex gap-2">
+            <button
+              onclick="checkSim1()"
+              class="px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 shadow-md"
+            >
+              <i class="fas fa-check"></i> Cek Jawaban
+            </button>
+            <button
+              id="btn-next-sim1"
+              onclick="
+                goToScreen('screen-sim2');
+                playSound('click');
+              "
+              class="hidden px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg animate-pulse"
+            >
+              Lanjut <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 4: SIMULASI 2 (COCOKKAN DETAIL)     -->
+      <!-- ========================================== -->
+      <section id="screen-sim2" class="hidden fade-in flex-col h-full">
+        <div
+          class="bg-white rounded-2xl shadow-lg p-6 mb-4 flex-grow flex flex-col"
+        >
+          <div class="flex justify-between items-center mb-4 border-b pb-2">
+            <h2 class="text-xl md:text-2xl font-bold">
+              <i class="fas fa-puzzle-piece text-blue-500"></i> Simulasi 2:
+              Detail Fungsi
+            </h2>
+            <span
+              class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold"
+              id="sim2-counter"
+              >Perangkat 1/5</span
+            >
+          </div>
+
+          <p class="mb-4 text-slate-600 font-medium">
+            Lengkapi informasi perangkat berikut dengan menarik kotak
+            <b>Jenis</b> dan <b>Fungsi</b> yang tepat!
+          </p>
+
+          <div class="flex flex-col md:flex-row gap-6 mb-6">
+            <!-- Kolom Gambar/Info Perangkat -->
+            <div
+              class="w-full md:w-1/3 bg-slate-50 border-2 border-slate-200 rounded-xl p-4 flex flex-col items-center justify-center text-center"
+            >
+              <div
+                id="sim2-device-icon"
+                class="text-6xl text-blue-500 mb-2"
+              ></div>
+              <h3
+                id="sim2-device-name"
+                class="text-2xl font-bold text-slate-800"
+              >
+                Nama Perangkat
+              </h3>
+            </div>
+
+            <!-- Kolom Tempat Drop -->
+            <div class="w-full md:w-2/3 flex flex-col gap-4">
+              <div>
+                <p class="font-bold text-slate-700 mb-1">
+                  Pilih Jenis Perangkat:
+                </p>
+                <div
+                  class="border-2 border-dashed border-slate-400 bg-slate-50 min-h-[60px] rounded-lg p-2 flex items-center justify-center drop-zone"
+                  id="sim2-drop-type"
+                  data-target="type"
+                >
+                  <!-- Drop Jenis Disini -->
+                  <span class="text-slate-400 text-sm placeholder-text"
+                    >Tarik jawaban 'Jenis' ke sini...</span
+                  >
+                </div>
+              </div>
+              <div>
+                <p class="font-bold text-slate-700 mb-1">
+                  Pilih Fungsi Perangkat:
+                </p>
+                <div
+                  class="border-2 border-dashed border-slate-400 bg-slate-50 min-h-[80px] rounded-lg p-2 flex items-center justify-center drop-zone"
+                  id="sim2-drop-desc"
+                  data-target="desc"
+                >
+                  <!-- Drop Fungsi Disini -->
+                  <span class="text-slate-400 text-sm placeholder-text"
+                    >Tarik jawaban 'Fungsi' ke sini...</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pool Pilihan Jawaban -->
+          <div
+            class="bg-slate-100 p-4 rounded-xl border border-slate-300 flex-grow"
+          >
+            <p class="text-sm text-center text-slate-500 font-bold mb-3">
+              Pilihan Jawaban (Tarik/Klik kotak di bawah ke area kosong di atas)
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 h-full">
+              <!-- Pilihan Jenis -->
+              <div
+                class="w-full md:w-1/4 border-r-0 md:border-r-2 border-slate-300 pr-0 md:pr-4"
+              >
+                <div
+                  class="drop-zone min-h-[50px] flex flex-col gap-2"
+                  id="sim2-pool-type"
+                >
+                  <!-- Generate via JS -->
+                </div>
+              </div>
+              <!-- Pilihan Fungsi -->
+              <div class="w-full md:w-3/4">
+                <div
+                  class="drop-zone min-h-[50px] flex flex-col gap-2"
+                  id="sim2-pool-desc"
+                >
+                  <!-- Generate via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback Area Sim 2 -->
+          <div
+            id="sim2-feedback"
+            class="mt-4 text-center font-bold text-lg hidden p-2 rounded-lg"
+          ></div>
+        </div>
+
+        <!-- Navigasi Bawah -->
+        <div class="flex justify-between items-center mt-auto">
+          <button
+            onclick="
+              goToScreen('screen-sim1');
+              playSound('click');
+            "
+            class="px-4 py-2 bg-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-400"
+          >
+            <i class="fas fa-arrow-left"></i> Kembali
+          </button>
+          <div class="flex gap-2">
+            <button
+              onclick="checkSim2()"
+              class="px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 shadow-md"
+            >
+              <i class="fas fa-check"></i> Cek
+            </button>
+            <button
+              id="btn-next-device"
+              onclick="nextDeviceSim2()"
+              class="hidden px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg animate-pulse"
+            >
+              Perangkat Berikutnya <i class="fas fa-arrow-right"></i>
+            </button>
+            <button
+              id="btn-finish-sim2"
+              onclick="
+                goToScreen('screen-quiz');
+                playSound('click');
+              "
+              class="hidden px-6 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 shadow-lg animate-pulse"
+            >
+              Lanjut Kuis <i class="fas fa-flag-checkered"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 5: KUIS EVALUASI                    -->
+      <!-- ========================================== -->
+      <section id="screen-quiz" class="hidden fade-in flex-col h-full">
+        <div
+          class="bg-white rounded-2xl shadow-lg p-6 mb-4 flex-grow flex flex-col relative overflow-hidden"
+          id="quiz-container"
+        >
+          <div class="flex justify-between items-center mb-6 border-b pb-2">
+            <h2 class="text-xl md:text-2xl font-bold">
+              <i class="fas fa-clipboard-list text-blue-500"></i> Kuis Evaluasi
+            </h2>
+            <div
+              class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-bold flex gap-2 items-center"
+            >
+              <i class="fas fa-star text-yellow-500"></i> Skor:
+              <span id="quiz-score-display">0</span>
+            </div>
+          </div>
+
+          <div id="quiz-question-area" class="flex-grow">
+            <h3 class="text-lg font-bold text-slate-500 mb-2">
+              Soal <span id="q-current">1</span> dari
+              <span id="q-total">5</span>
+            </h3>
+            <p
+              class="text-xl font-medium text-slate-800 mb-6"
+              id="quiz-question-text"
+            >
+              Pertanyaan akan muncul di sini?
+            </p>
+
+            <div class="flex flex-col gap-3" id="quiz-options-area">
+              <!-- Opsi digenerate via JS -->
+            </div>
+
+            <!-- Feedback Kuis -->
+            <div
+              id="quiz-feedback"
+              class="mt-6 hidden p-4 rounded-xl shadow-inner text-center"
+            >
+              <p id="quiz-feedback-text" class="font-bold text-lg mb-1"></p>
+              <p id="quiz-feedback-desc" class="text-slate-600 text-sm"></p>
+            </div>
+          </div>
+
+          <!-- Area Hasil Akhir (Awalnya Sembunyi) -->
+          <div
+            id="quiz-result-area"
+            class="hidden flex-col items-center justify-center h-full text-center"
+          >
+            <i
+              class="fas fa-trophy text-6xl text-yellow-400 mb-4 drop-shadow-lg"
+            ></i>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">
+              Kuis Selesai!
+            </h2>
+            <p class="text-lg text-slate-600 mb-6">
+              Kamu telah menyelesaikan semua materi dan simulasi.
+            </p>
+            <div
+              class="bg-blue-50 border-4 border-blue-200 p-6 rounded-full w-48 h-48 flex flex-col items-center justify-center shadow-lg mb-6"
+            >
+              <span class="text-sm font-bold text-blue-500">NILAI AKHIR</span>
+              <span
+                class="text-5xl font-black text-blue-700"
+                id="final-score-text"
+                >100</span
+              >
+            </div>
+            <p id="final-message" class="font-bold text-xl mb-8"></p>
+            <button
+              onclick="location.reload()"
+              class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg"
+            >
+              <i class="fas fa-redo"></i> Ulangi Pembelajaran
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigasi Bawah Kuis -->
+        <div
+          class="flex justify-between items-center mt-auto"
+          id="quiz-nav-bottom"
+        >
+          <button
+            onclick="
+              goToScreen('screen-sim2');
+              playSound('click');
+            "
+            class="px-4 py-2 bg-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-400"
+          >
+            <i class="fas fa-arrow-left"></i> Simulasi 2
+          </button>
+          <button
+            id="btn-next-question"
+            onclick="nextQuestion()"
+            class="hidden px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg animate-pulse"
+          >
+            Soal Berikutnya <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- KOMPONEN MODAL / POPUP                      -->
+      <!-- ========================================== -->
+
+      <!-- MODAL PETUNJUK -->
+      <div
+        id="modal-petunjuk"
+        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden opacity-0 transition-opacity duration-300"
+      >
+        <div
+          class="bg-white p-6 rounded-2xl shadow-2xl w-[90%] max-w-md transform scale-95 transition-transform duration-300"
+        >
+          <div class="flex justify-between items-center mb-4 border-b pb-2">
+            <h3 class="text-xl font-bold text-slate-800">
+              <i class="fas fa-book text-blue-500"></i> Petunjuk Penggunaan
+            </h3>
+            <button
+              onclick="
+                closeModal('modal-petunjuk');
+                playSound('click');
+              "
+              class="text-slate-400 hover:text-red-500 transition-colors"
+            >
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="bg-blue-50 p-3 rounded-lg mb-4 border border-blue-100">
+            <p class="text-sm text-blue-800">
+              <i class="fas fa-lightbulb text-yellow-500"></i>
+              <b>Tips Drag & Drop:</b>
+            </p>
+            <ul class="list-disc pl-5 mt-1 text-sm text-blue-700">
+              <li>
+                <b>Di Laptop/PC:</b> Klik, tahan (drag), lalu lepaskan di kotak
+                tujuan.
+              </li>
+              <li>
+                <b>Di HP (Sangat Disarankan):</b> <b>Ketuk (Tap)</b> pada
+                jawaban yang dipilih, lalu <b>Ketuk (Tap)</b> pada kotak kosong
+                tujuannya.
+              </li>
+            </ul>
+          </div>
+          <ul class="list-disc pl-5 space-y-1 text-slate-600 text-sm">
+            <li>Pelajari materi pada menu <b>Materi</b>.</li>
+            <li>Uji pemahamanmu dengan bermain Simulasi 1 & 2.</li>
+            <li>
+              Selesaikan <b>Kuis Evaluasi</b> di akhir untuk melihat skormu.
+            </li>
+          </ul>
+          <button
+            onclick="
+              closeModal('modal-petunjuk');
+              playSound('click');
+            "
+            class="mt-6 w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors shadow-md"
+          >
+            Saya Mengerti
+          </button>
+        </div>
+      </div>
+
+      <!-- MODAL TENTANG -->
+      <div
+        id="modal-tentang"
+        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden opacity-0 transition-opacity duration-300"
+      >
+        <div
+          class="bg-white p-6 rounded-3xl shadow-2xl w-[90%] max-w-sm transform scale-95 transition-transform duration-300 text-center relative overflow-hidden"
+        >
+          <div
+            class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-500 to-blue-600 -z-10"
+          ></div>
+          <div class="flex justify-end mb-2 absolute top-4 right-4">
+            <button
+              onclick="
+                closeModal('modal-tentang');
+                playSound('click');
+              "
+              class="text-white hover:text-slate-200 transition-colors"
+            >
+              <i class="fas fa-times text-xl drop-shadow-md"></i>
+            </button>
+          </div>
+          <img
+            src="https://ui-avatars.com/api/?name=Hanif+Nur+Fadhil&background=ffffff&color=2563eb&size=100"
+            alt="Avatar Pengembang"
+            class="rounded-full shadow-lg mx-auto mt-4 mb-3 border-4 border-white bg-white"
+          />
+          <h3 class="text-xl font-bold text-slate-800">
+            Hanif Nur Fadhil, S.Pd., Gr.
+          </h3>
+          <p class="text-blue-500 text-sm font-bold mb-4">
+            Pengembang Media Pembelajaran
+          </p>
+          <div
+            class="bg-slate-50 p-4 rounded-xl text-slate-600 text-sm text-left border border-slate-200 shadow-inner"
+          >
+            Media interaktif <b>"Dunia Hardware"</b> ini dikembangkan secara
+            khusus untuk membantu siswa SMP memahami fungsi dan jenis perangkat
+            keras komputer secara visual, menyenangkan, dan interaktif.
+          </div>
+          <button
+            onclick="
+              closeModal('modal-tentang');
+              playSound('click');
+            "
+            class="mt-4 w-full bg-slate-100 text-slate-700 font-bold py-2 rounded-xl hover:bg-slate-200 transition-colors"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+      // ==========================================
+      // 1. SISTEM AUDIO (Web Audio API)
+      // ==========================================
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      function playSound(type) {
+        if (audioCtx.state === "suspended") audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (type === "click") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(
+            800,
+            audioCtx.currentTime + 0.1,
+          );
+          gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioCtx.currentTime + 0.1,
+          );
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.1);
+        } else if (type === "correct") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+          osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === "wrong") {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+          osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        }
+      }
+
+      // ==========================================
+      // 2. SISTEM NAVIGASI & TAB
+      // ==========================================
+      const screens = [
+        "screen-home",
+        "screen-materi",
+        "screen-sim1",
+        "screen-sim2",
+        "screen-quiz",
+      ];
+
+      function goToScreen(targetId) {
+        // Sembunyikan semua layar
+        screens.forEach((id) => {
+          document.getElementById(id).classList.add("hidden");
+        });
+        // Tampilkan layar target
+        document.getElementById(targetId).classList.remove("hidden");
+
+        // Update Indikator Navigasi Atas
+        document.querySelectorAll(".nav-indicator").forEach((el) => {
+          el.classList.remove("bg-white", "text-blue-600");
+          el.classList.add("text-blue-100");
+        });
+        const navId = "nav-" + targetId.split("-")[1];
+        if (document.getElementById(navId)) {
+          document.getElementById(navId).classList.remove("text-blue-100");
+          document
+            .getElementById(navId)
+            .classList.add("bg-white", "text-blue-600");
+        }
+
+        // Inisialisasi khusus saat pindah layar
+        if (targetId === "screen-sim1" && !sim1Initialized) initSim1();
+        if (targetId === "screen-sim2" && !sim2Initialized) initSim2();
+        if (targetId === "screen-quiz" && !quizInitialized) initQuiz();
+      }
+
+      function openTab(tabId) {
+        playSound("click");
+        // Sembunyikan semua konten tab
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((el) => el.classList.add("hidden"));
+        // Reset styling tombol tab
+        document.querySelectorAll(".mat-tab").forEach((el) => {
+          el.classList.remove("bg-blue-100", "text-blue-700");
+          el.classList.add("bg-slate-100", "text-slate-600");
+        });
+
+        // Tampilkan konten target dan styling tombol aktif
+        document.getElementById(tabId).classList.remove("hidden");
+        const activeBtn = Array.from(
+          document.querySelectorAll(".mat-tab"),
+        ).find((btn) => btn.getAttribute("onclick").includes(tabId));
+        if (activeBtn) {
+          activeBtn.classList.remove("bg-slate-100", "text-slate-600");
+          activeBtn.classList.add("bg-blue-100", "text-blue-700");
+        }
+      }
+
+      // ==========================================
+      // 2B. SISTEM POPUP / MODAL
+      // ==========================================
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const content = modal.querySelector("div.bg-white");
+        modal.classList.remove("hidden");
+        // Trigger reflow untuk memastikan animasi berjalan
+        void modal.offsetWidth;
+        modal.classList.remove("opacity-0");
+        modal.classList.add("opacity-100");
+        content.classList.remove("scale-95");
+        content.classList.add("scale-100");
+      }
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const content = modal.querySelector("div.bg-white");
+        modal.classList.remove("opacity-100");
+        modal.classList.add("opacity-0");
+        content.classList.remove("scale-100");
+        content.classList.add("scale-95");
+        // Tunggu transisi selesai sebelum di hide dari DOM
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 300);
+      }
+
+      // ==========================================
+      // 3. SISTEM DRAG AND DROP UMUM (HYBRID PC & MOBILE)
+      // ==========================================
+      let draggedItem = null; // Menyimpan referensi DOM elemen yang ditarik
+      let selectedItemForClick = null; // Menyimpan item yang di-klik (untuk mode Tap/HP)
+
+      function setupDragAndDrop(itemClass, zoneClass) {
+        const items = document.querySelectorAll(itemClass);
+        const zones = document.querySelectorAll(zoneClass);
+
+        items.forEach((item) => {
+          // Gunakan penanda agar event listener tidak diduplikasi (Mencegah hilangnya fungsi saat re-init)
+          if (item.dataset.dragInit === "true") return;
+          item.dataset.dragInit = "true";
+
+          // Event untuk PC (Native HTML5 Drag)
+          item.addEventListener("dragstart", function (e) {
+            draggedItem = this;
+
+            // Wajib diset agar browser (terutama Firefox) mengizinkan Drop
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", this.id || "drag-item");
+
+            setTimeout(() => this.classList.add("opacity-50"), 0);
+            playSound("click");
+          });
+
+          item.addEventListener("dragend", function () {
+            setTimeout(() => {
+              this.classList.remove("opacity-50");
+              draggedItem = null;
+            }, 0);
+          });
+
+          // Event untuk HP/Tap to Move
+          item.addEventListener("click", function (e) {
+            e.stopPropagation(); // Mencegah event bocor ke elemen parent
+            playSound("click");
+
+            // Hapus seleksi sebelumnya
+            if (selectedItemForClick) {
+              selectedItemForClick.classList.remove("selected");
+            }
+
+            // Jika mengklik item yang sama, batalkan seleksi
+            if (selectedItemForClick === this) {
+              selectedItemForClick = null;
+              return;
+            }
+
+            // Set seleksi baru
+            selectedItemForClick = this;
+            this.classList.add("selected");
+          });
+        });
+
+        zones.forEach((zone) => {
+          // Gunakan penanda inisialisasi
+          if (zone.dataset.dropInit === "true") return;
+          zone.dataset.dropInit = "true";
+
+          // Event Drag Over (PC)
+          zone.addEventListener("dragover", function (e) {
+            e.preventDefault(); // Mengizinkan drop
+            e.dataTransfer.dropEffect = "move";
+            this.classList.add("drag-over");
+          });
+
+          // Event Drag Leave (PC)
+          zone.addEventListener("dragleave", function () {
+            this.classList.remove("drag-over");
+          });
+
+          // Event Drop (PC)
+          zone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            this.classList.remove("drag-over");
+
+            // Coba ambil elemen berdasarkan ID data yang ditransfer, dengan fallback ke global var
+            const itemId = e.dataTransfer.getData("text/plain");
+            let draggedEl = document.getElementById(itemId);
+            if (!draggedEl && draggedItem) draggedEl = draggedItem;
+
+            if (draggedEl) {
+              this.appendChild(draggedEl);
+              removePlaceholder(this);
+              playSound("click");
+            }
+          });
+
+          // Event Click (HP/Tap to Move)
+          zone.addEventListener("click", function () {
+            if (selectedItemForClick) {
+              this.appendChild(selectedItemForClick);
+              selectedItemForClick.classList.remove("selected");
+              removePlaceholder(this);
+              selectedItemForClick = null;
+              playSound("click");
+            }
+          });
+        });
+      }
+
+      function removePlaceholder(zone) {
+        const placeholder = zone.querySelector(".placeholder-text");
+        if (placeholder) placeholder.style.display = "none";
+      }
+
+      // ==========================================
+      // 4. LOGIKA SIMULASI 1 (KELOMPOKKAN HARDWARE)
+      // ==========================================
+      let sim1Initialized = false;
+      const sim1Data = [
+        { id: "h1", name: "Mouse", type: "input", icon: "fa-mouse" },
+        { id: "h2", name: "Keyboard", type: "input", icon: "fa-keyboard" },
+        { id: "h3", name: "Scanner", type: "input", icon: "fa-print" },
+        { id: "h4", name: "CPU", type: "process", icon: "fa-microchip" },
+        { id: "h5", name: "RAM", type: "process", icon: "fa-memory" },
+        { id: "h6", name: "Monitor", type: "output", icon: "fa-tv" },
+        { id: "h7", name: "Printer", type: "output", icon: "fa-print" },
+        { id: "h8", name: "Speaker", type: "output", icon: "fa-volume-up" },
+        { id: "h9", name: "Hardisk", type: "storage", icon: "fa-hdd" },
+        { id: "h10", name: "Flashdisk", type: "storage", icon: "fa-usb" },
+      ];
+
+      function initSim1() {
+        const pool = document.getElementById("sim1-pool");
+        pool.innerHTML = "";
+
+        // Mengacak data agar tidak berurutan
+        const shuffled = sim1Data.sort(() => 0.5 - Math.random());
+
+        shuffled.forEach((item) => {
+          const el = document.createElement("div");
+          el.className =
+            "drag-item bg-white border-2 border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-700 shadow-sm flex items-center gap-2 select-none hover:border-blue-400";
+          el.draggable = true;
+          el.dataset.type = item.type; // Data tersembunyi kunci jawaban
+          el.id = item.id;
+          el.innerHTML = `<i class="fas ${item.icon} text-slate-500"></i> ${item.name}`;
+          pool.appendChild(el);
+        });
+
+        setupDragAndDrop(".drag-item", ".drop-zone");
+        sim1Initialized = true;
+      }
+
+      function checkSim1() {
+        let allCorrect = true;
+        let totalItemsPlaced = 0;
+        const zones = ["input", "process", "output", "storage"];
+
+        zones.forEach((zoneType) => {
+          const zone = document.getElementById(`zone-${zoneType}`);
+          const items = zone.querySelectorAll(".drag-item");
+
+          items.forEach((item) => {
+            totalItemsPlaced++;
+            if (item.dataset.type === zoneType) {
+              // Benar
+              item.classList.replace("border-slate-300", "border-green-500");
+              item.classList.add("bg-green-100");
+              item.classList.remove("bg-red-100", "border-red-500");
+            } else {
+              // Salah
+              item.classList.replace("border-slate-300", "border-red-500");
+              item.classList.replace("border-green-500", "border-red-500");
+              item.classList.add("bg-red-100");
+              item.classList.remove("bg-green-100");
+              allCorrect = false;
+            }
+          });
+        });
+
+        const poolItems = document
+          .getElementById("sim1-pool")
+          .querySelectorAll(".drag-item").length;
+        const feedback = document.getElementById("sim1-feedback");
+        feedback.classList.remove(
+          "hidden",
+          "bg-green-100",
+          "text-green-800",
+          "bg-red-100",
+          "text-red-800",
+          "bg-yellow-100",
+          "text-yellow-800",
+        );
+
+        if (poolItems > 0) {
+          feedback.classList.add("bg-yellow-100", "text-yellow-800");
+          feedback.innerHTML =
+            '<i class="fas fa-exclamation-triangle"></i> Pindahkan semua perangkat terlebih dahulu!';
+          playSound("wrong");
+        } else if (allCorrect) {
+          feedback.classList.add("bg-green-100", "text-green-800");
+          feedback.innerHTML =
+            '<i class="fas fa-check-circle"></i> Luar Biasa! Semua pengelompokan sudah tepat.';
+          playSound("correct");
+          document.getElementById("btn-next-sim1").classList.remove("hidden");
+        } else {
+          feedback.classList.add("bg-red-100", "text-red-800");
+          feedback.innerHTML =
+            '<i class="fas fa-times-circle"></i> Masih ada yang salah tempat (warna merah). Coba perbaiki!';
+          playSound("wrong");
+        }
+      }
+
+      // ==========================================
+      // 5. LOGIKA SIMULASI 2 (COCOKKAN DETAIL FUNGSI)
+      // ==========================================
+      let sim2Initialized = false;
+      let currentDeviceIndex = 0;
+      const sim2Devices = [
+        {
+          name: "Keyboard",
+          icon: "fa-keyboard",
+          type: "Input",
+          desc: "Memasukkan data berupa huruf, angka, dan karakter.",
+          wrongDescs: [
+            "Menampilkan gambar grafis ke layar.",
+            "Menyimpan data secara permanen.",
+            "Memproses instruksi dari aplikasi.",
+          ],
+        },
+        {
+          name: "Prosesor (CPU)",
+          icon: "fa-microchip",
+          type: "Process",
+          desc: "Otak komputer yang memproses semua instruksi dan logika.",
+          wrongDescs: [
+            "Mencetak dokumen ke media kertas.",
+            "Merekam suara pengguna.",
+            "Menyediakan daya listrik untuk PC.",
+          ],
+        },
+        {
+          name: "Monitor",
+          icon: "fa-tv",
+          type: "Output",
+          desc: "Menampilkan hasil proses dalam bentuk visual di layar.",
+          wrongDescs: [
+            "Membaca kepingan CD atau DVD.",
+            "Menyimpan sistem operasi.",
+            "Memasukkan perintah dengan klik.",
+          ],
+        },
+        {
+          name: "Flashdisk",
+          icon: "fa-usb",
+          type: "Storage",
+          desc: "Menyimpan data digital yang mudah dibawa kemana-mana.",
+          wrongDescs: [
+            "Menghasilkan output berupa suara.",
+            "Mendinginkan suhu motherboard.",
+            "Mengetik dokumen teks panjang.",
+          ],
+        },
+        {
+          name: "Printer",
+          icon: "fa-print",
+          type: "Output",
+          desc: "Mencetak dokumen digital atau gambar ke atas kertas fisik.",
+          wrongDescs: [
+            "Memindai foto fisik menjadi file digital.",
+            "Memproses grafis game 3D.",
+            "Menghubungkan komputer ke jaringan internet.",
+          ],
+        },
+      ];
+
+      // Tipe Hardware statis yang selalu muncul sebagai pilihan
+      const sim2Types = ["Input", "Process", "Output", "Storage"];
+
+      function initSim2() {
+        currentDeviceIndex = 0;
+        renderSim2Device();
+        sim2Initialized = true;
+      }
+
+      function renderSim2Device() {
+        const device = sim2Devices[currentDeviceIndex];
+
+        // Update UI Header
+        document.getElementById("sim2-counter").innerText =
+          `Perangkat ${currentDeviceIndex + 1} dari 5`;
+        document.getElementById("sim2-device-name").innerText = device.name;
+        document.getElementById("sim2-device-icon").innerHTML =
+          `<i class="fas ${device.icon}"></i>`;
+
+        // Bersihkan drop zones dan setel ulang placeholder
+        document.getElementById("sim2-drop-type").innerHTML =
+          `<span class="text-slate-400 text-sm placeholder-text">Tarik jawaban 'Jenis' ke sini...</span>`;
+        document.getElementById("sim2-drop-desc").innerHTML =
+          `<span class="text-slate-400 text-sm placeholder-text">Tarik jawaban 'Fungsi' ke sini...</span>`;
+
+        // Generate Pilihan Jenis (Selalu 4)
+        const poolType = document.getElementById("sim2-pool-type");
+        poolType.innerHTML = "";
+        sim2Types.forEach((type, idx) => {
+          poolType.innerHTML += `<div class="drag-item bg-white border-2 border-slate-300 p-2 rounded text-center text-sm font-bold cursor-pointer" draggable="true" data-kind="type" data-val="${type}" id="t${idx}">${type}</div>`;
+        });
+
+        // Generate Pilihan Fungsi (1 Benar, 3 Salah)
+        const poolDesc = document.getElementById("sim2-pool-desc");
+        poolDesc.innerHTML = "";
+
+        let descOptions = [device.desc, ...device.wrongDescs];
+        // Acak urutan deskripsi
+        descOptions = descOptions.sort(() => 0.5 - Math.random());
+
+        descOptions.forEach((desc, idx) => {
+          // Yang benar ditandai di data-val sebagai 'correct', yang salah 'wrong'
+          const isCorrect = desc === device.desc ? "correct" : "wrong";
+          poolDesc.innerHTML += `<div class="drag-item bg-white border-2 border-slate-300 p-2 rounded text-sm cursor-pointer" draggable="true" data-kind="desc" data-val="${isCorrect}" id="d${idx}">${desc}</div>`;
+        });
+
+        // Re-setup drag and drop untuk elemen baru
+        setupDragAndDrop(".drag-item", ".drop-zone");
+
+        // Sembunyikan tombol/feedback sebelumnya
+        document.getElementById("sim2-feedback").classList.add("hidden");
+        document.getElementById("btn-next-device").classList.add("hidden");
+        document.getElementById("btn-finish-sim2").classList.add("hidden");
+      }
+
+      function checkSim2() {
+        const device = sim2Devices[currentDeviceIndex];
+        const dropType = document.getElementById("sim2-drop-type");
+        const dropDesc = document.getElementById("sim2-drop-desc");
+        const feedback = document.getElementById("sim2-feedback");
+
+        const itemType = dropType.querySelector(".drag-item");
+        const itemDesc = dropDesc.querySelector(".drag-item");
+
+        feedback.classList.remove(
+          "hidden",
+          "bg-green-100",
+          "text-green-800",
+          "bg-red-100",
+          "text-red-800",
+          "bg-yellow-100",
+          "text-yellow-800",
+        );
+
+        if (!itemType || !itemDesc) {
+          feedback.classList.add("bg-yellow-100", "text-yellow-800");
+          feedback.innerHTML =
+            '<i class="fas fa-exclamation-triangle"></i> Isi kedua kotak jawaban terlebih dahulu!';
+          playSound("wrong");
+          return;
+        }
+
+        // Pengecekan
+        // pastikan item di tempat yang benar (jenis di kotak jenis)
+        if (
+          itemType.dataset.kind !== "type" ||
+          itemDesc.dataset.kind !== "desc"
+        ) {
+          feedback.classList.add("bg-red-100", "text-red-800");
+          feedback.innerHTML =
+            '<i class="fas fa-times-circle"></i> Kamu terbalik meletakkan jenis dan fungsi. Coba perbaiki letaknya!';
+          playSound("wrong");
+          return;
+        }
+
+        const isTypeCorrect = itemType.dataset.val === device.type;
+        const isDescCorrect = itemDesc.dataset.val === "correct";
+
+        if (isTypeCorrect && isDescCorrect) {
+          // Benar Semua
+          itemType.classList.replace("border-slate-300", "border-green-500");
+          itemType.classList.add("bg-green-100");
+          itemDesc.classList.replace("border-slate-300", "border-green-500");
+          itemDesc.classList.add("bg-green-100");
+
+          feedback.classList.add("bg-green-100", "text-green-800");
+          feedback.innerHTML =
+            '<i class="fas fa-check-circle"></i> Benar Sekali! Kombinasi yang tepat.';
+          playSound("correct");
+
+          // Tampilkan tombol lanjut
+          if (currentDeviceIndex < sim2Devices.length - 1) {
+            document
+              .getElementById("btn-next-device")
+              .classList.remove("hidden");
+          } else {
+            document
+              .getElementById("btn-finish-sim2")
+              .classList.remove("hidden");
+          }
+        } else {
+          // Ada yang salah
+          feedback.classList.add("bg-red-100", "text-red-800");
+          feedback.innerHTML =
+            '<i class="fas fa-times-circle"></i> Jawaban masih kurang tepat. Coba tarik kembali ke bawah dan pilih yang lain.';
+          playSound("wrong");
+        }
+      }
+
+      function nextDeviceSim2() {
+        playSound("click");
+        currentDeviceIndex++;
+        renderSim2Device();
+      }
+
+      // ==========================================
+      // 6. LOGIKA KUIS EVALUASI (PILIHAN GANDA)
+      // ==========================================
+      let quizInitialized = false;
+      let currentQIndex = 0;
+      let score = 0;
+      let quizCompleted = false;
+
+      const quizData = [
+        {
+          q: "Perangkat yang berfungsi untuk memasukkan data atau perintah ke dalam komputer disebut...",
+          options: [
+            "Perangkat Output (Keluaran)",
+            "Perangkat Input (Masukan)",
+            "Perangkat Storage (Penyimpanan)",
+            "Perangkat Process (Pemroses)",
+          ],
+          ans: 1, // index opsi benar
+          explanation:
+            "Perangkat Input (seperti keyboard, mouse) digunakan untuk memasukkan perintah.",
+        },
+        {
+          q: "Manakah di bawah ini yang merupakan kelompok contoh Perangkat Proses (Process Device)?",
+          options: [
+            "Monitor, Printer, Speaker",
+            "Hardisk, Flashdisk, SSD",
+            "CPU, RAM, Motherboard",
+            "Mouse, Keyboard, Scanner",
+          ],
+          ans: 2,
+          explanation:
+            "CPU, RAM, dan Motherboard bertugas memproses data di dalam komputer.",
+        },
+        {
+          q: "Apa fungsi utama dari Hardisk atau SSD?",
+          options: [
+            "Menyimpan data dan file secara permanen",
+            "Mencetak foto berwarna",
+            "Mengolah grafis untuk game",
+            "Menampilkan video ke layar",
+          ],
+          ans: 0,
+          explanation:
+            "Hardisk dan SSD adalah contoh Storage Device yang berfungsi menyimpan data secara permanen.",
+        },
+        {
+          q: "Speaker, Monitor, dan Printer memiliki kesamaan fungsi utama, sehingga mereka dikelompokkan ke dalam perangkat...",
+          options: ["Input", "Output", "Storage", "Processing"],
+          ans: 1,
+          explanation:
+            "Ketiganya berfungsi menghasilkan atau menampilkan (output) data dari komputer ke pengguna.",
+        },
+        {
+          q: "Budi ingin memindahkan file tugas sekolah dari komputer laboratorium ke laptop di rumahnya. Perangkat keras apa yang paling tepat dan praktis digunakan Budi?",
+          options: ["VGA Card", "Scanner", "RAM", "Flashdisk"],
+          ans: 3,
+          explanation:
+            "Flashdisk adalah media penyimpanan portabel (mudah dibawa) yang ideal untuk memindahkan file.",
+        },
+      ];
+
+      function initQuiz() {
+        currentQIndex = 0;
+        score = 0;
+        quizCompleted = false;
+        document.getElementById("quiz-score-display").innerText = score;
+
+        // Sembunyikan area hasil, tampilkan area kuis
+        document.getElementById("quiz-result-area").classList.add("hidden");
+        document
+          .getElementById("quiz-question-area")
+          .classList.remove("hidden");
+        document.getElementById("quiz-nav-bottom").classList.remove("hidden");
+
+        renderQuestion();
+        quizInitialized = true;
+      }
+
+      function renderQuestion() {
+        const qData = quizData[currentQIndex];
+
+        document.getElementById("q-current").innerText = currentQIndex + 1;
+        document.getElementById("q-total").innerText = quizData.length;
+        document.getElementById("quiz-question-text").innerText = qData.q;
+
+        const optionsArea = document.getElementById("quiz-options-area");
+        optionsArea.innerHTML = "";
+
+        qData.options.forEach((opt, idx) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition-colors font-medium text-slate-700 focus:outline-none";
+          btn.innerHTML = `<span class="inline-block w-6 font-bold text-blue-500">${String.fromCharCode(65 + idx)}.</span> ${opt}`;
+          btn.onclick = () => selectAnswer(idx, btn);
+          optionsArea.appendChild(btn);
+        });
+
+        // Sembunyikan feedback dan tombol next
+        document.getElementById("quiz-feedback").classList.add("hidden");
+        document.getElementById("btn-next-question").classList.add("hidden");
+
+        // Aktifkan semua tombol opsi
+        optionsArea.style.pointerEvents = "auto";
+      }
+
+      function selectAnswer(selectedIndex, selectedBtn) {
+        const qData = quizData[currentQIndex];
+        const optionsArea = document.getElementById("quiz-options-area");
+        const feedback = document.getElementById("quiz-feedback");
+        const fbText = document.getElementById("quiz-feedback-text");
+        const fbDesc = document.getElementById("quiz-feedback-desc");
+
+        // Matikan klik lebih lanjut
+        optionsArea.style.pointerEvents = "none";
+
+        // Reset warna tombol
+        Array.from(optionsArea.children).forEach((btn, idx) => {
+          if (idx === qData.ans) {
+            // Tombol jawaban benar diwarnai hijau
+            btn.classList.replace("border-slate-200", "border-green-500");
+            btn.classList.add("bg-green-50");
+            btn.innerHTML +=
+              ' <i class="fas fa-check-circle text-green-500 float-right mt-1"></i>';
+          } else if (idx === selectedIndex) {
+            // Jika memilih yang salah, diwarnai merah
+            btn.classList.replace("border-slate-200", "border-red-500");
+            btn.classList.add("bg-red-50");
+            btn.innerHTML +=
+              ' <i class="fas fa-times-circle text-red-500 float-right mt-1"></i>';
+          }
+          btn.classList.remove("hover:border-blue-500", "hover:bg-blue-50");
+        });
+
+        feedback.classList.remove(
+          "hidden",
+          "bg-green-100",
+          "text-green-800",
+          "bg-red-100",
+          "text-red-800",
+        );
+
+        if (selectedIndex === qData.ans) {
+          // Benar
+          playSound("correct");
+          score += 20; // 5 soal x 20 = 100 max
+          document.getElementById("quiz-score-display").innerText = score;
+          feedback.classList.add("bg-green-100", "text-green-800");
+          fbText.innerHTML = "Benar Sekali!";
+        } else {
+          // Salah
+          playSound("wrong");
+          feedback.classList.add("bg-red-100", "text-red-800");
+          fbText.innerHTML = "Oops, Kurang Tepat!";
+        }
+
+        fbDesc.innerText = qData.explanation;
+
+        // Ganti teks tombol next jika ini soal terakhir
+        const btnNext = document.getElementById("btn-next-question");
+        btnNext.classList.remove("hidden");
+        if (currentQIndex === quizData.length - 1) {
+          btnNext.innerHTML =
+            'Lihat Hasil Akhir <i class="fas fa-flag-checkered"></i>';
+          btnNext.classList.replace("bg-blue-600", "bg-yellow-500");
+          btnNext.classList.replace("hover:bg-blue-700", "hover:bg-yellow-600");
+        } else {
+          btnNext.innerHTML =
+            'Soal Berikutnya <i class="fas fa-arrow-right"></i>';
+          btnNext.classList.replace("bg-yellow-500", "bg-blue-600");
+          btnNext.classList.replace("hover:bg-yellow-600", "hover:bg-blue-700");
+        }
+      }
+
+      function nextQuestion() {
+        playSound("click");
+        if (currentQIndex < quizData.length - 1) {
+          currentQIndex++;
+          renderQuestion();
+        } else {
+          showQuizResult();
+        }
+      }
+
+      function showQuizResult() {
+        document.getElementById("quiz-question-area").classList.add("hidden");
+        document.getElementById("quiz-nav-bottom").classList.add("hidden");
+        document.getElementById("quiz-result-area").classList.remove("hidden");
+
+        const finalScoreEl = document.getElementById("final-score-text");
+        const finalMessageEl = document.getElementById("final-message");
+
+        // Animasi perhitungan angka (Counter Animation)
+        let currentDisplay = 0;
+        const interval = setInterval(() => {
+          if (currentDisplay >= score) {
+            clearInterval(interval);
+            finalScoreEl.innerText = score;
+
+            // Set pesan berdasarkan skor
+            if (score >= 80) {
+              finalMessageEl.innerText =
+                "Luar Biasa! Pemahaman hardware kamu sudah sangat baik.";
+              finalMessageEl.className =
+                "font-bold text-xl mb-8 text-green-600";
+              playSound("correct"); // Tambahan efek suara apresiasi
+            } else if (score >= 60) {
+              finalMessageEl.innerText =
+                "Bagus! Kamu sudah memahami konsep dasar hardware.";
+              finalMessageEl.className = "font-bold text-xl mb-8 text-blue-600";
+            } else {
+              finalMessageEl.innerText =
+                "Jangan menyerah! Coba ulangi materi agar lebih paham.";
+              finalMessageEl.className =
+                "font-bold text-xl mb-8 text-orange-600";
+            }
+          } else {
+            currentDisplay += 5;
+            finalScoreEl.innerText = currentDisplay;
+          }
+        }, 50);
+      }
+
+      // ==========================================
+      // INIT PADA SAAT HALAMAN DIMUAT
+      // ==========================================
+      // Mencegah block default behavior browser saat drag and drop global
+      document.addEventListener("dragover", function (e) {
+        e.preventDefault();
+      });
+      document.addEventListener("drop", function (e) {
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
