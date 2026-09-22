@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neoGuru - Generator Modul Ajar Pembelajaran Mendalam</title>
+    <link rel="shortcut icon" href="../../favicon.png" type="image/x-icon" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2f318b", // blue-900 (lebih gelap dan elegan)
+              secondary: "#3caee4", // light blue-600
+              accent: "#f59e0b", // amber-500
+            },
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+              serif: ["Merriweather", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap");
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #f1f5f9;
+        color: #0f172a;
+      }
+
+      /* ==============================================================
+           STYLING MODERN UNTUK HASIL MODUL AJAR (MARKDOWN RENDER)
+           ============================================================== */
+      .markdown-body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: #334155;
+        line-height: 1.8;
+        font-size: 0.95rem;
+      }
+
+      /* Judul Utama Modul (H1) */
+      .markdown-body h1 {
+        background: linear-gradient(135deg, #1e3a8a, #0284c7);
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+        border-radius: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+        font-size: 2.2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Sub Judul Bagian (H2) */
+      .markdown-body h2 {
+        background-color: #e0f2fe; /* light blue */
+        color: #0c4a6e;
+        padding: 0.75rem 1.25rem;
+        border-left: 6px solid #0284c7;
+        border-radius: 0 0.75rem 0.75rem 0;
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      }
+
+      /* Sub-sub Judul (H3) */
+      .markdown-body h3 {
+        color: #1d4ed8;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.15rem;
+        border-bottom: 2px dashed #bfdbfe;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      .markdown-body p {
+        margin-bottom: 1.25rem;
+      }
+
+      /* Highlight Text (Bold) */
+      .markdown-body strong {
+        color: #0f172a;
+        font-weight: 700;
+        background-color: #fef3c7; /* amber-50 */
+        padding: 0 4px;
+        border-radius: 4px;
+      }
+
+      /* List Styling Modern */
+      .markdown-body ul,
+      .markdown-body ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+      .markdown-body ul {
+        list-style-type: none;
+      }
+      .markdown-body ul li {
+        position: relative;
+        margin-bottom: 0.5rem;
+        padding-left: 0.5rem;
+      }
+      .markdown-body ul li::before {
+        content: "\f0da"; /* FontAwesome play/triangle icon */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        left: -1.2rem;
+        top: 0.1rem;
+        color: #0284c7;
+        font-size: 1.1rem;
+      }
+      .markdown-body ol li {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Tabel Modern ala Card */
+      .markdown-body table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 2rem;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
+      }
+      .markdown-body thead {
+        background-color: #0f172a; /* Slate 900 */
+        color: white;
+      }
+      .markdown-body th,
+      .markdown-body td {
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .markdown-body th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+      }
+      .markdown-body tbody tr {
+        background-color: #ffffff;
+        transition: background-color 0.2s;
+      }
+      .markdown-body tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+      .markdown-body tbody tr:hover {
+        background-color: #f1f5f9;
+      }
+      .markdown-body tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Blockquote sebagai Info Box / Callout */
+      .markdown-body blockquote {
+        background: linear-gradient(to right, #fffbeb, #fef3c7);
+        border-left: 5px solid #f59e0b;
+        padding: 1.25rem 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 0.75rem 0.75rem 0;
+        color: #92400e;
+        box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+      }
+      .markdown-body blockquote p {
+        margin-bottom: 0;
+      }
+      .markdown-body blockquote strong {
+        background-color: transparent;
+        color: #b45309;
+      }
+
+      /* Garis Pemisah */
+      .markdown-body hr {
+        border: 0;
+        height: 2px;
+        background-image: linear-gradient(
+          to right,
+          transparent,
+          #cbd5e1,
+          transparent
+        );
+        margin: 3rem 0;
+      }
+
+      /* Custom Progress Bar CSS */
+      .progress-bar-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e5e7eb; /* gray-200 */
+        border-radius: 9999px;
+        overflow: hidden;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #1e40af);
+        border-radius: 9999px;
+        width: 0%;
+        transition: width 0.3s ease-out;
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.4);
+      }
+
+      /* Print Styles for A4 Paper format */
+      @media print {
+        @page {
+          size: A4;
+          margin: 20mm;
+        }
+        body {
+          background-color: white;
+          margin: 0;
+          padding: 0;
+        }
+        .no-print {
+          display: none !important;
+        }
+        #app-container {
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          max-width: none !important;
+          width: 100% !important;
+        }
+        .paper-look {
+          box-shadow: none !important;
+          padding: 0 !important;
+          border: none !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+        }
+        /* Ensure headings don't break uncomfortably */
+        h1,
+        h2,
+        h3 {
+          page-break-after: avoid;
+        }
+        table,
+        figure {
+          page-break-inside: avoid;
+        }
+      }
+
+      /* A4 Paper Look on Screen */
+      .paper-look {
+        background-color: white;
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        max-width: 210mm; /* A4 width */
+        margin: 0 auto;
+        min-height: 297mm; /* A4 height */
+        padding: 20mm;
+        border-radius: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen antialiased flex flex-col">
+    <header
+      class="bg-[#f1f5f9] text-white shadow-md py-4 px-6 sticky top-0 z-50 no-print"
+    >
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <a class="w-36" href="http://neoguru.my.id">
+            <img src="../../pic/neo-logo.png" alt="logo" />
+          </a>
+        </div>
+        <nav>
+          <button
+            onclick="goToHome()"
+            class="hover:text-secondary text-primary transition-colors font-medium"
+          >
+            <i class="fa-solid fa-house mr-1"></i> Beranda
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main
+      id="app-container"
+      class="flex-grow flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto"
+    >
+      <!-- ==================== HALAMAN BERANDA ==================== -->
+      <section
+        id="screen-home"
+        class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-8 md:p-12 text-center animate-fade-in mt-10"
+      >
+        <div
+          class="bg-blue-100 text-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <i class="fa-solid fa-wand-magic-sparkles text-4xl"></i>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+          Generator Modul Ajar Pembelajaran Mendalam
+        </h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          Rancang pengalaman belajar yang bermakna. Alat cerdas ini membantu
+          Anda menyusun modul ajar berpusat pada siswa yang mendorong
+          eksplorasi, penalaran kritis, dan aplikasi nyata.
+        </p>
+        <button
+          onclick="showScreen('screen-input')"
+          class="bg-primary hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg"
+        >
+          <i class="fa-solid fa-rocket mr-2"></i> Mulai Buat Modul Ajar
+        </button>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left">
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <i class="fa-solid fa-brain text-secondary text-2xl mb-3"></i>
+            <h3 class="font-bold text-gray-800 mb-2">Berpikir Kritis</h3>
+            <p class="text-sm text-gray-600">
+              Dirancang khusus untuk memfasilitasi <i>Deep Learning</i>, bukan
+              sekadar hafalan.
+            </p>
+          </div>
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <i class="fa-solid fa-list-check text-secondary text-2xl mb-3"></i>
+            <h3 class="font-bold text-gray-800 mb-2">Terstruktur</h3>
+            <p class="text-sm text-gray-600">
+              Menghasilkan alur mulai dari identitas, kegiatan inti, hingga
+              asesmen.
+            </p>
+          </div>
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <i class="fa-solid fa-file-pdf text-secondary text-2xl mb-3"></i>
+            <h3 class="font-bold text-gray-800 mb-2">Siap Cetak</h3>
+            <p class="text-sm text-gray-600">
+              Format rapi berstandar A4 yang bisa langsung dicetak atau disimpan
+              sebagai PDF.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== HALAMAN INPUT DATA ==================== -->
+      <section
+        id="screen-input"
+        class="w-full max-w-5xl hidden animate-fade-in"
+      >
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+          <div class="bg-gray-50 px-8 py-6 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800">
+              <i class="fa-solid fa-pen-to-square mr-2 text-secondary"></i>
+              Lengkapi Parameter Modul
+            </h2>
+            <p class="text-gray-500 mt-1">
+              Isi detail di bawah ini untuk menghasilkan modul ajar yang
+              spesifik dan kontekstual.
+            </p>
+          </div>
+
+          <form id="generator-form" class="p-8">
+            <!-- Pengaturan API Key -->
+            <div class="mb-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
+              <div
+                class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4"
+              >
+                <h3 class="text-lg font-bold text-blue-900 flex items-center">
+                  <i class="fa-solid fa-key mr-2 text-blue-600"></i> API Key
+                  Gemini (Wajib)
+                </h3>
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  class="text-sm bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-sm transition-colors inline-flex items-center"
+                >
+                  Dapatkan API Key Gratis
+                  <i
+                    class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"
+                  ></i>
+                </a>
+              </div>
+              <p class="text-sm text-blue-800 mb-4 leading-relaxed">
+                Web ini berjalan langsung di browser Anda untuk menjaga privasi
+                data. Karena itu, Anda memerlukan
+                <strong>API Key Gemini</strong> milik Anda sendiri agar web bisa
+                menghubungi AI Google. <br /><br />
+                <strong>Cara mendapatkan:</strong> Klik tombol biru di atas,
+                login dengan akun Google, pilih
+                <strong>"Create API Key"</strong> di Google AI Studio, lalu
+                salin kodenya ke kotak di bawah.
+              </p>
+              <div>
+                <input
+                  type="password"
+                  id="api-key"
+                  required
+                  placeholder="Contoh: AIzaSyB_xXxxXXXXxxx..."
+                  class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-mono shadow-inner text-sm"
+                />
+                <p class="text-xs text-gray-600 mt-2 flex items-center">
+                  <i
+                    class="fa-solid fa-shield-halved text-green-600 mr-1.5"
+                  ></i>
+                  Kunci ini hanya disimpan sementara di browser Anda dan aman.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Informasi Dasar -->
+              <div class="space-y-4 md:col-span-2 border-b pb-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                  <i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>
+                  Identitas Modul
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Mata Pelajaran <span class="text-red-500">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="mapel"
+                      required
+                      placeholder="Contoh: Biologi, Matematika, IPAS"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Fase / Kelas <span class="text-red-500">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="fase"
+                      required
+                      placeholder="Contoh: Fase E / Kelas X"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Alokasi Waktu <span class="text-red-500">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="waktu"
+                      required
+                      placeholder="Contoh: 2 x 45 Menit (1 Pertemuan)"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Model Pembelajaran
+                      <span class="text-red-500">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="model_pembelajaran"
+                      list="model-suggestions"
+                      required
+                      placeholder="Ketik atau pilih model..."
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none"
+                    />
+                    <datalist id="model-suggestions">
+                      <option value="Problem Based Learning (PBL)"></option>
+                      <option value="Project Based Learning (PjBL)"></option>
+                      <option value="Discovery Learning"></option>
+                      <option value="Inquiry Learning"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tujuan & Konteks -->
+              <div class="space-y-4 md:col-span-2 border-b pb-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                  <i class="fa-solid fa-bullseye text-blue-400 mr-2"></i> Tujuan
+                  & Konteks Pembelajaran
+                </h3>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Tujuan Pembelajaran (TP)
+                    <span class="text-red-500">*</span></label
+                  >
+                  <textarea
+                    id="tujuan"
+                    required
+                    rows="3"
+                    placeholder="Contoh: Peserta didik mampu menganalisis dampak perubahan iklim terhadap ekosistem lokal melalui pengamatan lapangan."
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none resize-y"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Dimensi Profil Lulusan (Pilih minimal 1)
+                    <span class="text-red-500">*</span></label
+                  >
+                  <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200"
+                  >
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Keimanan dan Ketakwaan terhadap Tuhan YME"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700"
+                        >Beriman & Bertakwa</span
+                      >
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Kewargaan"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Kewargaan</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Kreativitas"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Kreativitas</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Kemandirian"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Kemandirian</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Komunikasi"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Komunikasi</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Kolaborasi"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Kolaborasi</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Penalaran Kritis"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700"
+                        >Penalaran Kritis</span
+                      >
+                    </label>
+                    <label
+                      class="inline-flex items-center space-x-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        name="profil"
+                        value="Kesehatan"
+                        class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span class="text-sm text-gray-700">Kesehatan</span>
+                    </label>
+                  </div>
+                  <p id="profil-error" class="text-red-500 text-xs mt-1 hidden">
+                    Silakan pilih minimal 1 dimensi profil.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Kondisi Pembelajaran -->
+              <div class="space-y-4 md:col-span-2 border-b pb-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                  <i class="fa-solid fa-chalkboard-user text-blue-400 mr-2"></i>
+                  Kondisi Pembelajaran
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Sarana & Prasarana</label
+                    >
+                    <textarea
+                      id="sarpras"
+                      rows="3"
+                      placeholder="Contoh: LCD Proyektor, Smartphone siswa, Kertas plano, Spidol."
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none resize-y"
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Karakteristik Siswa</label
+                    >
+                    <textarea
+                      id="karakteristik"
+                      rows="3"
+                      placeholder="Contoh: Sebagian besar siswa visual-kinestetik, suka berdiskusi."
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none resize-y"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Penyusun -->
+              <div class="space-y-4 md:col-span-2">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                  <i class="fa-solid fa-user-tie text-blue-400 mr-2"></i> Data
+                  Penyusun
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Nama Penyusun</label
+                    >
+                    <input
+                      type="text"
+                      id="penyusun"
+                      placeholder="Nama Anda beserta gelar (opsional)"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Nama Sekolah</label
+                    >
+                    <input
+                      type="text"
+                      id="sekolah"
+                      placeholder="Instansi / Satuan Pendidikan"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 flex justify-end gap-3">
+              <button
+                type="button"
+                onclick="goToHome()"
+                class="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                class="bg-primary hover:bg-blue-800 text-white font-bold py-2.5 px-8 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center"
+              >
+                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Generate
+                Modul Ajar
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== HALAMAN PROSES & STREAMING ==================== -->
+      <section
+        id="screen-loading"
+        class="w-full max-w-4xl mx-auto flex flex-col items-center justify-center hidden animate-fade-in py-12"
+      >
+        <div
+          class="bg-white p-8 rounded-xl shadow-md w-full text-center border border-gray-100"
+        >
+          <i
+            class="fa-solid fa-robot text-5xl text-secondary mb-4 animate-bounce"
+          ></i>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">
+            Menyusun Modul Ajar...
+          </h2>
+          <p id="loading-status" class="text-gray-500 mb-6">
+            Menghubungkan ke Gemini-Flash API...
+          </p>
+
+          <!-- Progress Bar Container -->
+          <div class="w-full max-w-2xl mx-auto">
+            <div
+              class="flex justify-between text-xs font-semibold text-gray-500 mb-1 px-1"
+            >
+              <span>Memulai</span>
+              <span id="progress-text">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-3 italic" id="progress-detail">
+              Sedang merancang alur pembelajaran mendalam...
+            </p>
+          </div>
+        </div>
+
+        <!-- Tempat preview text saat streaming berlangsung (opsional, disembunyikan agar rapi) -->
+        <div
+          id="stream-preview"
+          class="w-full max-w-4xl mt-6 p-6 bg-white border border-gray-200 rounded-lg shadow-sm text-left text-sm font-mono text-gray-600 h-64 overflow-y-auto hidden"
+        >
+          <!-- Data stream masuk kesini -->
+        </div>
+      </section>
+
+      <!-- ==================== HALAMAN HASIL ==================== -->
+      <section
+        id="screen-result"
+        class="w-full hidden animate-fade-in relative"
+      >
+        <!-- Floating Action Bar (Sticky at top for actions) -->
+        <div
+          class="no-print sticky top-20 z-40 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-md rounded-lg p-4 mb-6 flex flex-wrap justify-between items-center gap-4 max-w-5xl mx-auto"
+        >
+          <div class="flex items-center text-green-600 font-semibold">
+            <i class="fa-solid fa-circle-check mr-2"></i> Modul Ajar Berhasil
+            Dibuat
+          </div>
+          <div class="flex gap-2">
+            <button
+              onclick="showScreen('screen-input')"
+              class="px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded font-medium text-sm transition-colors border border-gray-300"
+            >
+              <i class="fa-solid fa-pen mr-1"></i> Edit Input
+            </button>
+            <button
+              onclick="printModule()"
+              class="px-4 py-2 bg-accent text-white hover:bg-yellow-600 rounded font-medium text-sm transition-colors shadow-sm"
+            >
+              <i class="fa-solid fa-print mr-1"></i> Print / Simpan PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center mb-4 no-print text-sm text-gray-500">
+          <i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Tips: Saat
+          mencetak, pilih "Save as PDF", pastikan ukuran kertas diatur ke A4,
+          dan "Background graphics" dicentang.
+        </div>
+
+        <!-- Area Kertas Dokumen (A4 Look) -->
+        <div
+          id="module-content"
+          class="paper-look markdown-body font-serif text-gray-900 text-justify relative bg-white"
+        >
+          <!-- Konten akan di-generate oleh JS di sini -->
+        </div>
+
+        <!-- Footer on web view -->
+        <div class="mt-8 text-center no-print pb-12">
+          <button
+            onclick="goToHome()"
+            class="text-secondary hover:text-primary font-medium transition-colors"
+          >
+            <i class="fa-solid fa-rotate-left mr-1"></i> Buat Modul Baru
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer
+      class="bg-gray-800 text-gray-400 py-6 text-center text-sm no-print mt-auto"
+    >
+      <p>&copy; 2026 neoGuru - Generator Modul Ajar Pembelajaran Mendalam.</p>
+      <p class="mt-1 text-xs text-gray-500">
+        Diberdayakan oleh Google Gemini Flash API.
+      </p>
+    </footer>
+
+    <script>
+      // --- State Management ---
+      const screens = [
+        "screen-home",
+        "screen-input",
+        "screen-loading",
+        "screen-result",
+      ];
+
+      function showScreen(screenId) {
+        screens.forEach((id) => {
+          document.getElementById(id).classList.add("hidden");
+        });
+        document.getElementById(screenId).classList.remove("hidden");
+        window.scrollTo(0, 0);
+      }
+
+      function goToHome() {
+        showScreen("screen-home");
+      }
+
+      // --- On Load Init ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // Cek jika API Key pernah disimpan sebelumnya
+        const savedKey = localStorage.getItem("deepedugen_api_key");
+        if (savedKey) {
+          document.getElementById("api-key").value = savedKey;
+        }
+      });
+
+      // --- Form Handling ---
+      document
+        .getElementById("generator-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Validasi API Key
+          const apiKey = document.getElementById("api-key").value.trim();
+          if (!apiKey) {
+            alert("Silakan masukkan API Key Gemini terlebih dahulu.");
+            return;
+          }
+          // Simpan API Key ke local storage
+          localStorage.setItem("deepedugen_api_key", apiKey);
+
+          // Validasi Checkbox
+          const checkboxes = document.querySelectorAll(
+            'input[name="profil"]:checked',
+          );
+          if (checkboxes.length === 0) {
+            document.getElementById("profil-error").classList.remove("hidden");
+            return;
+          } else {
+            document.getElementById("profil-error").classList.add("hidden");
+          }
+
+          // Kumpulkan Data
+          let profilDimensi = [];
+          checkboxes.forEach((cb) => profilDimensi.push(cb.value));
+
+          const formData = {
+            mapel: document.getElementById("mapel").value,
+            fase: document.getElementById("fase").value,
+            waktu: document.getElementById("waktu").value,
+            tujuan: document.getElementById("tujuan").value,
+            model: document.getElementById("model_pembelajaran").value,
+            profil: profilDimensi.join(", "),
+            sarpras:
+              document.getElementById("sarpras").value ||
+              "Sesuai ketersediaan di sekolah",
+            karakteristik:
+              document.getElementById("karakteristik").value || "Heterogen",
+            penyusun:
+              document.getElementById("penyusun").value ||
+              "Guru Mata Pelajaran",
+            sekolah:
+              document.getElementById("sekolah").value || "Satuan Pendidikan",
+          };
+
+          // Mulai Proses
+          showScreen("screen-loading");
+
+          // Reset Progress UI
+          updateProgressUI(0, "Menghubungkan ke server Gemini-Flash...");
+
+          await generateModulAjarStreaming(formData, apiKey);
+        });
+
+      // Fungsi untuk mengupdate UI Progress
+      function updateProgressUI(percentage, detailText) {
+        const bar = document.getElementById("progress-bar");
+        const text = document.getElementById("progress-text");
+        const detail = document.getElementById("progress-detail");
+
+        if (bar) bar.style.width = percentage + "%";
+        if (text) text.innerText = Math.round(percentage) + "%";
+        if (detail && detailText) detail.innerText = detailText;
+      }
+
+      // --- API Integration with Fallback Chain ---
+      async function generateModulAjarStreaming(data, userApiKey) {
+        const prompt = `Bertindaklah sebagai Ahli Pengembang Kurikulum dan Pakar Pedagogi Pembelajaran Mendalam (Deep Learning). 
+            
+Tugas Anda adalah merancang Modul Ajar Pembelajaran Mendalam yang komprehensif, terstruktur, kontekstual, dan berpusat pada peserta didik berdasarkan parameter input berikut:
+            
+[ VARIABEL INPUT ]
+1. Mata Pelajaran       : ${data.mapel}
+2. Fase / Kelas         : ${data.fase}
+3. Alokasi Waktu        : ${data.waktu}
+4. Tujuan Pembelajaran  : ${data.tujuan}
+5. Model Pembelajaran   : ${data.model}
+6. Dimensi Profil       : ${data.profil}
+7. Sarana & Prasarana   : ${data.sarpras}
+8. Karakteristik Siswa  : ${data.karakteristik}
+9. Nama Penyusun        : ${data.penyusun}
+10. Nama Sekolah        : ${data.sekolah}
+            
+Persyaratan Khusus Konstruksi Pembelajaran Mendalam (Deep Learning):
+Modul Ajar ini harus memfasilitasi peserta didik tidak hanya menghafal (surface learning), tetapi juga memahami konsep secara mendalam, menghubungkan antarkonsep, menganalisis, merefleksi, serta mengaplikasikan pengetahuan dalam kehidupan nyata.
+            
+Buatkan Rencana Pembelajaran dengan struktur Markdown berikut:
+(Catatan Tata Letak: Gunakan struktur Tabel untuk mendaftar item agar rapi. Gunakan Blockquote (>) untuk menyorot bagian penting seperti Pemahaman Bermakna/Refleksi).
+            
+# MODUL AJAR: ${data.mapel.toUpperCase()}
+
+## 1. IDENTITAS UMUM
+(Tampilkan bagian ini dalam bentuk 1 buah Tabel Markdown yang rapi)
+- Mata Pelajaran, Fase/Kelas, Alokasi Waktu, Penyusun, Satuan Pendidikan.
+- Ringkasan singkat topik dan relevansi/manfaat topik tersebut dalam kehidupan sehari-hari.
+
+## 2. DIMENSI PROFIL LULUSAN
+- Jelaskan Dimensi Profil Lulusan yang ditargetkan dan kaitannya dengan kegiatan pembelajaran.
+
+## 3. TUJUAN PEMBELAJARAN
+- Tuliskan tujuan pembelajaran sesuai input.
+            
+## 4. PRAKTIK PEDAGOGIS
+- Pendekatan, Model, Metode Pembelajaran.
+- Diferensiasi Pembelajaran (Jika ada).
+> **Pemahaman Bermakna:** (Gunakan tanda blockquote > di sini). Tuliskan konsep mendalam yang akan diingat siswa.
+            
+## 5. LINGKUNGAN PEMBELAJARAN 
+- **Ruang Fisik & Budaya Belajar:** Lokasi, tata letak, dan budaya belajar.
+
+## 6. KEMITRAAN PEMBELAJARAN
+- **Kemitraan:** (Jika ada, jika tidak ada silahkan tuliskan "-").
+
+## 7. PEMANFAATAN DIGITAL
+- **Pemanfaatan Digital:** Media/alat digital yang digunakan.
+            
+## 8. KEGIATAN PEMBELAJARAN
+(Terapkan prinsip Pembelajaran Mendalam dan sintaks ${data.model})
+
+### A. Pendahuluan (Estimasi Waktu: ...)
+- Orientasi, Motivasi, Asesmen Diagnostik.
+> **Pertanyaan Pemantik:** (Gunakan blockquote) Berikan minimal 3 pertanyaan terbuka.
+
+### B. Kegiatan Inti (Estimasi Waktu: ...)
+(Gunakan tabel atau bullet points yang jelas untuk memisahkan Sintaks Model dan Aktivitas. Wajib urut: Memahami -> Mengaplikasi -> Merefleksi).
+- Tuliskan instruksi konkret guru dan aktivitas siswa.
+
+### C. Penutup (Estimasi Waktu: ...)
+- Refleksi, Rangkuman, Tindak Lanjut.
+
+## 9. ASESMEN PEMBELAJARAN
+(Sajikan asesmen dalam bentuk Tabel)
+- Asesmen Formatif (Proses) & Asesmen Sumatif (Akhir).
+- Sertakan Rubrik Penilaian & Rencana Tindak Lanjut.
+
+## 10. LAMPIRAN
+- Bahan Bacaan Guru & Peserta Didik (Ringkasan).
+- LKPD (Lembar Kerja Peserta Didik) (Jika ada).
+
+PENTING UNTUK OUTPUT:
+- Gunakan bahasa Indonesia yang profesional.
+- JANGAN berikan kalimat pengantar sebelum judul H1. Langsung berikan output Markdown.
+- INSTRUKSI KRITIS: Pastikan seluruh modul diselesaikan secara tuntas dari nomor 1 hingga 10 (Lampiran). Jangan biarkan teks terpotong di tengah kalimat. Jika konten terlalu panjang, buatlah kalimat yang lebih padat, ringkas, dan jelas agar muat dalam satu kali balasan.`;
+
+        // Urutan model cadangan (fallback chain) sesuai instruksi
+        const modelsToTry = [
+          "gemini-3.6-flash",
+          "gemini-3.5-flash",
+          "gemini-2.5-flash",
+          "gemini-3.5-flash-lite",
+          "gemini-3.1-flash-lite",
+        ];
+
+        let lastError = null;
+        let success = false;
+        let fullMarkdown = "";
+
+        // Animasi progress bar dinamis
+        let simulatedProgress = 10;
+        const progressInterval = setInterval(() => {
+          if (simulatedProgress < 90) {
+            simulatedProgress += (90 - simulatedProgress) * 0.05;
+            updateProgressUI(
+              simulatedProgress,
+              "AI sedang merancang detail kegiatan...",
+            );
+          }
+        }, 600);
+
+        try {
+          // Loop melalui array model
+          for (let i = 0; i < modelsToTry.length; i++) {
+            const modelName = modelsToTry[i];
+            updateProgressUI(
+              simulatedProgress,
+              `Mencoba model ${modelName} (${i + 1}/${modelsToTry.length})...`,
+            );
+            console.log(`Mengirim request ke model: ${modelName}`);
+
+            try {
+              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${userApiKey}`;
+
+              const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                  temperature: 0.7,
+                  topP: 0.95,
+                  maxOutputTokens: 8192,
+                },
+              };
+
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              // Jika terjadi error dari API (misal 404 Model Not Found, 500, dll)
+              if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                let errMsg = `HTTP error! status: ${response.status}`;
+                if (errorData.error && errorData.error.message) {
+                  errMsg = errorData.error.message;
+                }
+                throw new Error(`Model ${modelName} gagal: ${errMsg}`);
+              }
+
+              const dataResponse = await response.json();
+              if (
+                dataResponse.candidates &&
+                dataResponse.candidates[0].content
+              ) {
+                fullMarkdown = dataResponse.candidates[0].content.parts[0].text;
+                success = true;
+                console.log(`Sukses menggunakan model: ${modelName}`);
+                break; // Berhenti loop jika berhasil mendapatkan respon!
+              } else {
+                throw new Error(
+                  `Struktur respons dari model ${modelName} tidak valid atau kosong.`,
+                );
+              }
+            } catch (modelErr) {
+              // Jika model saat ini gagal, catat error dan LANJUT ke model berikutnya (continue)
+              console.warn(`Gagal pada model ${modelName}:`, modelErr.message);
+              lastError = modelErr;
+              continue;
+            }
+          }
+
+          clearInterval(progressInterval);
+
+          // Jika setelah semua model dicoba (for loop selesai) dan tidak ada yang berhasil
+          if (!success) {
+            throw new Error(
+              lastError
+                ? lastError.message
+                : "Semua model gagal memberikan respons. Coba cek API Key Anda.",
+            );
+          }
+
+          updateProgressUI(100, "Menerima dan memproses format dokumen...");
+
+          // Beri sedikit jeda agar user bisa melihat status 100%
+          setTimeout(() => {
+            // Bersihkan dari tag block code jika AI tidak patuh
+            fullMarkdown = fullMarkdown
+              .replace(/^```(markdown)?\n/i, "")
+              .replace(/```$/i, "");
+
+            // Render Markdown ke HTML menggunakan Marked.js
+            const htmlContent = marked.parse(fullMarkdown);
+
+            // Tampilkan Hasil ke DOM
+            document.getElementById("module-content").innerHTML = htmlContent;
+            showScreen("screen-result");
+          }, 800);
+        } catch (error) {
+          clearInterval(progressInterval);
+          console.error("Error generating module with fallback:", error);
+          alert("Terjadi kesalahan pada semua model:\n" + error.message);
+          showScreen("screen-input"); // Kembali ke form jika gagal total
+        }
+      }
+
+      // --- Print / Export Function ---
+      function printModule() {
+        // Browser native print will use the @media print CSS defined above
+        window.print();
+      }
+    </script>
+  </body>
+</html>

@@ -167,6 +167,31 @@
 
         <!-- 3 Cards Mata Pelajaran (Dengan Sub-Menu Terintegrasi) -->
         <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-10 items-start">
+          <!-- Card 0: Generator Modul Ajar -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 shadow-sm transition overflow-hidden"
+          >
+            <!-- Area yang bisa diklik -->
+            <div
+              onclick="toggleKategori('kat-modul')"
+              class="cursor-pointer p-8 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition text-center group"
+            >
+              <div
+                class="w-16 h-16 mx-auto mb-6 rounded-xl bg-brand-accent/40 dark:bg-gray-800 flex items-center justify-center text-brand-primary dark:text-brand-secondary text-2xl group-hover:scale-110 transition"
+              >
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-8">
+                Generator Modul Ajar
+              </h3>
+              <a
+                href="Generator_Modul_Ajar/modul_generator.html"
+                class="px-8 py-3 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/30"
+              >
+                Buka Generator
+              </a>
+            </div>
+          </div>
           <!-- Card 1: Informatika -->
           <div
             class="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-100 dark:border-gray-800 shadow-sm transition overflow-hidden"
