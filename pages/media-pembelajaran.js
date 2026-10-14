@@ -110,13 +110,13 @@ const mediaData = [
   },
   {
     id: 6,
-    title: "Media 6",
-    desc: "Deskripsi media pembelajaran ke-6 untuk pengujian paginasi.",
+    title: "Detektif Junior",
+    desc: "Gim Edukasi Berbasis Web untuk Melatih Berpikir Komputasional dan Numerasi Siswa SMP.",
     subject: "Informatika",
-    topic: "Topik",
+    topic: "Berpikir Komputasional",
     grade: "Umum",
-    icon: "fa-shield-alt",
-    link: "#",
+    icon: "fa-robot",
+    link: "Detektif_Junior/Detektif_Junior.html",
     target: "_self",
   },
   {
