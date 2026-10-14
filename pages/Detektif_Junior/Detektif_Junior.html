@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Detektif Junior - NeoGuru</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="shortcut icon" href="../../favicon.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #dfeeea;
+        --card: #fff;
+        --ink: #12293f;
+        --mut: #55697a;
+        --line: #b9d0cb;
+        --pri: #1c5d99;
+        --priS: #dcebf9;
+        --hl: #ffd23f;
+        --ok: #1f7a45;
+        --okS: #d9f3e2;
+        --bad: #b3204f;
+        --badS: #fde3ec;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0e1c24;
+          --card: #162a35;
+          --ink: #e8f3f1;
+          --mut: #8fa9b3;
+          --line: #2a4553;
+          --pri: #6db3f2;
+          --priS: #1d3a52;
+          --ok: #51cf84;
+          --okS: #16352360;
+          --bad: #ff7aa8;
+          --badS: #3d1d2b;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0e1c24;
+        --card: #162a35;
+        --ink: #e8f3f1;
+        --mut: #8fa9b3;
+        --line: #2a4553;
+        --pri: #6db3f2;
+        --priS: #1d3a52;
+        --ok: #51cf84;
+        --okS: #16352360;
+        --bad: #ff7aa8;
+        --badS: #3d1d2b;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        background-color: var(--bg);
+        background-image: radial-gradient(var(--line) 1.2px, transparent 1.2px);
+        background-size: 22px 22px;
+        color: var(--ink);
+        font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+        min-height: 100%;
+      }
+      .hd {
+        font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .card {
+        background: var(--card);
+        border: 2px solid var(--ink);
+        border-radius: 1.1rem;
+        padding: 1rem;
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+      .btn {
+        background: var(--pri);
+        color: #fff;
+        font-weight: 700;
+        border: 2px solid var(--ink);
+        border-radius: 0.8rem;
+        padding: 0.65rem 1.2rem;
+        box-shadow: 3px 3px 0 var(--ink);
+        transition:
+          transform 0.08s,
+          box-shadow 0.08s;
+        cursor: pointer;
+      }
+      .btn:active {
+        transform: translate(3px, 3px);
+        box-shadow: 0 0 0 var(--ink);
+      }
+      .btn.hl {
+        background: var(--hl);
+        color: #12293f;
+      }
+      .btn.ghost {
+        background: var(--card);
+        color: var(--ink);
+      }
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .chip {
+        border: 2px solid var(--line);
+        background: var(--card);
+        border-radius: 0.75rem;
+        padding: 0.5rem 0.8rem;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+        transition:
+          border-color 0.1s,
+          background 0.1s;
+      }
+      .chip:hover {
+        border-color: var(--pri);
+      }
+      .chip.on {
+        background: var(--hl);
+        border-color: var(--ink);
+        color: #12293f;
+      }
+      .chip.pin {
+        border-style: dashed;
+        border-color: var(--ink);
+        background: var(--priS);
+      }
+      .fb {
+        border-radius: 0.8rem;
+        padding: 0.6rem 0.9rem;
+        font-weight: 700;
+        border: 2px solid;
+      }
+      .fb.ok {
+        background: var(--okS);
+        color: var(--ok);
+        border-color: var(--ok);
+      }
+      .fb.no {
+        background: var(--badS);
+        color: var(--bad);
+        border-color: var(--bad);
+        animation: sh 0.3s;
+      }
+      .fb.hint {
+        background: var(--priS);
+        color: var(--pri);
+        border-color: var(--pri);
+      }
+      @keyframes sh {
+        25% {
+          transform: translateX(-6px);
+        }
+        75% {
+          transform: translateX(6px);
+        }
+      }
+      @keyframes stamp {
+        0% {
+          transform: scale(2.2) rotate(-14deg);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) rotate(-8deg);
+          opacity: 1;
+        }
+      }
+      .stamp {
+        display: inline-block;
+        border: 4px solid var(--bad);
+        color: var(--bad);
+        font-weight: 800;
+        border-radius: 0.5rem;
+        padding: 0.1rem 0.7rem;
+        transform: rotate(-8deg);
+        animation: stamp 0.35s ease-out;
+      }
+      .dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 99px;
+        border: 2px solid var(--ink);
+        background: var(--card);
+      }
+      .d1 {
+        background: var(--ok);
+      }
+      .d2 {
+        background: var(--hl);
+      }
+      .step {
+        border: 2px solid var(--line);
+        border-radius: 0.8rem;
+        padding: 0.6rem 0.8rem;
+        font-weight: 700;
+      }
+      .step.cur {
+        border-color: var(--ink);
+        background: var(--priS);
+      }
+      .step.done {
+        border-color: var(--ok);
+        background: var(--okS);
+      }
+      .step.wait {
+        opacity: 0.55;
+      }
+      .num {
+        border: 2px solid var(--ink);
+        border-radius: 0.7rem;
+        padding: 0.5rem 0.8rem;
+        background: var(--card);
+        color: var(--ink);
+        width: 9rem;
+        font-weight: 700;
+      }
+      .bar {
+        height: 0.7rem;
+        border: 2px solid var(--ink);
+        border-radius: 99px;
+        overflow: hidden;
+        background: var(--card);
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--bad);
+      }
+      .ph {
+        font-weight: 700;
+        padding: 0.2rem 0.7rem;
+        border-radius: 99px;
+        border: 2px solid var(--line);
+        color: var(--mut);
+      }
+      .ph.now {
+        background: var(--hl);
+        color: #12293f;
+        border-color: var(--ink);
+      }
+      .ph.dn {
+        background: var(--okS);
+        color: var(--ok);
+        border-color: var(--ok);
+      }
+      :focus-visible {
+        outline: 3px solid var(--pri);
+        outline-offset: 2px;
+      }
+      .pg {
+        aspect-ratio: 297/210;
+        container-type: inline-size;
+        background: #fff;
+        color: #12293f;
+        border: 2px solid #12293f;
+        position: relative;
+        overflow: hidden;
+        padding: 5cqw 6cqw 5cqw 8cqw;
+      }
+      .pg:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2.5cqw;
+        background: #ffd23f;
+      }
+      .inp {
+        border: 2px solid var(--ink);
+        border-radius: 0.7rem;
+        padding: 0.6rem 0.8rem;
+        background: var(--card);
+        color: var(--ink);
+        width: 100%;
+        font-weight: 700;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      const $ = (s) => document.querySelector(s),
+        fmt = (n) => n.toLocaleString("id-ID");
+      const sh = (a) => {
+        a = [...a];
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = (Math.random() * (i + 1)) | 0;
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      };
+      const NM = {
+          goal: "Tujuan",
+          data: "Bukti",
+          plan: "Rencana",
+          run: "Mesin",
+        },
+        IC = { goal: "🎯", data: "📌", plan: "🧩", run: "⚙️" };
+      const DH = {
+        goal: "Baca kalimat tanya di akhir cerita. Apa tepatnya yang diminta?",
+        data: "Untuk tiap info, tanyakan: apakah aku butuh ini untuk menjawab pertanyaan?",
+        plan: "Hasil langkah mana yang dibutuhkan langkah berikutnya?",
+        run: "Pakai hasil dari langkah sebelumnya.",
+      };
+      const CASES = [
+        {
+          e: "🍎",
+          n: "Apel Bu Sari",
+          st: "Bu Sari pergi ke pasar membawa tas belanja biru. Ia membeli 3 kg apel dengan harga Rp20.000 per kg dan tiba di pasar pukul 07.00. Berapa uang yang harus dibayar Bu Sari untuk apelnya?",
+          f: [
+            ["3 kg apel", 1],
+            ["Rp20.000 per kg", 1],
+            ["Tas belanja biru", 0],
+            ["Tiba pukul 07.00", 0],
+          ],
+          g: [
+            [
+              "Total uang untuk apel",
+              "Harga apel per kg",
+              "Jumlah kg yang dibeli",
+              "Jam tiba di pasar",
+            ],
+            0,
+            ["rupiah", "kilogram", "jam"],
+            0,
+          ],
+          tip: "Cari kalimat tanya di akhir cerita. Kata kuncinya: “uang yang harus dibayar”.",
+          p: ["Kalikan jumlah kg × harga per kg (3 × 20.000)"],
+          pd: ["Bagi 20.000 dengan 3"],
+          r: [60000],
+          a: "Rp60.000",
+          h: {
+            goal: "Kalimat tanyanya diawali “Berapa…”. Apa yang sebenarnya ditanyakan?",
+          },
+        },
+        {
+          e: "📒",
+          n: "Uang Dini",
+          st: "Dini membawa uang Rp50.000 ke toko alat tulis. Ia membeli 2 buku tulis seharga Rp8.000 per buku dan 1 pulpen seharga Rp4.000. Berapa sisa uang Dini?",
+          f: [
+            ["Uang Rp50.000", 1],
+            ["2 buku @Rp8.000", 1],
+            ["1 pulpen Rp4.000", 1],
+            ["Toko alat tulis", 0],
+          ],
+          g: [
+            [
+              "Uang awal Dini",
+              "Total belanja Dini",
+              "Sisa uang Dini setelah belanja",
+              "Harga satu buku",
+            ],
+            2,
+            ["rupiah", "buku", "lembar"],
+            0,
+          ],
+          tip: "Kata kuncinya “sisa”: uang yang masih ada setelah belanja.",
+          p: [
+            "Hitung harga buku (2 × 8.000)",
+            "Tambahkan harga pulpen (+ 4.000)",
+            "Kurangi uang awal dengan total (50.000 − total)",
+          ],
+          pd: ["Jumlahkan uang awal dengan harga pulpen"],
+          r: [16000, 20000, 30000],
+          a: "Rp30.000",
+          h: {
+            goal: "Setelah Dini selesai belanja, uang yang mana yang ditanyakan?",
+          },
+        },
+        {
+          e: "🥤",
+          n: "Bazar Es Teh",
+          st: "Kelas 7A mengadakan bazar. Mereka menjual 24 gelas es teh seharga Rp3.000 per gelas. Modal membeli bahan Rp20.000. Bazar dibuka pukul 09.00 dan ada 30 siswa di kelas. Berapa keuntungan bazar kelas 7A?",
+          f: [
+            ["24 gelas terjual", 1],
+            ["Rp3.000 per gelas", 1],
+            ["Modal bahan Rp20.000", 1],
+            ["Bazar buka pukul 09.00", 0],
+            ["30 siswa di kelas", 0],
+          ],
+          g: [
+            [
+              "Pendapatan kotor bazar",
+              "Jumlah gelas terjual",
+              "Keuntungan bazar",
+              "Jumlah siswa",
+            ],
+            2,
+            ["gelas", "rupiah", "siswa"],
+            1,
+          ],
+          tip: "“Keuntungan” bukan sekadar uang yang masuk. Apa lagi yang sudah dikeluarkan?",
+          p: [
+            "Hitung pendapatan (24 × 3.000)",
+            "Kurangi pendapatan dengan modal (− 20.000)",
+          ],
+          pd: [
+            "Jumlahkan pendapatan dengan modal",
+            "Bagi pendapatan dengan 30",
+          ],
+          r: [72000, 52000],
+          a: "Rp52.000",
+          h: {
+            goal: "Apa beda “uang yang masuk” dengan “keuntungan”?",
+            data: "Kalau info ini dihapus, apakah aku masih bisa menghitung keuntungan?",
+          },
+        },
+        {
+          e: "🍚",
+          n: "Belanja Pak Budi",
+          st: "Pak Budi berbelanja di Warung Makmur. Ia membeli 5 kg beras seharga Rp12.000 per kg dan 2 liter minyak seharga Rp15.000 per liter. Ia membayar dengan uang Rp100.000. Berapa uang kembalian yang diterima Pak Budi?",
+          f: [
+            ["5 kg beras", 1],
+            ["Rp12.000 per kg", 1],
+            ["2 liter minyak", 1],
+            ["Rp15.000 per liter", 1],
+            ["Bayar dengan Rp100.000", 1],
+            ["Nama warung: Makmur", 0],
+          ],
+          g: [
+            [
+              "Total belanja Pak Budi",
+              "Harga beras per kg",
+              "Uang yang dibayarkan",
+              "Uang kembalian",
+            ],
+            3,
+            ["kilogram", "rupiah", "liter"],
+            1,
+          ],
+          tip: "Kembalian adalah uang yang dikembalikan penjual setelah pembeli membayar.",
+          par: [[0, 1]],
+          p: [
+            "Hitung harga beras (5 × 12.000)",
+            "Hitung harga minyak (2 × 15.000)",
+            "Jumlahkan kedua harga",
+            "Kurangi uang bayar dengan total (100.000 − total)",
+          ],
+          pd: ["Bagi total dengan 2", "Jumlahkan uang bayar dengan total"],
+          r: [60000, 30000, 90000, 10000],
+          a: "Rp10.000",
+          h: {
+            plan: "Kembalian butuh dua hal: uang yang dibayar dan total belanja. Total belanja butuh apa?",
+          },
+        },
+        {
+          e: "⚽",
+          n: "Iuran Tim Futsal",
+          st: "Tim futsal kelas 8 memakai jersey merah. Setiap pertandingan, tim membayar sewa lapangan Rp45.000. Mereka bermain 3 pertandingan, dimulai pukul 15.00. Kas tim sudah berisi Rp100.000. Kekurangannya dibagi rata oleh 5 pemain. Berapa uang tambahan yang harus dibayar tiap pemain?",
+          f: [
+            ["Sewa Rp45.000 per pertandingan", 1],
+            ["3 pertandingan", 1],
+            ["Kas tim Rp100.000", 1],
+            ["5 pemain, bayar sama rata", 1],
+            ["Jersey berwarna merah", 0],
+            ["Main mulai pukul 15.00", 0],
+          ],
+          g: [
+            [
+              "Total sewa lapangan",
+              "Uang tambahan tiap pemain",
+              "Kekurangan kas tim",
+              "Jumlah pemain",
+            ],
+            1,
+            ["rupiah total", "rupiah per pemain", "pemain"],
+            1,
+          ],
+          tip: "Ada banyak angka uang. Pilih yang dibayar oleh satu pemain, bukan seluruh tim.",
+          p: [
+            "Hitung total sewa (3 × 45.000)",
+            "Hitung kekurangan (total − kas 100.000)",
+            "Bagi kekurangan dengan 5 pemain",
+          ],
+          pd: ["Bagi total sewa dengan 5", "Jumlahkan kas dengan total sewa"],
+          r: [135000, 35000, 7000],
+          a: "Rp7.000 per pemain",
+          h: {
+            goal: "Uang yang diminta itu untuk siapa: seluruh tim atau satu pemain?",
+            plan: "Sebelum membagi ke pemain, kamu harus tahu berapa yang kurang. Itu butuh apa?",
+          },
+        },
+        {
+          e: "🌱",
+          n: "Kebun Sekolah",
+          st: "Sekolah membuat kebun kopi dengan 5 petak. Setiap petak berukuran 4 m × 3 m. Pagar kebun sudah dipasang kemarin dan 3 kelas akan menanam bersama. Pada setiap 1 m² ditanam 4 bibit kopi, harga bibit kopi Rp2.500 per bibit kopi. Berapa biaya seluruh bibit kopi yang dibutuhkan?",
+          f: [
+            ["5 petak kebun", 1],
+            ["Ukuran petak 4 m × 3 m", 1],
+            ["4 bibit tiap 1 m²", 1],
+            ["Rp2.500 per bibit", 1],
+            ["Pagar sudah dipasang", 0],
+            ["3 kelas menanam bersama", 0],
+          ],
+          g: [
+            [
+              "Luas seluruh kebun",
+              "Jumlah bibit",
+              "Biaya seluruh bibit",
+              "Banyak kelas",
+            ],
+            2,
+            ["bibit", "meter persegi", "rupiah"],
+            2,
+          ],
+          tip: "Hati-hati, ada beberapa hal yang bisa dihitung. Mana yang diminta di kalimat tanya?",
+          p: [
+            "Hitung luas satu petak (4 × 3)",
+            "Hitung luas seluruh petak (× 5)",
+            "Hitung jumlah bibit (× 4)",
+            "Hitung biaya bibit (× 2.500)",
+          ],
+          pd: ["Hitung keliling satu petak", "Bagi biaya dengan 3 kelas"],
+          r: [12, 60, 240, 600000],
+          a: "Rp600.000",
+        },
+      ];
+      const LEVELS = [
+        {
+          t: "Level 1: Apa yang Ditanyakan?",
+          d: "Sebelum menghitung, temukan dulu apa yang sebenarnya diminta. Di level ini kamu hanya merumuskan Tujuan. Mesin yang mengerjakan sisanya.",
+          ph: ["goal"],
+          hint: 1,
+          cases: [0, 1],
+        },
+        {
+          t: "Level 2: Pilah Bukti",
+          d: "Tidak semua info dalam cerita berguna. Pasang bukti penting di Papan Bukti dan abaikan pengecohnya.",
+          ph: ["goal", "data"],
+          hint: 1,
+          cases: [2],
+        },
+        {
+          t: "Level 3: Susun Rencana",
+          d: "Sekarang kamu menyusun urutan langkah. Awas, ada langkah pengecoh yang tidak dibutuhkan.",
+          ph: ["goal", "data", "plan"],
+          hint: 1,
+          cases: [3],
+        },
+        {
+          t: "Level 4: Kasus Penuh",
+          d: "Seluruh alur ada di tanganmu: Tujuan, Bukti, Rencana, lalu jalankan mesin dan hitung tiap langkahnya sendiri.",
+          ph: ["goal", "data", "plan", "run"],
+          hint: 1,
+          cases: [4],
+        },
+        {
+          t: "Level 5: Misi Akhir",
+          d: "Kasus baru tanpa petunjuk. Buktikan kamu bisa memecahkannya sendiri.",
+          ph: ["goal", "data", "plan", "run"],
+          hint: 0,
+          cases: [5],
+        },
+      ];
+      const Q = LEVELS.flatMap((L, li) =>
+        L.cases.map((c, k) => ({ li, c, first: !k })),
+      );
+      const KEY = "dr_v1",
+        PK = ["name", "kelas", "cd", "c0", "c1", "coins", "hu", "err", "dt"];
+      const def = () => ({
+        scr: "menu",
+        q: 0,
+        fb: null,
+        name: "",
+        kelas: "",
+        cd: {},
+        c0: 0,
+        c1: 0,
+        coins: 5,
+        hu: 0,
+        dt: "",
+        err: { goal: 0, data: 0, plan: 0, run: 0 },
+      });
+      let S = def();
+      try {
+        const p = JSON.parse(localStorage.getItem(KEY));
+        if (p)
+          PK.forEach((k) => {
+            if (k in p) S[k] = p[k];
+          });
+      } catch (e) {}
+      const save = () => {
+        try {
+          localStorage.setItem(
+            KEY,
+            JSON.stringify(Object.fromEntries(PK.map((k) => [k, S[k]]))),
+          );
+        } catch (e) {}
+      };
+      const LV = () => LEVELS[Q[S.q].li],
+        PH = () => LV().ph[S.ph];
+      const wrap = (v) =>
+        `<div class="max-w-6xl mx-auto p-3 md:p-6"><header class="flex flex-wrap items-center justify-between gap-3 mb-4"><div class="flex items-center gap-2"><span class="text-3xl">🕵️</span><span class="hd text-2xl md:text-3xl">Detektif Junior</span></div><div class="flex items-center gap-1.5">${Q.map((_, i) => `<span class="dot ${S.cd[i] ? "d1" : i == S.q && ["play", "sum"].includes(S.scr) ? "d2" : ""}"></span>`).join("")}</div><div class="chip !py-1 !px-3 cursor-default">🪙 ${S.coins}</div></header>${v}</div>`;
+      function R() {
+        const v = { menu, how, abt, reg, lv, intro, play, sum, fin, cert }[
+          S.scr
+        ]();
+        $("#app").innerHTML = wrap(v);
+        const i = $("#in");
+        if (i) i.focus();
+      }
+      function start() {
+        return `<div class="grid md:grid-cols-2 gap-6 items-center mt-2 md:mt-10"><div><div class="stamp text-lg mb-3">KASUS TERBUKA</div><h1 class="hd text-4xl md:text-6xl leading-none">Temukan dulu masalahnya. Hitung belakangan.</h1><p class="mt-4 text-lg text-[var(--mut)] max-w-md">Kamu detektif junior. Setiap laporan warga berisi cerita berbelit penuh angka. Tugasmu: rumuskan tujuan, kumpulkan bukti, susun rencana, lalu jalankan mesin.</p></div><div class="card"><p class="hd text-xl">Sebelum mulai</p><p class="mt-1 text-[var(--mut)]">Seberapa yakin kamu bisa memecahkan soal cerita yang belum pernah kamu lihat?</p><div class="grid grid-cols-5 gap-2 mt-3">${["😟", "🙁", "😐", "🙂", "😎"].map((x, i) => `<button class="chip text-center text-2xl ${S.c0 == i + 1 ? "on" : ""}" data-a="c0" data-i="${i}" aria-label="Yakin ${i + 1} dari 5">${x}</button>`).join("")}</div><button class="btn hl w-full mt-4 text-lg" data-a="go" ${S.c0 ? "" : "disabled"}>Mulai penyelidikan</button><p class="text-sm text-[var(--mut)] mt-3">Pilih satu wajah dulu. Kamu akan memilihnya lagi di akhir.</p></div></div>`;
+      }
+      function intro() {
+        const L = LV();
+        return `<div class="card max-w-2xl mx-auto mt-6 md:mt-12"><p class="text-[var(--mut)] font-bold">${Q[S.q].li + 1} dari ${LEVELS.length}</p><h2 class="hd text-3xl md:text-4xl">${L.t}</h2><p class="mt-3 text-lg">${L.d}</p><p class="mt-3 font-bold">${L.hint ? "Petunjuk tersedia, tiap petunjuk memakai 1 koin." : "Tanpa petunjuk di level ini."}</p><div class="flex flex-wrap gap-2 mt-3">${L.ph.map((k) => `<span class="ph">${IC[k]} ${NM[k]}</span>`).join("")}</div><div class="flex flex-wrap gap-3 mt-5"><button class="btn hl text-lg" data-a="beg">Buka berkas kasus</button><button class="btn ghost" data-a="go">Pilihan level</button></div></div>`;
+      }
+      function startCase() {
+        const c = CASES[Q[S.q].c];
+        Object.assign(S, {
+          cv: c,
+          ph: 0,
+          g: [null, null],
+          d: new Set(),
+          pl: [],
+          pool: sh([...c.p, ...c.pd]),
+          fo: sh(c.f.map((_, i) => i)),
+          ri: 0,
+          ce: 0,
+          fb: null,
+          ok: false,
+          scr: "play",
+        });
+        R();
+      }
+      function play() {
+        const c = S.cv,
+          L = LV(),
+          k = PH();
+        const file = `<section class="card md:col-span-2 md:self-start"><div class="flex items-center gap-3"><span class="text-4xl">${c.e}</span><div><p class="text-sm font-bold text-[var(--mut)]">Berkas kasus</p><h2 class="hd text-2xl leading-tight">${c.n}</h2></div></div><p class="mt-3 text-lg leading-relaxed">${c.st}</p></section>`;
+        let b = "";
+        if (k == "goal") {
+          const sl = (i, o, l) =>
+            `<p class="mt-3 font-bold text-[var(--mut)]">${l}</p><div class="flex flex-wrap gap-2 mt-1">${o.map((x, j) => `<button class="chip ${S.g[i] == j ? "on" : ""}" data-a="g" data-i="${i}" data-j="${j}" ${S.ok ? "disabled" : ""}>${x}</button>`).join("")}</div>`;
+          b = `<p class="hd text-xl">Rumuskan tujuanmu</p><p class="mt-2 text-lg p-3 rounded-xl bg-[var(--priS)] border-2 border-dashed border-[var(--ink)]">Aku harus mencari <b>${S.g[0] != null ? c.g[0][S.g[0]] : "……"}</b> dalam satuan <b>${S.g[1] != null ? c.g[2][S.g[1]] : "……"}</b>.</p>${sl(0, c.g[0], "Yang dicari:")}${sl(1, c.g[2], "Satuan jawabannya:")}`;
+        }
+        if (k == "data") {
+          b = `<p class="hd text-xl">Pasang bukti penting</p><p class="text-[var(--mut)]">Ketuk temuan untuk memasangnya di papan. Ketuk lagi untuk melepas.</p><div class="grid sm:grid-cols-2 gap-3 mt-3"><div><p class="font-bold mb-1">🔎 Temuan di lokasi</p><div class="flex flex-col gap-2">${
+            S.fo
+              .filter((i) => !S.d.has(i))
+              .map(
+                (i) =>
+                  `<button class="chip" data-a="f" data-i="${i}" ${S.ok ? "disabled" : ""}>${c.f[i][0]}</button>`,
+              )
+              .join("") ||
+            '<span class="text-[var(--mut)]">Semua sudah dipasang.</span>'
+          }</div></div><div class="p-2 rounded-xl border-2 border-dashed border-[var(--ink)] bg-[var(--priS)]"><p class="font-bold mb-1">📌 Papan Bukti</p><div class="flex flex-col gap-2">${
+            S.fo
+              .filter((i) => S.d.has(i))
+              .map(
+                (i) =>
+                  `<button class="chip on" data-a="f" data-i="${i}" ${S.ok ? "disabled" : ""}>${c.f[i][0]}</button>`,
+              )
+              .join("") ||
+            '<span class="text-[var(--mut)]">Masih kosong.</span>'
+          }</div></div></div>`;
+        }
+        if (k == "plan") {
+          b = `<p class="hd text-xl">Susun rencana</p><p class="text-[var(--mut)]">Ketuk langkah untuk menaruhnya di lintasan. Tidak semua langkah dibutuhkan.</p><div class="grid sm:grid-cols-2 gap-3 mt-3"><div><p class="font-bold mb-1">🧰 Blok langkah</p><div class="flex flex-col gap-2">${S.pool.map((s, i) => (S.pl.includes(i) ? "" : `<button class="chip" data-a="pa" data-i="${i}" ${S.ok ? "disabled" : ""}>${s}</button>`)).join("")}</div></div><div class="p-2 rounded-xl border-2 border-dashed border-[var(--ink)] bg-[var(--priS)]"><p class="font-bold mb-1">🧩 Lintasan rencana</p><ol class="flex flex-col gap-2">${S.pl.map((x, n) => `<li><button class="chip on w-full" data-a="pr" data-i="${n}" ${S.ok ? "disabled" : ""}><b>${n + 1}.</b> ${S.pool[x]}</button></li>`).join("") || '<span class="text-[var(--mut)]">Lintasan kosong.</span>'}</ol></div></div>`;
+        }
+        if (k == "run") {
+          b = `<p class="hd text-xl">Jalankan mesin</p><p class="text-[var(--mut)]">Mesin menjalankan rencanamu. Isi hasil hitung tiap langkah.</p><div class="flex flex-col gap-2 mt-3">${c.p.map((s, i) => (i < S.ri ? `<div class="step done">✅ ${s} = <b>${fmt(c.r[i])}</b></div>` : i == S.ri && !S.ok ? `<div class="step cur">⚙️ ${s}<div class="flex flex-wrap gap-2 mt-2"><input id="in" class="num" type="number" inputmode="numeric" placeholder="Hasilnya?" aria-label="Hasil langkah"><button class="btn" data-a="run">Jalankan</button></div></div>` : `<div class="step wait">${s}</div>`)).join("")}</div>`;
+        }
+        const fb = S.fb
+          ? `<div class="fb ${S.fb.t} mt-4" role="status">${S.fb.x}</div>`
+          : "";
+        const acts = `<div class="flex flex-wrap gap-3 mt-4">${S.ok ? '<button class="btn hl" data-a="nx">Lanjut</button>' : k == "run" ? "" : '<button class="btn" data-a="chk">Periksa</button>'}${L.hint && S.coins > 0 && !S.ok ? '<button class="btn ghost" data-a="hint">💡 Petunjuk (−1 koin)</button>' : ""}</div>`;
+        const st = `<div class="flex flex-wrap gap-2 mb-3">${L.ph.map((x, i) => `<span class="ph ${i < S.ph ? "dn" : i == S.ph ? "now" : ""}">${IC[x]} ${NM[x]}</span>`).join("")}</div>`;
+        return `<div class="grid md:grid-cols-5 gap-4">${file}<section class="card md:col-span-3">${st}${b}${fb}${acts}</section></div>`;
+      }
+      const good = (x) => {
+        S.fb = { t: "ok", x };
+        S.ok = true;
+        R();
+      };
+      function bad(k, x) {
+        S.err[k]++;
+        S.ce++;
+        S.fb = { t: "no", x };
+        R();
+      }
+      function chk() {
+        const c = S.cv,
+          k = PH();
+        if (k == "goal") {
+          if (S.g.includes(null)) {
+            S.fb = { t: "no", x: "Pilih dulu kedua bagian kalimat tujuanmu." };
+            return R();
+          }
+          const a = S.g[0] == c.g[1],
+            b = S.g[1] == c.g[3];
+          return a && b
+            ? good("Tujuan tepat! Kamu tahu persis apa yang dicari.")
+            : bad(
+                k,
+                a
+                  ? "Yang dicari sudah benar, tapi satuan jawabannya belum cocok. Jawabannya berupa apa?"
+                  : "Bagian “yang dicari” belum tepat. " + c.tip,
+              );
+        }
+        if (k == "data") {
+          const m = c.f.some((x, i) => x[1] && !S.d.has(i)),
+            x = c.f.some((x, i) => !x[1] && S.d.has(i));
+          return !m && !x && S.d.size
+            ? good(
+                "Papan Bukti bersih! Hanya data yang dibutuhkan yang kamu ambil.",
+              )
+            : bad(
+                k,
+                x
+                  ? "Ada pengecoh di Papan Bukti. Tanyakan: apakah info ini dipakai untuk menjawab pertanyaan?"
+                  : "Masih ada bukti penting yang belum kamu pasang.",
+              );
+        }
+        if (k == "plan") {
+          const t = S.pl.map((i) => S.pool[i]),
+            nm = (a) => {
+              a = [...a];
+              (c.par || []).forEach((g) => {
+                const v = g.map((i) => a[i]).sort();
+                g.forEach((i, j) => (a[i] = v[j]));
+              });
+              return a.join("|");
+            };
+          if (nm(t) == nm(c.p))
+            return good("Rencana valid! Urutan langkahnya masuk akal.");
+          return bad(
+            k,
+            t.some((s) => c.pd.includes(s))
+              ? "Ada langkah yang tidak dibutuhkan. Cek lagi tujuan dan buktinya."
+              : t.length < c.p.length
+                ? "Rencanamu belum lengkap. Masih ada langkah yang hilang."
+                : "Langkahnya sudah pas, tapi urutannya belum. Langkah mana yang butuh hasil langkah sebelumnya?",
+          );
+        }
+      }
+      function run() {
+        const v = $("#in").value,
+          c = S.cv;
+        if (v === "") return;
+        if (+v == c.r[S.ri]) {
+          S.ri++;
+          if (S.ri == c.r.length)
+            return good("Mesin selesai! Semua langkah dihitung dengan benar.");
+          S.fb = { t: "ok", x: "Benar! Lanjut ke langkah berikutnya." };
+        } else {
+          S.err.run++;
+          S.ce++;
+          S.fb = {
+            t: "no",
+            x: "Strategimu sudah benar, hanya hitungannya yang meleset. Hitung lagi pelan-pelan.",
+          };
+        }
+        R();
+      }
+      function nx() {
+        S.ph++;
+        S.ok = false;
+        S.fb = null;
+        if (S.ph >= LV().ph.length) {
+          S.st = S.ce == 0 ? 3 : S.ce < 3 ? 2 : 1;
+          S.cd[S.q] = { s: S.st, e: S.ce };
+          save();
+          S.scr = "sum";
+        }
+        R();
+      }
+      function sum() {
+        const c = S.cv,
+          s = S.st;
+        return `<div class="card max-w-3xl mx-auto mt-2"><div class="text-center"><div class="stamp text-xl mb-2">TERPECAHKAN</div><div class="text-4xl" aria-label="${s} dari 3 bintang">${"⭐".repeat(s)}${"☆".repeat(3 - s)}</div><h2 class="hd text-3xl mt-1">${c.n}</h2></div>
+      <div class="mt-4 grid gap-3"><div class="step">🎯 Tujuan: aku harus mencari <b>${c.g[0][c.g[1]]}</b> dalam satuan <b>${c.g[2][c.g[3]]}</b>.</div>
+      <div class="step">📌 Bukti: ${c.f
+        .filter((x) => x[1])
+        .map(
+          (x) =>
+            `<span class="chip on !py-0.5 !px-2 inline-block mr-1 mb-1">${x[0]}</span>`,
+        )
+        .join(
+          "",
+        )}<br><span class="text-[var(--mut)]">Pengecoh yang diabaikan: ${c.f
+        .filter((x) => !x[1])
+        .map((x) => x[0])
+        .join(", ")}</span></div>
+      <div class="step">🧩 Rencana dan mesin:<ol class="mt-1 grid gap-1">${c.p.map((p, i) => `<li><b>${i + 1}.</b> ${p} = <b>${fmt(c.r[i])}</b></li>`).join("")}</ol></div>
+      <div class="step done">✅ Jawaban: <b class="text-xl">${c.a}</b></div></div>
+      <div class="text-center mt-5"><button class="btn hl text-lg" data-a="nq">${LV().cases.every((c) => S.cd[c]) ? (allDone() ? "Selesaikan misi" : "Kembali ke pilihan level") : "Kasus berikutnya"}</button></div></div>`;
+      }
+      function end() {
+        const e = S.err,
+          v = Object.values(e),
+          tot = v.reduce((a, b) => a + b, 0),
+          mx = Object.keys(e).sort((a, b) => e[b] - e[a])[0],
+          m = Math.max(...v, 1);
+        const TIP = {
+          goal: "Yang paling perlu dilatih: membaca kalimat tanya dan menyatakannya ulang dengan kata-katamu sendiri.",
+          data: "Yang paling perlu dilatih: memilah info yang dipakai menghitung dan info pelengkap cerita.",
+          plan: "Yang paling perlu dilatih: menuliskan urutan langkah sebelum mulai menghitung.",
+          run: "Strategimu sudah baik. Yang perlu dilatih: ketelitian menghitung di tiap langkah.",
+        };
+        const RQ = [
+          "Di kasus mana kamu hampir salah memahami apa yang diminta? Tanda apa yang membuatmu sadar, dan bagaimana kamu memakainya di soal ujian?",
+          "Pikirkan masalah di luar sekolah, misalnya belanja bulanan atau jadwal kegiatan. Info apa yang kamu abaikan, dan bagaimana kamu memutuskannya?",
+          "Saat rencanamu gagal, apa yang kamu lakukan? Kapan strategi itu bisa kamu pakai lagi?",
+        ];
+        return `<div class="grid md:grid-cols-2 gap-4 mt-2"><div class="card"><div class="stamp text-lg mb-2">KASUS DITUTUP</div><h2 class="hd text-3xl">Kamu menyelesaikan ${Q.length} kasus</h2><p class="text-3xl mt-2">⭐ ${S.stars} <span class="text-lg text-[var(--mut)]">dari ${Q.length * 3}</span></p><p class="mt-4 font-bold">Catatan kesalahanmu</p><div class="grid gap-2 mt-2">${Object.keys(
+          e,
+        )
+          .map(
+            (k) =>
+              `<div><div class="flex justify-between font-bold"><span>${IC[k]} ${NM[k]}</span><span>${e[k]}</span></div><div class="bar"><i style="width:${(e[k] / m) * 100}%"></i></div></div>`,
+          )
+          .join(
+            "",
+          )}</div><p class="mt-3">${tot ? TIP[mx] : "Tanpa satu pun kesalahan. Luar biasa!"}</p><p class="mt-4 font-bold">Seberapa yakin kamu sekarang?</p><div class="grid grid-cols-5 gap-2 mt-2">${["😟", "🙁", "😐", "🙂", "😎"].map((x, i) => `<button class="chip text-center text-2xl ${S.c1 == i + 1 ? "on" : ""}" data-a="c1" data-i="${i}" aria-label="Yakin ${i + 1} dari 5">${x}</button>`).join("")}</div>${S.c1 ? `<p class="mt-2 font-bold">Keyakinanmu: ${["😟", "🙁", "😐", "🙂", "😎"][S.c0 - 1]} sebelum, ${["😟", "🙁", "😐", "🙂", "😎"][S.c1 - 1]} sesudah.</p>` : ""}<button class="btn ghost mt-4" data-a="again">Main lagi</button></div>
+      <div class="card"><h3 class="hd text-2xl">Diskusi kelas</h3><p class="text-[var(--mut)]">Bawa strategi detektif ke dunia nyata.</p><ol class="mt-3 grid gap-3">${RQ.map((q, i) => `<li class="step"><b>${i + 1}.</b> ${q}</li>`).join("")}</ol></div></div>`;
+      }
+      document.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-a]");
+        if (!b || b.disabled) return;
+        const a = b.dataset.a,
+          i = +b.dataset.i,
+          j = +b.dataset.j;
+        if (a == "c0") S.c0 = i + 1;
+        else if (a == "c1") S.c1 = i + 1;
+        else if (a == "go") {
+          S.fb = null;
+          S.scr = S.name ? "lv" : "reg";
+        } else if (a == "beg") return startCase();
+        else if (a == "g") {
+          S.g[i] = j;
+          S.fb = null;
+        } else if (a == "f") {
+          S.d.has(i) ? S.d.delete(i) : S.d.add(i);
+          S.fb = null;
+        } else if (a == "pa") {
+          S.pl.push(i);
+          S.fb = null;
+        } else if (a == "pr") {
+          S.pl.splice(i, 1);
+          S.fb = null;
+        } else if (a == "chk") return chk();
+        else if (a == "run") return run();
+        else if (a == "nx") return nx();
+        else if (a == "hint") {
+          S.coins--;
+          S.hu++;
+          S.fb = { t: "hint", x: "💡 " + ((S.cv.h || {})[PH()] || DH[PH()]) };
+        } else if (a == "nq") {
+          const n = LV().cases.find((c) => !S.cd[c]);
+          if (n != null) {
+            S.q = n;
+            return startCase();
+          }
+          S.fb = null;
+          S.scr = allDone() ? (S.c1 ? "cert" : "fin") : "lv";
+        } else if (a == "menu") {
+          S.rs = 0;
+          S.scr = "menu";
+        } else if (a == "how") S.scr = "how";
+        else if (a == "abt") S.scr = "abt";
+        else if (a == "reg") {
+          if (S.name.trim() && S.kelas.trim() && S.c0) {
+            S.name = S.name.trim();
+            S.kelas = S.kelas.trim();
+            save();
+            S.scr = "lv";
+          } else
+            S.fb = {
+              t: "no",
+              x: "Isi nama, kelas, dan pilih wajah keyakinanmu dulu.",
+            };
+        } else if (a == "open") {
+          S.q = LEVELS[i].cases.find((c) => !S.cd[c]);
+          S.scr = "intro";
+        } else if (a == "rst") {
+          if (S.rs) {
+            S = def();
+            try {
+              localStorage.removeItem(KEY);
+            } catch (e) {}
+          } else S.rs = 1;
+        } else if (a == "fin") {
+          S.fb = null;
+          S.scr = "fin";
+        } else if (a == "cert") {
+          if (S.c1) {
+            if (!S.dt)
+              S.dt = new Date().toLocaleDateString("id-ID", {
+                dateStyle: "long",
+              });
+            save();
+            S.scr = "cert";
+          } else S.fb = { t: "no", x: "Pilih dulu wajah keyakinanmu." };
+        } else if (a == "pdf") return pdf();
+        R();
+      });
+      const esc = (s) =>
+        String(s).replace(/[&<>']/g, (c) => "&#" + c.charCodeAt(0) + ";");
+      const EXIT_URL = "../../index.html";
+      FACE = ["😟", "🙁", "😐", "🙂", "😎"];
+      const lvDone = (i) => LEVELS[i].cases.every((c) => S.cd[c]),
+        lvOpen = (i) => !i || lvDone(i - 1),
+        allDone = () => Q.every((_, i) => S.cd[i]);
+      const pred = (s) =>
+        s >= 90
+          ? "Detektif Cemerlang"
+          : s >= 70
+            ? "Detektif Handal"
+            : "Detektif Tangguh";
+      const stat = () => {
+        const st = Q.map((_, i) => S.cd[i] || { s: 0, e: 0 }),
+          T = st.reduce((a, x) => a + x.s, 0);
+        return { st, T, sc: Math.round((T / (Q.length * 3)) * 100) };
+      };
+      const faces = (k) =>
+        `<div class='grid grid-cols-5 gap-2 mt-3'>${FACE.map((x, i) => `<button class='chip text-center text-2xl ${S[k] == i + 1 ? "on" : ""}' data-a='${k}' data-i='${i}' aria-label='Yakin ${i + 1} dari 5'>${x}</button>`).join("")}</div>`;
+      const msg = () => (S.fb ? `<div class='fb no mt-3'>${S.fb.x}</div>` : "");
+      function menu() {
+        return `<div class='grid md:grid-cols-2 gap-6 items-center mt-2 md:mt-8'><div><div class='stamp text-lg mb-3'>KASUS TERBUKA</div><h1 class='hd text-4xl md:text-6xl leading-none'>Temukan dulu masalahnya. Hitung belakangan.</h1><p class='mt-4 text-lg text-[var(--mut)] max-w-md'>Jadi detektif junior: rumuskan tujuan, kumpulkan bukti, susun rencana, lalu jalankan mesin.</p></div><div class='card grid gap-3'><button class='btn hl text-xl' data-a='go'>${S.name ? "Lanjutkan" : "Mulai"}</button><button class='btn' data-a='how'>Petunjuk</button><button class='btn' data-a='abt'>Tentang</button><a class='btn ghost text-center' href='${EXIT_URL}' target='_blank' rel='noopener'>Keluar</a></div></div>`;
+      }
+      const info = (t, b) =>
+        `<div class='card max-w-2xl mx-auto mt-4'><h2 class='hd text-3xl'>${t}</h2><div class='mt-3 grid gap-2 text-lg'>${b}</div><button class='btn hl mt-5' data-a='menu'>Kembali ke menu</button></div>`;
+      const how = () =>
+        info(
+          "Petunjuk",
+          [
+            "🎯 <b>Tujuan:</b> temukan apa yang sebenarnya ditanyakan soal.",
+            "📌 <b>Bukti:</b> pasang data yang dibutuhkan, abaikan pengecoh.",
+            "🧩 <b>Rencana:</b> susun urutan langkah yang benar.",
+            "⚙️ <b>Mesin:</b> hitung hasil tiap langkah.",
+            "🪙 Petunjuk memakai koin dan berbentuk pertanyaan. Level 1 sampai 4 memberi petunjuk, level 5 tidak.",
+            "🔒 Level terbuka bertahap. Progresmu tersimpan otomatis di perangkat ini.",
+          ]
+            .map((x) => `<p class='step'>${x}</p>`)
+            .join(""),
+        );
+      const abt = () =>
+        info(
+          "Tentang",
+          "<p>Detektif Junior melatih berpikir komputasional dan numerasi siswa SMP: memahami masalah, memilah data, menyusun strategi, dan mengeksekusinya.</p><p>Dirancang dan dikembangkan dengan bantuan Kecerdasan Artifisial oleh:</p><p class='font-bold'>Hanif Nur Fadhil, S.Pd., Gr.</p>",
+        );
+      const reg = () =>
+        `<div class='card max-w-xl mx-auto mt-4'><h2 class='hd text-3xl'>Kenalan dulu, Detektif</h2><label class='block mt-3 font-bold'>Nama<input id='nm' class='inp mt-1' maxlength='40' autocomplete='off' value='${esc(S.name)}'></label><label class='block mt-3 font-bold'>Kelas<input id='kl' class='inp mt-1' maxlength='12' placeholder='contoh: 7A' autocomplete='off' value='${esc(S.kelas)}'></label><p class='mt-4 font-bold'>Seberapa yakin kamu bisa memecahkan soal cerita yang belum pernah kamu lihat?</p>${faces("c0")}${msg()}<div class='flex gap-3 mt-5'><button class='btn hl' data-a='reg'>Masuk</button><button class='btn ghost' data-a='menu'>Kembali</button></div></div>`;
+      const lv = () =>
+        `<div class='flex flex-wrap items-center justify-between gap-2'><h2 class='hd text-3xl'>Halo, Detektif ${esc(S.name)}</h2><div class='flex gap-2'><button class='btn ghost' data-a='menu'>Menu</button><button class='btn ghost' data-a='rst'>${S.rs ? "Yakin hapus progres?" : "Ganti pemain"}</button></div></div><div class='grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4'>${LEVELS.map(
+          (L, i) => {
+            const d = lvDone(i),
+              o = lvOpen(i),
+              s = L.cases.reduce((a, c) => a + (S.cd[c] ? S.cd[c].s : 0), 0),
+              on = o && !d;
+            return `<button class='card text-left ${on ? "" : "opacity-70"}' data-a='open' data-i='${i}' ${on ? "" : "disabled"}><div class='flex justify-between items-center'><span class='hd text-4xl'>${i + 1}</span><span class='text-2xl'>${d ? "✅" : o ? "🔓" : "🔒"}</span></div><p class='hd text-xl mt-1'>${L.t.split(": ")[1]}</p><p class='text-[var(--mut)] mt-1'>${d ? "⭐ " + s + " dari " + L.cases.length * 3 : o ? "Terbuka. Ketuk untuk bermain." : "Selesaikan level " + i + " dulu."}</p></button>`;
+          },
+        ).join(
+          "",
+        )}${allDone() ? `<button class='card text-left' data-a='${S.c1 ? "cert" : "fin"}'><span class='text-4xl'>🏅</span><p class='hd text-xl mt-1'>Sertifikat</p><p class='text-[var(--mut)]'>Semua misi selesai. Ketuk untuk membuka.</p></button>` : ""}</div>`;
+      const fin = () =>
+        `<div class='card max-w-xl mx-auto mt-4 text-center'><div class='stamp text-xl mb-2'>KASUS DITUTUP</div><h2 class='hd text-3xl'>Semua misi selesai!</h2><p class='mt-2 font-bold'>Seberapa yakin kamu sekarang?</p>${faces("c1")}${msg()}<button class='btn hl mt-5' data-a='cert'>Lihat sertifikat</button></div>`;
+      function cert() {
+        const { st, T, sc } = stat(),
+          e = S.err,
+          m = Math.max(...Object.values(e), 1),
+          w = (a, b) =>
+            `<div style='display:flex;justify-content:space-between;border-bottom:1px solid #b9d0cb;padding:.5cqw 0'><span>${a}</span><b>${b}</b></div>`;
+        return `<div class='grid gap-5 max-w-4xl mx-auto'><div class='pg'><p class='hd' style='font-size:2.2cqw'>Detektif Junior</p><p class='hd' style='font-size:5.5cqw;margin-top:4cqw'>Sertifikat Penyelesaian</p><p style='font-size:1.9cqw;margin-top:3cqw'>diberikan kepada</p><p class='hd' style='font-size:5cqw;border-bottom:.3cqw solid #12293f;display:inline-block;padding-right:3cqw'>${esc(S.name)}</p><p style='font-size:2.4cqw;margin-top:1cqw'>Kelas ${esc(S.kelas)}</p><p style='font-size:1.8cqw;margin-top:3cqw;max-width:56%;line-height:1.5'>telah menyelesaikan seluruh 5 level dan 6 misi, serta menunjukkan kemampuan mengenali masalah, memilah data, menyusun strategi, dan menghitung secara mandiri.</p><p style='font-size:1.6cqw;position:absolute;bottom:5cqw'>${S.dt}</p><div style='position:absolute;right:7cqw;top:20cqw;text-align:center'><p style='font-size:1.8cqw'>Skor akhir</p><p class='hd' style='font-size:12cqw;line-height:1'>${sc}</p><p style='font-size:1.8cqw;font-weight:700'>${pred(sc)}</p></div></div>
+      <div class='pg'><p class='hd' style='font-size:3.6cqw'>Rincian statistik belajar</p><p style='font-size:1.8cqw'>${esc(S.name)}, kelas ${esc(S.kelas)}</p><div style='display:grid;grid-template-columns:1fr 1.2fr;gap:4cqw;margin-top:3cqw;font-size:1.7cqw'><div>${w("Misi selesai", Q.length + " dari " + Q.length)}${w("Bintang", T + " dari " + Q.length * 3)}${w("Petunjuk dipakai", S.hu + " kali")}${w("Keyakinan diri", S.c0 + "/5 ke " + S.c1 + "/5")}<p class='hd' style='margin:2cqw 0 .5cqw'>Kesalahan per tahap</p>${Object.keys(
+        e,
+      )
+        .map(
+          (k) =>
+            `<div style='margin-bottom:.8cqw'>${NM[k]}: <b>${e[k]}</b><div style='height:1cqw;background:#ffd23f;width:${(e[k] / m) * 100}%'></div></div>`,
+        )
+        .join(
+          "",
+        )}</div><div><p class='hd' style='margin-bottom:.5cqw'>Hasil per misi</p>${st.map((x, i) => w(i + 1 + ". " + CASES[i].n, x.s + "/3 bintang, " + x.e + " salah")).join("")}</div></div></div></div><div class='flex flex-wrap gap-3 justify-center mt-4'><button class='btn hl' data-a='pdf'>Simpan sebagai PDF</button><button class='btn ghost' data-a='go'>Pilihan level</button></div>`;
+      }
+      async function pdf() {
+        const { st, T, sc } = stat(),
+          e = S.err,
+          { jsPDF } = window.jspdf,
+          d = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" }),
+          N = [18, 41, 63];
+        const t = (s, x, y, z, b, al) => {
+          d.setFont("helvetica", b ? "bold" : "normal");
+          d.setFontSize(z);
+          d.setTextColor(...N);
+          d.text(String(s), x, y, { align: al || "left" });
+        };
+        const bd = () => {
+          d.setFillColor(255, 210, 63);
+          d.rect(0, 0, 8, 210, "F");
+          d.setDrawColor(...N);
+          d.setLineWidth(0.4);
+          d.rect(14, 12, 271, 186);
+        };
+        bd();
+        t("Detektif Junior", 26, 30, 14, 1);
+        t("Sertifikat Penyelesaian", 26, 64, 34, 1);
+        t("diberikan kepada", 26, 82, 13);
+        t(S.name, 26, 100, 30, 1);
+        d.line(26, 104, 150, 104);
+        t("Kelas " + S.kelas, 26, 114, 16);
+        d.setFontSize(12);
+        d.text(
+          d.splitTextToSize(
+            "telah menyelesaikan seluruh 5 level dan 6 misi, serta menunjukkan kemampuan mengenali masalah, memilah data, menyusun strategi, dan menghitung secara mandiri.",
+            140,
+          ),
+          26,
+          132,
+        );
+        t("Skor akhir", 235, 80, 13, 0, "center");
+        t(sc, 235, 112, 64, 1, "center");
+        t(pred(sc), 235, 126, 14, 1, "center");
+        t(S.dt, 26, 184, 11);
+        d.addPage();
+        bd();
+        t("Rincian statistik belajar", 26, 30, 24, 1);
+        t(S.name + ", kelas " + S.kelas, 26, 40, 12);
+        [
+          ["Misi selesai", Q.length + " dari " + Q.length],
+          ["Bintang", T + " dari " + Q.length * 3],
+          ["Petunjuk dipakai", S.hu + " kali"],
+          ["Keyakinan diri", S.c0 + "/5 ke " + S.c1 + "/5"],
+        ].forEach((r, i) => {
+          t(r[0], 26, 62 + i * 10, 12);
+          t(r[1], 118, 62 + i * 10, 12, 1, "right");
+          d.line(26, 64 + i * 10, 118, 64 + i * 10);
+        });
+        t("Kesalahan per tahap", 26, 114, 13, 1);
+        const m = Math.max(...Object.values(e), 1);
+        Object.keys(e).forEach((k, i) => {
+          const y = 126 + i * 12;
+          t(NM[k], 26, y, 11);
+          d.setFillColor(255, 210, 63);
+          d.rect(52, y - 4, Math.max((e[k] / m) * 55, 1), 5, "F");
+          t(e[k], 112, y, 11, 1, "right");
+        });
+        t("Hasil per misi", 150, 62, 13, 1);
+        t("Bintang", 250, 62, 11, 1, "right");
+        t("Salah", 272, 62, 11, 1, "right");
+        st.forEach((x, i) => {
+          const y = 74 + i * 11;
+          t(i + 1 + ". " + CASES[i].n, 150, y, 11);
+          t(x.s + "/3", 250, y, 11, 0, "right");
+          t(x.e, 272, y, 11, 0, "right");
+          d.line(150, y + 2.5, 276, y + 2.5);
+        });
+        const fn = "Sertifikat-" + S.name.split(" ").join("-") + ".pdf";
+        try {
+          const dl = window.claude
+            ? await window.claude.use("downloads")
+            : null;
+          if (dl) {
+            await dl.save({ filename: fn, data: d.output("blob") });
+            return;
+          }
+        } catch (x) {
+          if (x && x.code == "declined") return;
+        }
+        d.save(fn);
+      }
+      document.addEventListener("input", (e) => {
+        if (e.target.id == "nm") S.name = e.target.value;
+        if (e.target.id == "kl") S.kelas = e.target.value;
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "Enter" && e.target.id == "in") run();
+      });
+      R();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Berkas Inovasi | neoguru</title>
+    <link rel="shortcut icon" href="../favicon.png" type="image/x-icon" />
+
+    <!-- FontAwesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- CSS Output Tailwind Lokal -->
+    <link rel="stylesheet" href="src/output.css" />
+
+    <!-- CDN Tailwind (Sistem wajib memuat ini agar fitur Preview di chatbox berjalan normal) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                primary: "#2F318B",
+                secondary: "#3CAEE4",
+                accent: "#D0E5F2",
+                darkbg: "#000000",
+                white: "#FFFFFF",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      body {
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-white text-gray-800 dark:bg-brand-darkbg dark:text-gray-200 antialiased selection:bg-brand-secondary selection:text-white pt-24"
+  >
+    <!-- NAV START -->
+    <nav
+      class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="../index.html#home" class="w-36">
+              <img
+                class=""
+                src="../pic/neo-logo.png"
+                alt="home-logo"
+                onerror="
+                  this.src =
+                    'https://placehold.co/150x50/2F318B/FFFFFF?text=neoguru'
+                "
+              />
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-6 items-center">
+            <a
+              href="../index.html#home"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Beranda</a
+            >
+            <a
+              href="../index.html#profil"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Profil</a
+            >
+            <a
+              href="../index.html#perangkat"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Perangkat</a
+            >
+            <a
+              href="../index.html#media"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Media</a
+            >
+            <a
+              href="../index.html#portofolio"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Portofolio Murid</a
+            >
+            <a
+              href="../index.html#kontak"
+              class="text-sm font-medium hover:text-brand-secondary transition"
+              >Kontak</a
+            >
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center space-x-4">
+            <button
+              id="mobile-menu-btn"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand-primary focus:outline-none"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white dark:bg-brand-darkbg border-b border-gray-200 dark:border-gray-800"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="../index.html#home"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Beranda</a
+          >
+          <a
+            href="../index.html#profil"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Profil</a
+          >
+          <a
+            href="../index.html#perangkat"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Perangkat Ajar</a
+          >
+          <a
+            href="../index.html#media"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Media Pembelajaran</a
+          >
+          <a
+            href="../index.html#portofolio"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Portofolio Murid</a
+          >
+          <a
+            href="../index.html#kontak"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-brand-accent/20 dark:hover:bg-gray-900"
+            >Kontak</a
+          >
+        </div>
+      </div>
+    </nav>
+    <!-- NAV END -->
+
+    <!-- MAIN CONTENT START -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+      <div class="text-center mb-12">
+        <h1
+          class="text-3xl md:text-5xl font-bold text-brand-primary dark:text-brand-secondary mb-4"
+        >
+          Pengumpulan Berkas Inovasi
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
+          Halaman khusus untuk meninjau dan mengunduh berkas laporan, video,
+          serta portofolio terkait inovasi pada kegiatan Anugerah Guru, Kepala
+          Sekolah dan Pengawas Sekolah Kreatif & Inovatif Kabupaten Kepahiang.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Card 0: Karya Inovasi -->
+        <div
+          class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary rounded-full flex items-center justify-center text-2xl mb-4"
+          >
+            <i class="fas fa-robot"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">Karya Inovasi</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm">
+            Karya Inovasi berupa Gim Edukasi dengan judul "Detektif Junior". Gim
+            Edukasi Berbasis Web untuk Melatih Berpikir Komputasional dan
+            Numerasi Siswa SMP
+          </p>
+          <a
+            href="Detektif_Junior/Detektif_Junior.html"
+            target="_blank"
+            class="w-full bg-brand-primary hover:bg-brand-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            Buka Dokumen
+          </a>
+        </div>
+
+        <!-- Card 1: Naskah Inovasi -->
+        <div
+          class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary rounded-full flex items-center justify-center text-2xl mb-4"
+          >
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">Naskah Inovasi</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm">
+            Dokumen laporan rinci berisi profil peserta, latar belakang,
+            spesifikasi teknis, serta dampak penerapan gim edukasi "Detektif
+            Junior".
+          </p>
+          <a
+            href="https://www.google.com"
+            target="_blank"
+            class="w-full bg-brand-primary hover:bg-brand-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            Buka Dokumen
+          </a>
+        </div>
+
+        <!-- Card 2: Video Inovasi -->
+        <div
+          class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary rounded-full flex items-center justify-center text-2xl mb-4"
+          >
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">Video Inovasi</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm">
+            Cuplikan video demonstrasi penggunaan gim "Detektif Junior",
+            menampilkan fitur utama, antarmuka, dan pengalaman belajar yang
+            menyenangkan bagi siswa.
+          </p>
+          <a
+            href="https://youtu.be/HApHXsav5Cs"
+            target="_blank"
+            class="w-full bg-brand-primary hover:bg-brand-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            Tonton Video
+          </a>
+        </div>
+
+        <!-- Card 3: Portofolio Peserta -->
+        <div
+          class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-brand-accent/30 text-brand-primary dark:bg-gray-800 dark:text-brand-secondary rounded-full flex items-center justify-center text-2xl mb-4"
+          >
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">Portofolio Peserta</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm">
+            Rekam jejak digital berisi rangkuman karya dan daftar lengkap media
+            pembelajaran yang telah dikembangkan di platform NeoGuru oleh
+            Peserta.
+          </p>
+          <a
+            href="https://drive.google.com/file/d/1eXOhdkPNUz59gagyODmMXdLNDmRRl-MI/view?usp=drive_link"
+            target="_blank"
+            class="w-full bg-brand-primary hover:bg-brand-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            Lihat Portofolio
+          </a>
+        </div>
+      </div>
+    </main>
+    <!-- MAIN CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer id="kontak" class="bg-gray-900 text-white pt-5 pb-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16"
+        >
+          <!-- Branding -->
+          <div class="col-span-1 md:col-span-2">
+            <img class="w-52 mb-4" src="../pic/neo-logo.png" alt="neo-logo" />
+            <p class="text-gray-400 mb-6 max-w-md">
+              Mendedikasikan diri untuk pendidikan teknologi yang inklusif,
+              menyenangkan, dan relevan dengan kebutuhan masa depan.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="https://www.facebook.com/hanifnurf1999"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/hanifnur_f"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@neoguruID"
+                target="_blank"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-secondary transition text-white"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Tautan Cepat</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a
+                  href="../index.html#home"
+                  class="hover:text-brand-secondary transition"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#profil"
+                  class="hover:text-brand-secondary transition"
+                  >Profil</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#perangkat"
+                  class="hover:text-brand-secondary transition"
+                  >Perangkat Ajar</a
+                >
+              </li>
+              <li>
+                <a
+                  href="../index.html#media"
+                  class="hover:text-brand-secondary transition"
+                  >Media Pembelajaran</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="font-bold text-lg mb-4 text-white">Kontak</h4>
+            <ul class="space-y-4 text-gray-400">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-envelope mt-1 text-brand-secondary"></i>
+                <span>hanif.nur3514@guru.smp.belajar.id</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i
+                  class="fas fa-map-marker-alt mt-1 text-brand-secondary mr-1"
+                ></i>
+                <span>Kepahiang, Indonesia</span>
+              </li>
+            </ul>
+            <a
+              href="mailto:hanif.nur3514@guru.smp.belajar.id"
+              class="mt-6 inline-block w-full text-center px-4 py-2 bg-brand-primary hover:bg-brand-secondary transition rounded-lg font-medium"
+            >
+              Kirim Email
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"
+        >
+          <p>&copy; 2026 Hanif Nur Fadhil. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <!-- FOOTER END -->
+
+    <script>
+      // Script hanya tersisa untuk Toggle Mobile Menu
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+    </script>
+  </body>
+</html>
