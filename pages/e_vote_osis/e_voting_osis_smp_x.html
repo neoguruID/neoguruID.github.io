@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pemilihan Ketua OSIS SMP Negeri 02 Bermani Ilir 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .bg-pattern {
+        background-color: #f0fdfa;
+        background-image: radial-gradient(#14b8a6 0.75px, #f0fdfa 0.75px);
+        background-size: 15px 15px;
+      }
+      .modal-enter {
+        animation: modalFadeIn 0.3s ease-out forwards;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-pattern text-slate-800 min-h-screen flex flex-col">
+    <header class="bg-teal-600 text-white shadow-md py-4">
+      <div
+        class="container mx-auto px-4 flex justify-between items-center text-center sm:text-left"
+      >
+        <h1 class="text-2xl font-bold tracking-wide w-full sm:w-auto">
+          E-Voting OSIS SMP Negeri 02 Bermani Ilir
+        </h1>
+        <div class="hidden sm:block text-sm bg-teal-800 px-3 py-1 rounded-full">
+          Tahun 2026
+        </div>
+      </div>
+    </header>
+
+    <main
+      class="flex-grow flex items-center justify-center container mx-auto px-4 py-8"
+    >
+      <!-- ==================== SCREEN 1: HOME ==================== -->
+      <div
+        id="screen-home"
+        class="w-full max-w-2xl bg-white p-8 md:p-12 rounded-3xl shadow-xl text-center border-t-8 border-teal-500"
+      >
+        <div class="mb-6 inline-block bg-teal-100 p-4 rounded-full">
+          <svg
+            class="w-16 h-16 text-teal-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4">
+          Pemilihan Ketua OSIS
+        </h2>
+        <h3 class="text-xl md:text-2xl font-semibold text-teal-600 mb-6">
+          SMP Negeri 02 Bermani Ilir - Periode 2026/2027
+        </h3>
+        <p class="text-slate-600 mb-8 leading-relaxed">
+          Selamat datang di portal E-Voting pemilihan Ketua OSIS SMP Negeri 02
+          Bermani Ilir. Gunakan hak suara Anda dengan bijak untuk memilih
+          pemimpin yang terbaik bagi sekolah kita. Satu suara Anda sangat
+          berarti untuk masa depan OSIS SMP Negeri 02 Bermani Ilir!
+        </p>
+        <button
+          onclick="startElection()"
+          class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+        >
+          Mulai Pemilihan
+        </button>
+      </div>
+
+      <!-- ==================== SCREEN 2: VOTING ==================== -->
+      <div id="screen-voting" class="hidden w-full max-w-6xl">
+        <div
+          class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4"
+        >
+          <h2
+            class="text-2xl md:text-3xl font-bold text-slate-800 bg-white px-6 py-2 rounded-full shadow-sm border border-teal-100"
+          >
+            Kandidat Ketua OSIS
+          </h2>
+          <button
+            onclick="showPasswordModal()"
+            class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full shadow transition-colors flex items-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              ></path>
+            </svg>
+            Akhiri Pemilihan
+          </button>
+        </div>
+
+        <div
+          id="candidates-container"
+          class="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          <!-- Cards will be injected here via JS -->
+        </div>
+      </div>
+
+      <!-- ==================== SCREEN 3: RESULTS ==================== -->
+      <div
+        id="screen-results"
+        class="hidden w-full max-w-4xl bg-white p-8 rounded-3xl shadow-xl border-t-8 border-yellow-400"
+      >
+        <div class="text-center mb-10">
+          <h2 class="text-4xl font-extrabold text-slate-800 mb-2">
+            Hasil Pemilihan
+          </h2>
+          <p class="text-lg text-slate-500">
+            Statistik Akhir Pemilihan Ketua OSIS SMP Negeri 02 Bermani Ilir 2026
+          </p>
+        </div>
+
+        <div
+          id="winner-announcement"
+          class="mb-12 text-center bg-yellow-50 p-8 rounded-2xl border border-yellow-200 shadow-inner"
+        >
+          <!-- Winner info injected via JS -->
+        </div>
+
+        <div class="mb-6 text-xl font-bold text-slate-700">
+          Statistik Suara:
+        </div>
+        <div id="statistics-container" class="space-y-6">
+          <!-- Stats injected via JS -->
+        </div>
+
+        <div class="mt-12 text-center">
+          <button
+            onclick="location.reload()"
+            class="text-teal-600 font-semibold hover:underline"
+          >
+            Kembali ke Beranda (Reset)
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal: Sukses Memilih -->
+    <div
+      id="modal-success"
+      class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm"
+    >
+      <div
+        class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl modal-enter"
+      >
+        <div
+          class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6"
+        >
+          <svg
+            class="h-10 w-10 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 mb-2">Terima Kasih!</h3>
+        <p class="text-slate-600 mb-8">
+          Suara Anda telah berhasil direkam. Silakan panggil pemilih berikutnya.
+        </p>
+        <button
+          onclick="closeSuccessModal()"
+          class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-xl transition-colors"
+        >
+          OK, Lanjut Pemilih Berikutnya
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal: Password Konfirmasi Akhiri -->
+    <div
+      id="modal-password"
+      class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm"
+    >
+      <div
+        class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl modal-enter"
+      >
+        <h3
+          class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"
+        >
+          <svg
+            class="w-6 h-6 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            ></path>
+          </svg>
+          Akhiri Sesi Pemilihan
+        </h3>
+        <p class="text-slate-600 mb-4 text-sm">
+          Masukkan password admin untuk mengakhiri pemilihan dan melihat hasil
+          akhir.
+        </p>
+
+        <input
+          type="password"
+          id="admin-password"
+          class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 mb-2"
+          placeholder="Masukkan Password"
+        />
+        <p id="password-error" class="text-red-500 text-sm hidden mb-4">
+          Password salah!
+        </p>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button
+            onclick="closePasswordModal()"
+            class="px-5 py-2 text-slate-600 font-semibold hover:bg-slate-100 rounded-xl transition-colors"
+          >
+            Batal
+          </button>
+          <button
+            onclick="verifyPassword()"
+            class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-colors"
+          >
+            Akhiri Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      class="bg-white py-4 text-center text-slate-500 text-sm shadow-inner mt-auto"
+    >
+      &copy; 2026 Pemilihan Ketua OSIS SMP Negeri 02 Bermani Ilir. All rights
+      reserved.
+    </footer>
+
+    <script>
+      // Data Kandidat
+      const candidates = [
+        {
+          id: 1,
+          name: "Diffa Mhicko Yuensyah",
+          className: "Kelas VII",
+          image: "1.jpg",
+          color: "blue",
+          votes: 0,
+        },
+        {
+          id: 2,
+          name: "Muhamad Bayu Sukma",
+          className: "Kelas VII",
+          image: "2.jpg",
+          color: "green",
+          votes: 0,
+        },
+        {
+          id: 3,
+          name: "Keyna Safa Afifah",
+          className: "Kelas VII",
+          image: "3.jpg",
+          color: "yellow",
+          votes: 0,
+        },
+      ];
+
+      // Konstanta Password
+      const ADMIN_PASSWORD = "osis2026";
+
+      // Referensi elemen DOM
+      const screenHome = document.getElementById("screen-home");
+      const screenVoting = document.getElementById("screen-voting");
+      const screenResults = document.getElementById("screen-results");
+      const modalSuccess = document.getElementById("modal-success");
+      const modalPassword = document.getElementById("modal-password");
+      const candidatesContainer = document.getElementById(
+        "candidates-container",
+      );
+      const passwordInput = document.getElementById("admin-password");
+      const passwordError = document.getElementById("password-error");
+
+      // Pindah layar ke pemilihan
+      function startElection() {
+        screenHome.classList.add("hidden");
+        screenVoting.classList.remove("hidden");
+        renderCandidates();
+      }
+
+      // Render card kandidat ke layar
+      function renderCandidates() {
+        candidatesContainer.innerHTML = "";
+
+        candidates.forEach((candidate) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-white rounded-3xl p-6 shadow-xl border border-slate-100 flex flex-col items-center text-center transform transition-transform duration-300 hover:scale-105";
+
+          card.innerHTML = `
+                    <div class="relative w-40 h-40 mb-6">
+                        <div class="absolute inset-0 bg-${candidate.color}-200 rounded-full animate-pulse opacity-50"></div>
+                        <img src="${candidate.image}" alt="Foto ${candidate.name}" class="relative w-full h-full object-cover rounded-full border-4 border-white shadow-md">
+                        <div class="absolute -bottom-2 -right-2 bg-${candidate.color}-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl shadow-lg border-2 border-white">
+                            ${candidate.id}
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">${candidate.name}</h3>
+                    <p class="text-teal-600 font-semibold mb-8 bg-teal-50 px-4 py-1 rounded-full text-sm">${candidate.className}</p>
+                    
+                    <button onclick="castVote(${candidate.id})" class="mt-auto w-full bg-${candidate.color}-600 hover:bg-${candidate.color}-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-colors text-lg uppercase tracking-wider">
+                        Pilih Nomor ${candidate.id}
+                    </button>
+                `;
+          candidatesContainer.appendChild(card);
+        });
+      }
+
+      // Fungsi mencatat suara
+      function castVote(candidateId) {
+        const candidate = candidates.find((c) => c.id === candidateId);
+        if (candidate) {
+          candidate.votes += 1;
+          showSuccessModal();
+        }
+      }
+
+      // Menampilkan & Menutup Modal Sukses
+      function showSuccessModal() {
+        modalSuccess.classList.remove("hidden");
+      }
+
+      function closeSuccessModal() {
+        modalSuccess.classList.add("hidden");
+        // Layar tetap di screenVoting, siap untuk pemilih berikutnya (no limit)
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function showPasswordModal() {
+        passwordInput.value = "";
+        passwordError.classList.add("hidden");
+        modalPassword.classList.remove("hidden");
+        setTimeout(() => passwordInput.focus(), 100);
+      }
+
+      function closePasswordModal() {
+        modalPassword.classList.add("hidden");
+      }
+
+      function verifyPassword() {
+        if (passwordInput.value === ADMIN_PASSWORD) {
+          closePasswordModal();
+          endElection();
+        } else {
+          passwordError.classList.remove("hidden");
+        }
+      }
+
+      // Allow pressing Enter on password input
+      passwordInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          verifyPassword();
+        }
+      });
+
+      function endElection() {
+        screenVoting.classList.add("hidden");
+        screenResults.classList.remove("hidden");
+        generateResults();
+      }
+
+      function generateResults() {
+        // Hitung total suara
+        const totalVotes = candidates.reduce(
+          (sum, candidate) => sum + candidate.votes,
+          0,
+        );
+
+        // Urutkan berdasarkan suara terbanyak
+        const sortedCandidates = [...candidates].sort(
+          (a, b) => b.votes - a.votes,
+        );
+
+        const winnerAnnouncement = document.getElementById(
+          "winner-announcement",
+        );
+        const statsContainer = document.getElementById("statistics-container");
+
+        if (totalVotes === 0) {
+          winnerAnnouncement.innerHTML = `
+                    <h3 class="text-2xl font-bold text-slate-700">Belum ada suara yang masuk.</h3>
+                `;
+        } else {
+          const winner = sortedCandidates[0];
+          const isTie =
+            sortedCandidates.length > 1 &&
+            sortedCandidates[0].votes === sortedCandidates[1].votes;
+
+          if (isTie) {
+            winnerAnnouncement.innerHTML = `
+                        <h3 class="text-3xl font-extrabold text-slate-800 mb-2">Hasil Seri!</h3>
+                        <p class="text-slate-600">Terdapat lebih dari satu kandidat dengan perolehan suara terbanyak yang sama.</p>
+                    `;
+          } else {
+            winnerAnnouncement.innerHTML = `
+                        <div class="text-yellow-500 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 01.993.883L11 3v1.077l3.705 1.588a1 1 0 01.378 1.636l-2.607 2.607 1.134 4.536a1 1 0 01-1.45 1.054L10 14.15l-3.16 1.342a1 1 0 01-1.45-1.054l1.134-4.536-2.607-2.607a1 1 0 01.378-1.636L8 4.077V3a1 1 0 01.883-.993L9 2h2z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        <h3 class="text-xl text-slate-600 font-semibold mb-1">Ketua OSIS Terpilih:</h3>
+                        <h2 class="text-4xl font-extrabold text-slate-800 mb-2">${winner.name}</h2>
+                        <p class="text-lg text-slate-500">${winner.className}</p>
+                    `;
+          }
+        }
+
+        // Generate Bar Chart CSS/HTML based Stats
+        statsContainer.innerHTML = "";
+
+        sortedCandidates.forEach((candidate) => {
+          const percentage =
+            totalVotes === 0
+              ? 0
+              : Math.round((candidate.votes / totalVotes) * 100);
+
+          const statRow = document.createElement("div");
+          statRow.className =
+            "bg-slate-50 p-4 rounded-xl border border-slate-100";
+          statRow.innerHTML = `
+                    <div class="flex justify-between items-end mb-2">
+                        <div>
+                            <span class="font-bold text-lg text-slate-800">${candidate.name}</span>
+                            <span class="text-slate-500 text-sm ml-2">(Paslon ${candidate.id})</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-extrabold text-2xl text-${candidate.color}-600">${candidate.votes}</span>
+                            <span class="text-slate-500 text-sm">Suara</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-4">
+                        <div class="bg-${candidate.color}-500 h-4 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div class="text-right mt-1 text-sm font-semibold text-slate-600">${percentage}%</div>
+                `;
+          statsContainer.appendChild(statRow);
+
+          // Animate progress bar
+          setTimeout(() => {
+            const progressBar = statRow.querySelector(
+              `.bg-${candidate.color}-500`,
+            );
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+          }, 100);
+        });
+
+        // Add Total Votes Summary
+        const totalSummary = document.createElement("div");
+        totalSummary.className =
+          "mt-6 text-center text-slate-500 bg-white p-4 rounded-xl border border-slate-200";
+        totalSummary.innerHTML = `Total Suara Masuk: <span class="font-bold text-slate-800">${totalVotes} Suara</span>`;
+        statsContainer.appendChild(totalSummary);
+      }
+    </script>
+  </body>
+</html>
