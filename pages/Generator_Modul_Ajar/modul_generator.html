@@ -1363,7 +1363,9 @@
           .replace(/\\\[([\s\S]+?)\\\]/g, (_, t) => stash(t, true))
           .replace(/\\\((.+?)\\\)/g, (_, t) => stash(t, false))
           .replace(/\$(?!\s)([^$\n]*?[^\s$])\$/g, (_, t) => stash(t, false));
-        const html = DOMPurify.sanitize(marked.parse(md));
+        const html = DOMPurify.sanitize(
+          marked.parse(md, { breaks: true, gfm: true }),
+        );
         return html.replace(/NGMATH(\d+)NGEND/g, (_, i) => {
           const [t, d] = maths[i];
           try {
@@ -1426,7 +1428,7 @@ Aturan: (1) Bahasa Indonesia profesional. (2) Output HANYA Markdown, tanpa kalim
 ## 2. DIMENSI PROFIL LULUSAN
 (jelaskan dimensi yang ditargetkan dan kaitannya dengan kegiatan)
 ## 3. TUJUAN PEMBELAJARAN
-(tujuan pembelajaran utama sama persis seperti yang diinput, lalu buat tujuan pembelajaran turunan (indikator) yang lebih spesifik, terukur, dan dapat diamati; gunakan Tabel Markdown)
+(tujuan pembelajaran utama sama persis seperti yang diinput, lalu buat tujuan pembelajaran turunan (Kriteria Ketercapaian Tujuan Pembelajaran (KKTP)) yang lebih spesifik, terukur, dan dapat diamati; gunakan Tabel Markdown)
 ## 4. PRAKTIK PEDAGOGIS
 (pendekatan, model, metode, diferensiasi; lalu blockquote "> **Pemahaman Bermakna:** ...")
 ## 5. LINGKUNGAN PEMBELAJARAN
