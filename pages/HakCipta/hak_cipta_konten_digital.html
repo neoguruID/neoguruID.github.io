@@ -1,0 +1,1929 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hak Cipta Konten Digital - KKA Kelas 7 SMP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- PptxGenJS CDN for exporting to PPTX directly -->
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                900: "#1e1b4b",
+                dark: "#0f172a",
+                card: "#1e293b",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom Scrollbar for notes view */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
+      }
+
+      .slide-aspect {
+        aspect-ratio: 16 / 9;
+      }
+
+      /* Printing adjustments for Notes View */
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-only {
+          display: block !important;
+        }
+        .notes-card {
+          background: #ffffff !important;
+          border: 1px solid #cbd5e1 !important;
+          color: #0f172a !important;
+          box-shadow: none !important;
+          page-break-inside: avoid;
+        }
+        .notes-card h2,
+        .notes-card h3 {
+          color: #1e1b4b !important;
+        }
+        .notes-card p,
+        .notes-card li {
+          color: #334155 !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between antialiased selection:bg-brand-500 selection:text-white"
+  >
+    <!-- Top Navigation Bar (Teacher & Export Controls) -->
+    <header
+      class="no-print bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-4 py-3"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3"
+      >
+        <!-- Branding / Title -->
+        <div class="flex items-center space-x-3">
+          <div
+            class="p-2 bg-brand-600 rounded-lg text-white shadow-lg shadow-brand-500/30"
+          >
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="font-bold text-base md:text-lg leading-tight text-white">
+              Hak Cipta Konten Digital
+            </h1>
+            <p class="text-xs text-slate-400">
+              Materi KKA / Informatika Kelas 7 SMP
+            </p>
+          </div>
+        </div>
+
+        <!-- View Toggle & Action Buttons -->
+        <div class="flex items-center flex-wrap gap-2">
+          <!-- Toggle View Mode Button -->
+          <button
+            id="toggleViewBtn"
+            onclick="toggleViewMode()"
+            class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs md:text-sm font-medium transition flex items-center space-x-2 text-slate-200"
+          >
+            <i data-lucide="file-text" class="w-4 h-4 text-brand-500"></i>
+            <span id="toggleViewText">Modus Catatan Siswa</span>
+          </button>
+
+          <!-- Export PPTX Button -->
+          <button
+            onclick="exportToPPTX()"
+            class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs md:text-sm font-medium shadow-md shadow-indigo-600/20 transition flex items-center space-x-2"
+          >
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Ekspor PPTX</span>
+          </button>
+
+          <!-- Print / Save PDF Button -->
+          <button
+            onclick="window.print()"
+            class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs md:text-sm font-medium transition text-slate-300 flex items-center space-x-1.5"
+            title="Cetak atau Simpan PDF"
+          >
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Cetak</span>
+          </button>
+
+          <!-- Fullscreen Button -->
+          <button
+            onclick="toggleFullscreen()"
+            class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition hidden md:block"
+            title="Layar Penuh"
+          >
+            <i data-lucide="maximize-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN PRESENTATION VIEW CONTAINER -->
+    <main
+      id="presentationContainer"
+      class="flex-1 flex flex-col justify-center items-center p-3 md:p-6 transition-all duration-300"
+    >
+      <!-- Presentation Stage Frame (16:9 Aspect Ratio Container) -->
+      <div
+        class="w-full max-w-6xl slide-aspect bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden relative flex flex-col justify-between"
+      >
+        <!-- Slide Progress Header Indicator -->
+        <div class="no-print absolute top-0 left-0 right-0 h-1 bg-slate-800">
+          <div
+            id="progressBar"
+            class="h-full bg-brand-500 transition-all duration-300"
+            style="width: 14.28%"
+          ></div>
+        </div>
+
+        <!-- SLIDE CONTENTS AREA -->
+        <div
+          id="slideViewport"
+          class="flex-1 p-6 md:p-12 flex flex-col justify-center overflow-y-auto"
+        >
+          <!-- SLIDE 1: Judul & Pengantar -->
+          <div class="slide-content transition-all duration-300" data-slide="1">
+            <div class="max-w-3xl mx-auto text-center space-y-6">
+              <span
+                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-brand-500/10 text-brand-500 border border-brand-500/20"
+              >
+                <i data-lucide="sparkles" class="w-4 h-4 mr-1.5"></i> KKA /
+                Informatika - Kelas 7 SMP
+              </span>
+              <h1
+                class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight"
+              >
+                Memahami Konsep Dasar <br />
+                <span
+                  class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"
+                  >Hak Cipta Konten Digital</span
+                >
+              </h1>
+              <p
+                class="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl mx-auto"
+              >
+                Belajar menjadi pengguna dan pembuat konten internet yang
+                kreatif, bijak, adil, serta bertanggung jawab di era digital.
+              </p>
+
+              <div
+                class="pt-4 grid grid-cols-4 gap-2 md:gap-3 max-w-2xl mx-auto text-left"
+              >
+                <div
+                  class="p-2.5 bg-slate-800/60 rounded-xl border border-slate-700/50"
+                >
+                  <i
+                    data-lucide="help-circle"
+                    class="w-4 h-4 text-amber-400 mb-1"
+                  ></i>
+                  <div class="text-xs font-bold text-slate-200">
+                    01. Pemantik
+                  </div>
+                  <div class="text-[10px] text-slate-400">Studi Kasus</div>
+                </div>
+                <div
+                  class="p-2.5 bg-slate-800/60 rounded-xl border border-slate-700/50"
+                >
+                  <i
+                    data-lucide="book-open"
+                    class="w-4 h-4 text-indigo-400 mb-1"
+                  ></i>
+                  <div class="text-xs font-bold text-slate-200">02. Konsep</div>
+                  <div class="text-[10px] text-slate-400">Hak & Aturan</div>
+                </div>
+                <div
+                  class="p-2.5 bg-slate-800/60 rounded-xl border border-slate-700/50"
+                >
+                  <i
+                    data-lucide="message-square"
+                    class="w-4 h-4 text-pink-400 mb-1"
+                  ></i>
+                  <div class="text-xs font-bold text-slate-200">
+                    03. Diskusi
+                  </div>
+                  <div class="text-[10px] text-slate-400">Skenario A-D</div>
+                </div>
+                <div
+                  class="p-2.5 bg-slate-800/60 rounded-xl border border-slate-700/50"
+                >
+                  <i
+                    data-lucide="heart-handshake"
+                    class="w-4 h-4 text-emerald-400 mb-1"
+                  ></i>
+                  <div class="text-xs font-bold text-slate-200">
+                    04. Praktek
+                  </div>
+                  <div class="text-[10px] text-slate-400">Etika & Credit</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2: Aktivitas Pemantik & Studi Kasus Singkat -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="2"
+          >
+            <div class="space-y-5">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20"
+                >
+                  <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-amber-400"
+                    >Aktivitas Awal</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Studi Kasus Singkat: Milik Siapa?
+                  </h2>
+                </div>
+              </div>
+
+              <!-- Visual Illustrative Cards -->
+              <div class="grid md:grid-cols-3 gap-3">
+                <div
+                  class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/80 flex items-center space-x-3"
+                >
+                  <div
+                    class="p-2.5 bg-indigo-500/20 text-indigo-400 rounded-lg"
+                  >
+                    <i data-lucide="palette" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">
+                      Gambar Fanart Anime
+                    </h4>
+                    <p class="text-[11px] text-slate-400">
+                      Dibuat bertatap-tatap hari
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/80 flex items-center space-x-3"
+                >
+                  <div class="p-2.5 bg-pink-500/20 text-pink-400 rounded-lg">
+                    <i data-lucide="music" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">
+                      Lagu TikTok Viral
+                    </h4>
+                    <p class="text-[11px] text-slate-400">
+                      Audio ciptaan musisi
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/80 flex items-center space-x-3"
+                >
+                  <div
+                    class="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-lg"
+                  >
+                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">
+                      Video Editan Game
+                    </h4>
+                    <p class="text-[11px] text-slate-400">
+                      Konten kreator YouTube
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Discussion Questions -->
+              <div
+                class="bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 p-4 md:p-5 rounded-2xl border border-amber-500/30 space-y-3"
+              >
+                <h3
+                  class="text-sm md:text-base font-bold text-amber-300 flex items-center"
+                >
+                  <i
+                    data-lucide="messages-square"
+                    class="w-5 h-5 mr-2 text-amber-400"
+                  ></i>
+                  Pertanyaan Diskusi Kelas:
+                </h3>
+                <div class="space-y-2 text-xs md:text-sm">
+                  <div
+                    class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 text-slate-200"
+                  >
+                    <strong>1.</strong>
+                    <em
+                      >"Kalau kamu menggambar fanart selama 3 hari, lalu ada
+                      orang lain yang mengambilnya, menghapus namamu, dan
+                      menjualnya dalam bentuk kaos tanpa izin, bagaimana
+                      perasaanmu?"</em
+                    >
+                  </div>
+                  <div
+                    class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 text-slate-200"
+                  >
+                    <strong>2.</strong>
+                    <em
+                      >"Apakah boleh kita memakai lagu/gambar orang lain untuk
+                      konten YouTube/TikTok kita sendiri?"</em
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="p-3 bg-indigo-950/40 rounded-xl border border-indigo-800/40 text-xs text-indigo-200 flex items-center space-x-2"
+              >
+                <i
+                  data-lucide="target"
+                  class="w-5 h-5 text-indigo-400 flex-shrink-0"
+                ></i>
+                <span
+                  ><strong>Tujuan:</strong> Menyadarkan bahwa konten di internet
+                  tidak otomatis menjadi "milik bersama" yang bebas
+                  diambil!</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3: Konsep Dasar Hak Cipta -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="3"
+          >
+            <div class="space-y-6">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20"
+                >
+                  <i data-lucide="copyright" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-indigo-400"
+                    >Materi 01</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Konsep Dasar Hak Cipta (Copyright)
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6 items-stretch">
+                <!-- Left Card: Definisi -->
+                <div
+                  class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 flex flex-col justify-between space-y-4"
+                >
+                  <div>
+                    <h3
+                      class="font-semibold text-lg text-indigo-300 mb-2 flex items-center"
+                    >
+                      <i
+                        data-lucide="info"
+                        class="w-5 h-5 mr-2 text-indigo-400"
+                      ></i>
+                      Apa itu Hak Cipta?
+                    </h3>
+                    <p
+                      class="text-slate-300 text-sm md:text-base leading-relaxed"
+                    >
+                      Hak khusus yang dimiliki oleh
+                      <strong class="text-white">pencipta</strong> suatu karya
+                      digital. Dengan hak ini, pencipta berhak mengatur siapa
+                      saja yang boleh menggunakan karyanya dan cara
+                      penggunaannya.
+                    </p>
+                  </div>
+                  <div
+                    class="p-3.5 bg-indigo-950/50 rounded-lg border border-indigo-800/40 text-xs text-indigo-200"
+                  >
+                    💡 <strong>Analogi Kepemilikan:</strong> Sama seperti
+                    sertifikat barang pribadi, karya digital memiliki pemilik
+                    sah yang wajib dihormati.
+                  </div>
+                </div>
+
+                <!-- Right Card: Contoh Konten Digital -->
+                <div
+                  class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 space-y-3"
+                >
+                  <h3
+                    class="font-semibold text-lg text-purple-300 mb-1 flex items-center"
+                  >
+                    <i
+                      data-lucide="folder-git-2"
+                      class="w-5 h-5 mr-2 text-purple-400"
+                    ></i>
+                    Contoh Konten Digital Dilindungi:
+                  </h3>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div
+                      class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/50 flex items-center space-x-2"
+                    >
+                      <i
+                        data-lucide="music"
+                        class="w-4 h-4 text-emerald-400"
+                      ></i>
+                      <span
+                        class="text-xs md:text-sm font-medium text-slate-200"
+                        >Lagu & Audio</span
+                      >
+                    </div>
+                    <div
+                      class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/50 flex items-center space-x-2"
+                    >
+                      <i data-lucide="image" class="w-4 h-4 text-sky-400"></i>
+                      <span
+                        class="text-xs md:text-sm font-medium text-slate-200"
+                        >Foto & Gambar</span
+                      >
+                    </div>
+                    <div
+                      class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/50 flex items-center space-x-2"
+                    >
+                      <i data-lucide="video" class="w-4 h-4 text-rose-400"></i>
+                      <span
+                        class="text-xs md:text-sm font-medium text-slate-200"
+                        >Video TikTok/YT</span
+                      >
+                    </div>
+                    <div
+                      class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/50 flex items-center space-x-2"
+                    >
+                      <i
+                        data-lucide="file-text"
+                        class="w-4 h-4 text-amber-400"
+                      ></i>
+                      <span
+                        class="text-xs md:text-sm font-medium text-slate-200"
+                        >Tulisan & Blog</span
+                      >
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-400 pt-1">
+                    *Meskipun mudah diakses di internet, bukan berarti karya
+                    tersebut boleh bebas dipakai tanpa aturan.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 4: Bentuk Pelanggaran Hak Cipta -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="4"
+          >
+            <div class="space-y-5">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-rose-500/10 text-rose-400 rounded-xl border border-rose-500/20"
+                >
+                  <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-rose-400"
+                    >Materi 02</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Bentuk Pelanggaran Hak Cipta
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <!-- Card 1 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80 space-y-2"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm"
+                  >
+                    1
+                  </div>
+                  <h3 class="font-bold text-white text-sm md:text-base">
+                    Mengambil & Memakai Bebas
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Mengambil gambar dari Google untuk slide tugas, postingan
+                    sosmed, atau poster sekolah tanpa mencantumkan sumber
+                    aslinya.
+                  </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80 space-y-2"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm"
+                  >
+                    2
+                  </div>
+                  <h3 class="font-bold text-white text-sm md:text-base">
+                    Mengedit Tanpa Izin
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Mengubah, memotong, atau mengedit video/gambar milik orang
+                    lain lalu membagikannya seolah-olah buatan sendiri.
+                  </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80 space-y-2"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm"
+                  >
+                    3
+                  </div>
+                  <h3 class="font-bold text-white text-sm md:text-base">
+                    Unggah Ulang (Reupload)
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Mendownload konten orang lain dan mengunggah ulang ke
+                    TikTok, Reels, atau YouTube demi mendapatkan *like* /
+                    penonton.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Warning Box -->
+              <div
+                class="p-3.5 bg-rose-950/40 rounded-xl border border-rose-800/40 flex items-center space-x-3 text-xs md:text-sm text-rose-200"
+              >
+                <i
+                  data-lucide="x-circle"
+                  class="w-5 h-5 text-rose-400 flex-shrink-0"
+                ></i>
+                <span
+                  ><strong>Ingat!</strong> Semua tindakan di atas secara hukum
+                  dan etika digital <u>tidak diperbolehkan</u>.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 5: Mengapa Hak Cipta Itu Penting? -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="5"
+          >
+            <div class="space-y-5">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20"
+                >
+                  <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-emerald-400"
+                    >Materi 03</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Mengapa Hak Cipta Itu Penting?
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <!-- Reason 1 -->
+                <div
+                  class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 flex flex-col justify-between"
+                >
+                  <div>
+                    <i
+                      data-lucide="lock"
+                      class="w-8 h-8 text-emerald-400 mb-3"
+                    ></i>
+                    <h3 class="font-bold text-white text-base mb-2">
+                      1. Melindungi Karya
+                    </h3>
+                    <p
+                      class="text-xs md:text-sm text-slate-300 leading-relaxed"
+                    >
+                      Mencegah pencurian, pembajakan, atau penyalahgunaan karya
+                      oleh pihak yang tidak bertanggung jawab.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Reason 2 -->
+                <div
+                  class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 flex flex-col justify-between"
+                >
+                  <div>
+                    <i
+                      data-lucide="award"
+                      class="w-8 h-8 text-emerald-400 mb-3"
+                    ></i>
+                    <h3 class="font-bold text-white text-base mb-2">
+                      2. Menghargai Kreator
+                    </h3>
+                    <p
+                      class="text-xs md:text-sm text-slate-300 leading-relaxed"
+                    >
+                      Menghargai waktu, tenaga, ide, dan biaya yang telah
+                      dicurahkan pembuat konten saat berkarya.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Reason 3 -->
+                <div
+                  class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 flex flex-col justify-between"
+                >
+                  <div>
+                    <i
+                      data-lucide="user-check"
+                      class="w-8 h-8 text-emerald-400 mb-3"
+                    ></i>
+                    <h3 class="font-bold text-white text-base mb-2">
+                      3. Sikap Bertanggung Jawab
+                    </h3>
+                    <p
+                      class="text-xs md:text-sm text-slate-300 leading-relaxed"
+                    >
+                      Melatih kita memahami aturan dan batasan dalam berinternet
+                      agar menjadi pengguna digital yang adil.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 6: Cara Menghormati Hak Cipta -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="6"
+          >
+            <div class="space-y-5">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20"
+                >
+                  <i data-lucide="thumbs-up" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-amber-400"
+                    >Materi 04</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Cara Menghormati Hak Cipta
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <!-- Step 1 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-amber-500/30 relative overflow-hidden"
+                >
+                  <div class="text-amber-400 font-extrabold text-2xl mb-2">
+                    01
+                  </div>
+                  <h3 class="font-bold text-white text-base mb-1">
+                    Minta Izin
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Sebelum menggunakan karya seseorang, cari informasi
+                    pemiliknya dan hubungi untuk meminta izin penggunaan secara
+                    sopan.
+                  </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-amber-500/30 relative overflow-hidden"
+                >
+                  <div class="text-amber-400 font-extrabold text-2xl mb-2">
+                    02
+                  </div>
+                  <h3 class="font-bold text-white text-base mb-1">
+                    Konten Bebas Lisensi
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Gunakan gambar/musik/video dari situs penyedia aset gratis
+                    yang mengizinkan penggunaan ulang secara legal.
+                  </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                  class="bg-slate-800/80 p-4 rounded-xl border border-amber-500/30 relative overflow-hidden"
+                >
+                  <div class="text-amber-400 font-extrabold text-2xl mb-2">
+                    03
+                  </div>
+                  <h3 class="font-bold text-white text-base mb-1">
+                    Cantumkan Sumber
+                  </h3>
+                  <p class="text-xs text-slate-300 leading-relaxed">
+                    Selalu tuliskan nama pembuat asli dan situs tempat kamu
+                    mengambil materi tersebut sebagai bentuk atribusi.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="p-3.5 bg-slate-800/90 rounded-xl border border-slate-700 flex items-center justify-between"
+              >
+                <div class="text-xs md:text-sm text-slate-200">
+                  🌟 <strong>Opsi Terbaik Lainnya:</strong> Buatlah karya atau
+                  kontenmu sendiri secara mandiri!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 7: Creative Commons & Platform Gratis -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="7"
+          >
+            <div class="space-y-5">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/20"
+                >
+                  <i data-lucide="globe" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-sky-400"
+                    >Materi 05</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Creative Commons & Platform Gratis
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-5">
+                <!-- Left: Creative Commons explanation -->
+                <div
+                  class="bg-slate-800/80 p-4 md:p-5 rounded-xl border border-slate-700 space-y-3"
+                >
+                  <h3
+                    class="font-bold text-sky-300 text-base flex items-center"
+                  >
+                    <i
+                      data-lucide="cc-icon"
+                      class="w-5 h-5 mr-2 text-sky-400"
+                    ></i>
+                    Apa itu Creative Commons (CC)?
+                  </h3>
+                  <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    Lisensi khusus yang memungkinkan karya boleh digunakan
+                    secara
+                    <strong class="text-white">gratis dan legal</strong> tanpa
+                    membayar atau izin tertulis,
+                    <u class="text-sky-300"
+                      >dengan syarat tetap mencantumkan sumbernya</u
+                    >.
+                  </p>
+
+                  <div class="pt-2">
+                    <h4 class="text-xs font-semibold text-slate-400 mb-2">
+                      Contoh Situs Bebas Lisensi Legal:
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                      <span
+                        class="px-2.5 py-1 bg-sky-950/60 text-sky-300 rounded border border-sky-800/50 text-xs font-medium"
+                        >Pixabay</span
+                      >
+                      <span
+                        class="px-2.5 py-1 bg-sky-950/60 text-sky-300 rounded border border-sky-800/50 text-xs font-medium"
+                        >Unsplash</span
+                      >
+                      <span
+                        class="px-2.5 py-1 bg-sky-950/60 text-sky-300 rounded border border-sky-800/50 text-xs font-medium"
+                        >Pexels</span
+                      >
+                      <span
+                        class="px-2.5 py-1 bg-sky-950/60 text-sky-300 rounded border border-sky-800/50 text-xs font-medium"
+                        >Free Music Archive</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Cara Menulis Atribusi -->
+                <div
+                  class="bg-slate-800/80 p-4 md:p-5 rounded-xl border border-slate-700 space-y-3"
+                >
+                  <h3
+                    class="font-bold text-emerald-300 text-base flex items-center"
+                  >
+                    <i
+                      data-lucide="pen-tool"
+                      class="w-5 h-5 mr-2 text-emerald-400"
+                    ></i>
+                    Contoh Format Penulisan Sumber:
+                  </h3>
+                  <p class="text-xs text-slate-300">
+                    Saat meletakkan gambar di slide presentasi atau tugas
+                    sekolah, tuliskan teks kecil di bawah gambar:
+                  </p>
+
+                  <div
+                    class="p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-xs text-emerald-400"
+                  >
+                    "Foto oleh: gidlark01 / Pixabay.com (2025)"
+                  </div>
+
+                  <div
+                    class="p-3 bg-slate-900/60 rounded-lg text-xs text-slate-300 space-y-1"
+                  >
+                    <div>✔ <strong>Nama Pencipta:</strong> gidlark01</div>
+                    <div>✔ <strong>Platform:</strong> Pixabay.com</div>
+                    <div>✔ <strong>Tahun/Sumber:</strong> (2025)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 8: Diskusi Kasus - Skenario A & B -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="8"
+          >
+            <div class="space-y-4">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-pink-500/10 text-pink-400 rounded-xl border border-pink-500/20"
+                >
+                  <i data-lucide="help-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-pink-400"
+                    >Diskusi Kelompok (1/2)</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Analisis Skenario Kasus "Boleh atau Tidak?"
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <!-- Scenario A Card -->
+                <div
+                  class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 flex flex-col justify-between space-y-3"
+                >
+                  <div class="space-y-2">
+                    <span
+                      class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 rounded font-bold text-xs"
+                      >Skenario A</span
+                    >
+                    <p
+                      class="text-xs md:text-sm text-slate-200 leading-relaxed"
+                    >
+                      <strong>Kasus:</strong> Budi mengunduh lagu populer berhak
+                      cipta untuk backsound video tugas sekolah, lalu
+                      mengunggahnya ke YouTube tanpa mencantumkan sumber lagu.
+                    </p>
+                  </div>
+
+                  <!-- Toggle Answer Button -->
+                  <button
+                    onclick="toggleAnswer('ansA')"
+                    class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-slate-200 transition flex items-center justify-center space-x-1"
+                  >
+                    <i data-lucide="eye" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Tampilkan / Sembunyikan Kunci Jawaban</span>
+                  </button>
+
+                  <!-- Answer Box Hidden by default -->
+                  <div
+                    id="ansA"
+                    class="hidden p-3 bg-rose-950/40 rounded-lg border border-rose-800/40 text-xs space-y-1.5"
+                  >
+                    <div class="text-rose-400 font-bold flex items-center">
+                      <i data-lucide="x-circle" class="w-4 h-4 mr-1"></i>
+                      Status: MELANGGAR HAK CIPTA
+                    </div>
+                    <div class="text-slate-300">
+                      <strong>Alasan:</strong> Menggunakan lagu berhak cipta
+                      tanpa izin dan tidak memberikan kredit sumber.
+                    </div>
+                    <div class="text-emerald-300">
+                      <strong>Solusi:</strong> Gunakan musik bebas lisensi
+                      (Audio Library) atau minta izin & tuliskan kredit lengkap.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario B Card -->
+                <div
+                  class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 flex flex-col justify-between space-y-3"
+                >
+                  <div class="space-y-2">
+                    <span
+                      class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 rounded font-bold text-xs"
+                      >Skenario B</span
+                    >
+                    <p
+                      class="text-xs md:text-sm text-slate-200 leading-relaxed"
+                    >
+                      <strong>Kasus:</strong> Siti mengambil foto dari Unsplash
+                      (berlisensi bebas pakai) untuk PPT. Di slide terakhir,
+                      Siti menulis:
+                      <em>"Gambar latar belakang oleh Jane Doe via Unsplash"</em
+                      >.
+                    </p>
+                  </div>
+
+                  <!-- Toggle Answer Button -->
+                  <button
+                    onclick="toggleAnswer('ansB')"
+                    class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-slate-200 transition flex items-center justify-center space-x-1"
+                  >
+                    <i data-lucide="eye" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Tampilkan / Sembunyikan Kunci Jawaban</span>
+                  </button>
+
+                  <!-- Answer Box Hidden by default -->
+                  <div
+                    id="ansB"
+                    class="hidden p-3 bg-emerald-950/40 rounded-lg border border-emerald-800/40 text-xs space-y-1.5"
+                  >
+                    <div class="text-emerald-400 font-bold flex items-center">
+                      <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>
+                      Status: MENGHORMATI HAK CIPTA
+                    </div>
+                    <div class="text-slate-300">
+                      <strong>Alasan:</strong> Menggunakan sumber platform bebas
+                      lisensi legal dan mencantumkan atribusi/kredit dengan
+                      benar.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 9: Diskusi Kasus - Skenario C & D -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="9"
+          >
+            <div class="space-y-4">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-pink-500/10 text-pink-400 rounded-xl border border-pink-500/20"
+                >
+                  <i data-lucide="help-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-pink-400"
+                    >Diskusi Kelompok (2/2)</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Analisis Skenario Kasus "Boleh atau Tidak?"
+                  </h2>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <!-- Scenario C Card -->
+                <div
+                  class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 flex flex-col justify-between space-y-3"
+                >
+                  <div class="space-y-2">
+                    <span
+                      class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 rounded font-bold text-xs"
+                      >Skenario C</span
+                    >
+                    <p
+                      class="text-xs md:text-sm text-slate-200 leading-relaxed"
+                    >
+                      <strong>Kasus:</strong> Edo mengopi (*copy-paste*) seluruh
+                      isi artikel blog teknologi ke Word tugasnya dan
+                      mengumpulkannya atas namanya sendiri tanpa menyebut
+                      penulis asli.
+                    </p>
+                  </div>
+
+                  <!-- Toggle Answer Button -->
+                  <button
+                    onclick="toggleAnswer('ansC')"
+                    class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-slate-200 transition flex items-center justify-center space-x-1"
+                  >
+                    <i data-lucide="eye" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Tampilkan / Sembunyikan Kunci Jawaban</span>
+                  </button>
+
+                  <!-- Answer Box Hidden by default -->
+                  <div
+                    id="ansC"
+                    class="hidden p-3 bg-rose-950/40 rounded-lg border border-rose-800/40 text-xs space-y-1.5"
+                  >
+                    <div class="text-rose-400 font-bold flex items-center">
+                      <i data-lucide="x-circle" class="w-4 h-4 mr-1"></i>
+                      Status: MELANGGAR HAK CIPTA
+                    </div>
+                    <div class="text-slate-300">
+                      <strong>Alasan:</strong> Melakukan plagiarisme (mengklaim
+                      karangan tulisan orang lain sebagai karya pribadi).
+                    </div>
+                    <div class="text-emerald-300">
+                      <strong>Solusi:</strong> Rangkum dengan bahasa sendiri
+                      (parafrasa) dan tuliskan tautan sumber/penulisnya.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Scenario D Card -->
+                <div
+                  class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 flex flex-col justify-between space-y-3"
+                >
+                  <div class="space-y-2">
+                    <span
+                      class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 rounded font-bold text-xs"
+                      >Skenario D</span
+                    >
+                    <p
+                      class="text-xs md:text-sm text-slate-200 leading-relaxed"
+                    >
+                      <strong>Kasus:</strong> Rani menggambar ulang karakter
+                      komik favorit dengan gaya lukisannya sendiri (*fanart*),
+                      lalu mengunggah ke IG dengan caption kredit ke komikus
+                      original.
+                    </p>
+                  </div>
+
+                  <!-- Toggle Answer Button -->
+                  <button
+                    onclick="toggleAnswer('ansD')"
+                    class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-slate-200 transition flex items-center justify-center space-x-1"
+                  >
+                    <i data-lucide="eye" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Tampilkan / Sembunyikan Kunci Jawaban</span>
+                  </button>
+
+                  <!-- Answer Box Hidden by default -->
+                  <div
+                    id="ansD"
+                    class="hidden p-3 bg-emerald-950/40 rounded-lg border border-emerald-800/40 text-xs space-y-1.5"
+                  >
+                    <div class="text-emerald-400 font-bold flex items-center">
+                      <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>
+                      Status: MENGHORMATI HAK CIPTA
+                    </div>
+                    <div class="text-slate-300">
+                      <strong>Alasan:</strong> Menghargai dan mengapresiasi
+                      pencipta asli serta memberikan kredit yang jelas saat
+                      mengunggah fanart.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 10: Ringkasan Catatan Siswa -->
+          <div
+            class="slide-content hidden transition-all duration-300"
+            data-slide="10"
+          >
+            <div class="space-y-4">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="p-2.5 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20"
+                >
+                  <i data-lucide="notebook-pen" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs uppercase font-bold tracking-wider text-indigo-400"
+                    >Rangkuman Akhir</span
+                  >
+                  <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Ringkasan Utama Catatan Siswa
+                  </h2>
+                </div>
+              </div>
+
+              <div
+                class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 space-y-3 text-xs md:text-sm"
+              >
+                <div class="flex items-start space-x-3">
+                  <span
+                    class="px-2 py-0.5 bg-brand-500 text-white font-bold rounded text-xs flex-shrink-0 mt-0.5"
+                    >1</span
+                  >
+                  <p class="text-slate-200">
+                    <strong>Hak Cipta (Copyright)</strong> adalah hak eksklusif
+                    pencipta untuk mengatur penggunaan karya digitalnya (lagu,
+                    gambar, tulisan, video).
+                  </p>
+                </div>
+
+                <div class="flex items-start space-x-3">
+                  <span
+                    class="px-2 py-0.5 bg-brand-500 text-white font-bold rounded text-xs flex-shrink-0 mt-0.5"
+                    >2</span
+                  >
+                  <p class="text-slate-200">
+                    Mengambil, mengedit, atau mengunggah ulang karya orang lain
+                    tanpa izin dan tanpa mencantumkan sumber adalah
+                    <strong>pelanggaran hak cipta</strong>.
+                  </p>
+                </div>
+
+                <div class="flex items-start space-x-3">
+                  <span
+                    class="px-2 py-0.5 bg-brand-500 text-white font-bold rounded text-xs flex-shrink-0 mt-0.5"
+                    >3</span
+                  >
+                  <p class="text-slate-200">
+                    Hak cipta penting untuk <strong>melindungi karya</strong>,
+                    <strong>menghargai usaha/kreativitas pencipta</strong>, dan
+                    melatih <strong>tanggung jawab digital</strong>.
+                  </p>
+                </div>
+
+                <div class="flex items-start space-x-3">
+                  <span
+                    class="px-2 py-0.5 bg-brand-500 text-white font-bold rounded text-xs flex-shrink-0 mt-0.5"
+                    >4</span
+                  >
+                  <p class="text-slate-200">
+                    <strong>3 Cara Menghormati:</strong> (1) Minta Izin, (2)
+                    Gunakan Konten Lisensi Bebas (Pixabay/Unsplash/Pexels), (3)
+                    Cantumkan Atribusi/Credit.
+                  </p>
+                </div>
+              </div>
+
+              <div class="text-center pt-2">
+                <p class="text-xs text-slate-400">
+                  💡 Klik tombol <strong>"Modus Catatan Siswa"</strong> di pojok
+                  kanan atas untuk melihat versi rangkuman lengkap yang siap
+                  dicetak!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide Navigation Footer Controls -->
+        <div
+          class="no-print bg-slate-900/90 border-t border-slate-800 p-4 flex items-center justify-between"
+        >
+          <!-- Slide Counter -->
+          <div class="text-xs md:text-sm text-slate-400 font-medium">
+            Slide
+            <span id="currentSlideNum" class="text-white font-bold">1</span>
+            dari <span id="totalSlideNum">10</span>
+          </div>
+
+          <!-- Slide Thumbnail dots -->
+          <div
+            class="hidden sm:flex items-center space-x-1.5"
+            id="slideDotsContainer"
+          >
+            <!-- Dots generated dynamically via JS -->
+          </div>
+
+          <!-- Next/Prev Controls -->
+          <div class="flex items-center space-x-2">
+            <button
+              id="prevBtn"
+              onclick="prevSlide()"
+              class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center space-x-1 text-xs md:text-sm"
+            >
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              <span>Sebelumnya</span>
+            </button>
+            <button
+              id="nextBtn"
+              onclick="nextSlide()"
+              class="px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition flex items-center space-x-1 text-xs md:text-sm shadow-md shadow-brand-500/20"
+            >
+              <span>Berikutnya</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FULL STUDENT NOTES VIEW CONTAINER (Hidden by default, toggled via button) -->
+    <section
+      id="notesViewContainer"
+      class="hidden max-w-4xl mx-auto p-4 md:p-8 space-y-8 my-6"
+    >
+      <!-- Header Note -->
+      <div
+        class="no-print bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between"
+      >
+        <div class="flex items-center space-x-3">
+          <i data-lucide="file-text" class="w-6 h-6 text-brand-500"></i>
+          <div>
+            <h2 class="font-bold text-white">
+              Tampilan Ringkasan Catatan Siswa
+            </h2>
+            <p class="text-xs text-slate-400">
+              Ringkasan rapi untuk bahan belajar atau dicetak langsung.
+            </p>
+          </div>
+        </div>
+        <button
+          onclick="toggleViewMode()"
+          class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 transition"
+        >
+          Kembali ke Slide
+        </button>
+      </div>
+
+      <!-- Print Header Title -->
+      <div class="text-center space-y-2 border-b border-slate-700 pb-6">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white">
+          CATATAN MATERI: HAK CIPTA KONTEN DIGITAL
+        </h1>
+        <p class="text-sm text-slate-400">
+          Mata Pelajaran: KKA / Informatika | Kelas VII SMP
+        </p>
+      </div>
+
+      <!-- Note Section Pemantik -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-amber-400 flex items-center">
+          <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> Studi Kasus Awal &
+          Pertanyaan Pemantik
+        </h2>
+        <ul
+          class="list-disc list-inside text-sm text-slate-300 space-y-2 leading-relaxed"
+        >
+          <li>
+            Konten digital di internet (fanart, musik TikTok, video game)
+            diciptakan dengan waktu dan usaha.
+          </li>
+          <li>
+            Konten yang diunggah ke internet **bukan milik bersama** yang bebas
+            diambil tanpa izin.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Note Section 1 -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-indigo-400 flex items-center">
+          <i data-lucide="bookmark" class="w-5 h-5 mr-2"></i> 1. Konsep Dasar
+          Hak Cipta
+        </h2>
+        <ul
+          class="list-disc list-inside text-sm text-slate-300 space-y-2 leading-relaxed"
+        >
+          <li>
+            <strong>Pengertian:</strong> Hak Cipta (*Copyright*) adalah hak
+            khusus yang dimiliki oleh pencipta atas karya digitalnya (lagu,
+            gambar, tulisan, video).
+          </li>
+          <li>
+            <strong>Prinsip Utama:</strong> Orang lain tidak boleh mengambil,
+            mengedit, atau membagikan karya tersebut tanpa izin resmi pencipta.
+          </li>
+          <li>
+            <strong>Analogi:</strong> Sama seperti sertifikat kepemilikan barang
+            pribadi, karya digital memiliki pemilik sahnya.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Note Section 2 -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-rose-400 flex items-center">
+          <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> 2. Bentuk
+          Pelanggaran Hak Cipta Digital
+        </h2>
+        <ul
+          class="list-disc list-inside text-sm text-slate-300 space-y-2 leading-relaxed"
+        >
+          <li>
+            Mengambil gambar dari internet untuk tugas/sosmed tanpa izin dan
+            tanpa sumber.
+          </li>
+          <li>
+            Mengedit/memotong video milik orang lain lalu mengunggahnya
+            seolah-olah karya sendiri.
+          </li>
+          <li>
+            Mengunggah ulang (*reupload*) video atau musik orang lain ke
+            TikTok/YouTube demi penonton (*viewers*).
+          </li>
+        </ul>
+      </div>
+
+      <!-- Note Section 3 -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-emerald-400 flex items-center">
+          <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i> 3. Mengapa Hak
+          Cipta Penting?
+        </h2>
+        <ol
+          class="list-decimal list-inside text-sm text-slate-300 space-y-2 leading-relaxed"
+        >
+          <li>
+            <strong>Melindungi Konten:</strong> Mencegah pencurian karya di
+            internet.
+          </li>
+          <li>
+            <strong>Menghargai Pembuat Konten:</strong> Menghormati waktu,
+            tenaga, dan kreativitas pencipta.
+          </li>
+          <li>
+            <strong>Sikap Bertanggung Jawab:</strong> Menjadikan kita pengguna
+            internet yang adil dan bijak.
+          </li>
+        </ol>
+      </div>
+
+      <!-- Note Section 4 -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-amber-400 flex items-center">
+          <i data-lucide="check-circle-2" class="w-5 h-5 mr-2"></i> 4. Cara
+          Menghormati Hak Cipta
+        </h2>
+        <div class="grid md:grid-cols-3 gap-3 text-sm pt-2">
+          <div
+            class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/60"
+          >
+            <strong class="text-amber-300 block mb-1">1. Minta Izin</strong>
+            Hubungi pencipta sebelum menggunakan karyanya.
+          </div>
+          <div
+            class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/60"
+          >
+            <strong class="text-amber-300 block mb-1">2. Lisensi Bebas</strong>
+            Gunakan situs penyedia aset gratis (Pixabay, Unsplash, Pexels).
+          </div>
+          <div
+            class="p-3 bg-slate-900/60 rounded-lg border border-slate-700/60"
+          >
+            <strong class="text-amber-300 block mb-1">3. Tulis Atribusi</strong>
+            Cantumkan nama pembuat dan situs sumber.
+          </div>
+        </div>
+      </div>
+
+      <!-- Note Section 5 -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-sky-400 flex items-center">
+          <i data-lucide="code" class="w-5 h-5 mr-2"></i> 5. Creative Commons &
+          Format Atribusi
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          <strong>Creative Commons (CC)</strong> adalah lisensi yang
+          memperbolehkan karya dipakai gratis asal mencantumkan kredit.
+        </p>
+        <div
+          class="p-3 bg-slate-950 rounded-lg text-xs font-mono text-emerald-400 border border-slate-800"
+        >
+          Format Contoh Atribusi: "Foto oleh: gidlark01 / Pixabay.com (2025)"
+        </div>
+      </div>
+
+      <!-- Note Section 6: Skenario Kasus -->
+      <div
+        class="notes-card bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-3"
+      >
+        <h2 class="text-lg font-bold text-pink-400 flex items-center">
+          <i data-lucide="help-circle" class="w-5 h-5 mr-2"></i> 6. Rangkuman
+          Skenario Kasus
+        </h2>
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="p-2.5 bg-slate-900/80 rounded-lg">
+            <strong>Skenario A (Budi):</strong> Melanggar (lagu berhak cipta
+            tanpa sumber untuk backsound YT).
+          </div>
+          <div class="p-2.5 bg-slate-900/80 rounded-lg">
+            <strong>Skenario B (Siti):</strong> Menghormati (foto Unsplash
+            berlisensi bebas dengan kredit).
+          </div>
+          <div class="p-2.5 bg-slate-900/80 rounded-lg">
+            <strong>Skenario C (Edo):</strong> Melanggar (copy-paste artikel
+            blog atas nama sendiri).
+          </div>
+          <div class="p-2.5 bg-slate-900/80 rounded-lg">
+            <strong>Skenario D (Rani):</strong> Menghormati (menggambar fanart &
+            memberikan kredit komikus asli).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Credit -->
+    <footer
+      class="no-print bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500"
+    >
+      Materi Hak Cipta Konten Digital • KKA SMP Kelas 7
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+      // State variables
+      let currentSlide = 1;
+      const totalSlides = 10;
+      let isNotesView = false;
+
+      // Initialize icons and UI elements
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+        buildSlideDots();
+        updateSlideUI();
+
+        // Touch gesture support for mobile devices
+        let touchstartX = 0;
+        let touchendX = 0;
+        const viewport = document.getElementById("slideViewport");
+
+        viewport.addEventListener(
+          "touchstart",
+          (e) => {
+            touchstartX = e.changedTouches[0].screenX;
+          },
+          false,
+        );
+
+        viewport.addEventListener(
+          "touchend",
+          (e) => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+          },
+          false,
+        );
+
+        function handleSwipe() {
+          if (touchendX < touchstartX - 50) nextSlide();
+          if (touchendX > touchstartX + 50) prevSlide();
+        }
+      });
+
+      // Keyboard navigation listeners
+      document.addEventListener("keydown", (e) => {
+        if (isNotesView) return;
+        if (e.key === "ArrowRight" || e.key === "Space") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      // Toggle answer visibility for scenario cards
+      function toggleAnswer(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.classList.toggle("hidden");
+        }
+      }
+
+      // Build bottom slide thumbnail dots
+      function buildSlideDots() {
+        const container = document.getElementById("slideDotsContainer");
+        container.innerHTML = "";
+        for (let i = 1; i <= totalSlides; i++) {
+          const dot = document.createElement("button");
+          dot.className = `w-2 h-2 rounded-full transition-all duration-200 ${i === currentSlide ? "bg-brand-500 w-5" : "bg-slate-700 hover:bg-slate-600"}`;
+          dot.onclick = () => goToSlide(i);
+          dot.title = `Ke Slide ${i}`;
+          container.appendChild(dot);
+        }
+      }
+
+      // Navigate slides
+      function goToSlide(n) {
+        if (n < 1 || n > totalSlides) return;
+        currentSlide = n;
+        updateSlideUI();
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          updateSlideUI();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 1) {
+          currentSlide--;
+          updateSlideUI();
+        }
+      }
+
+      // Update UI states for presentation viewport
+      function updateSlideUI() {
+        const slides = document.querySelectorAll(".slide-content");
+        slides.forEach((slide) => {
+          const num = parseInt(slide.getAttribute("data-slide"));
+          if (num === currentSlide) {
+            slide.classList.remove("hidden");
+          } else {
+            slide.classList.add("hidden");
+          }
+        });
+
+        // Update Progress Bar
+        const percent = (currentSlide / totalSlides) * 100;
+        document.getElementById("progressBar").style.width = `${percent}%`;
+
+        // Update Slide Counter Number
+        document.getElementById("currentSlideNum").innerText = currentSlide;
+        document.getElementById("totalSlideNum").innerText = totalSlides;
+
+        // Update Prev/Next Button Enabled State
+        document.getElementById("prevBtn").disabled = currentSlide === 1;
+        document.getElementById("nextBtn").disabled =
+          currentSlide === totalSlides;
+
+        // Refresh slide thumbnail dots
+        buildSlideDots();
+      }
+
+      // Toggle between Presentation View and Notes View Mode
+      function toggleViewMode() {
+        isNotesView = !isNotesView;
+        const presContainer = document.getElementById("presentationContainer");
+        const notesContainer = document.getElementById("notesViewContainer");
+        const toggleText = document.getElementById("toggleViewText");
+
+        if (isNotesView) {
+          presContainer.classList.add("hidden");
+          notesContainer.classList.remove("hidden");
+          toggleText.innerText = "Tampilan Slide";
+        } else {
+          presContainer.classList.remove("hidden");
+          notesContainer.classList.add("hidden");
+          toggleText.innerText = "Modus Catatan Siswa";
+        }
+      }
+
+      // Toggle Fullscreen Mode
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch((err) => {
+            alert(`Gagal masuk mode fullscreen: ${err.message}`);
+          });
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+      }
+
+      // EXPORT TO EDITABLE POWERPOINT (.PPTX)
+      function exportToPPTX() {
+        try {
+          let pptx = new PptxGenJS();
+          pptx.layout = "LAYOUT_16x9";
+          pptx.author = "Guru KKA";
+          pptx.title = "Hak Cipta Konten Digital - Kelas 7";
+
+          const COLOR_BG = "0F172A";
+          const COLOR_TEXT_WHITE = "FFFFFF";
+          const COLOR_TEXT_MUTED = "94A3B8";
+          const COLOR_ACCENT = "6366F1";
+
+          // SLIDE 1: Cover
+          let s1 = pptx.addSlide();
+          s1.background = { color: COLOR_BG };
+          s1.addText("KKA / INFORMATIKA - KELAS 7 SMP", {
+            x: 0.8,
+            y: 1.2,
+            w: 8.4,
+            h: 0.4,
+            fontSize: 14,
+            color: "818CF8",
+            bold: true,
+          });
+          s1.addText("Memahami Konsep Dasar\nHak Cipta Konten Digital", {
+            x: 0.8,
+            y: 1.8,
+            w: 8.4,
+            h: 2.0,
+            fontSize: 32,
+            color: COLOR_TEXT_WHITE,
+            bold: true,
+          });
+          s1.addText(
+            "Belajar menjadi pengguna dan pembuat konten internet yang kreatif, bijak, adil, dan bertanggung jawab.",
+            {
+              x: 0.8,
+              y: 4.0,
+              w: 8.4,
+              h: 1.0,
+              fontSize: 16,
+              color: COLOR_TEXT_MUTED,
+            },
+          );
+
+          // SLIDE 2: Pemantik
+          let s2 = pptx.addSlide();
+          s2.background = { color: COLOR_BG };
+          s2.addText("AKTIVITAS AWAL: STUDI KASUS SINGKAT", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "F59E0B",
+            bold: true,
+          });
+          s2.addText(
+            'Pertanyaan Diskusi Kelas:\n1. "Kalau kamu membuat gambar fanart selama 3 hari, lalu ada orang lain yang mengambilnya, menghapus namamu, dan menjualnya dalam bentuk kaos tanpa izin, bagaimana perasaanmu?"\n2. "Apakah boleh kita memakai lagu/gambar orang lain untuk konten YouTube/TikTok kita sendiri?"',
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 2.5,
+              fontSize: 15,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+          s2.addText(
+            "Tujuan: Menyadarkan bahwa konten digital yang diunggah ke internet tidak otomatis menjadi 'milik bersama' yang bebas diambil.",
+            {
+              x: 0.8,
+              y: 4.2,
+              w: 8.4,
+              h: 0.8,
+              fontSize: 13,
+              color: "818CF8",
+              italic: true,
+            },
+          );
+
+          // SLIDE 3: Konsep
+          let s3 = pptx.addSlide();
+          s3.background = { color: COLOR_BG };
+          s3.addText("KONSEP DASAR HAK CIPTA", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: COLOR_ACCENT,
+            bold: true,
+          });
+          s3.addText(
+            "Hak Cipta (Copyright) adalah hak khusus yang dimiliki pencipta untuk mengatur siapa yang boleh menggunakan karyanya.\nSama seperti kepemilikan barang pribadi, karya digital memiliki pemilik sah yang wajib dihormati.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 1.8,
+              fontSize: 14,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 4: Pelanggaran
+          let s4 = pptx.addSlide();
+          s4.background = { color: COLOR_BG };
+          s4.addText("BENTUK PELANGGARAN HAK CIPTA", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "F43F5E",
+            bold: true,
+          });
+          s4.addText(
+            "1. Mengambil & Memakai Gambar Bebas tanpa sumber.\n2. Mengedit / Memotong Karya Orang Lain tanpa izin.\n3. Mengunggah Ulang (Reupload) Konten ke TikTok/YouTube demi viewers.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.0,
+              fontSize: 15,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 5: Pentingnya
+          let s5 = pptx.addSlide();
+          s5.background = { color: COLOR_BG };
+          s5.addText("MENGAPA HAK CIPTA ITU PENTING?", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "10B981",
+            bold: true,
+          });
+          s5.addText(
+            "1. Melindungi Karya dari Pencurian atau Penyalahgunaan.\n2. Menghargai Kreator atas waktu, tenaga, dan ide karyanya.\n3. Melatih Sikap Bertanggung Jawab di dunia digital.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.0,
+              fontSize: 15,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 6: Cara Menghormati
+          let s6 = pptx.addSlide();
+          s6.background = { color: COLOR_BG };
+          s6.addText("CARA MENGHORMATI HAK CIPTA", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "F59E0B",
+            bold: true,
+          });
+          s6.addText(
+            "1. Mintalah Izin sebelum menggunakan karya orang lain.\n2. Gunakan Konten Bebas Lisensi (Pixabay, Unsplash, Pexels).\n3. Cantumkan Nama Sumber / Kredit Pembuat Karya.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.0,
+              fontSize: 15,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 7: CC & Kredit
+          let s7 = pptx.addSlide();
+          s7.background = { color: COLOR_BG };
+          s7.addText("CREATIVE COMMONS & KREDIT", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "0EA5E9",
+            bold: true,
+          });
+          s7.addText(
+            "Creative Commons (CC) adalah lisensi khusus yang mengizinkan penggunaan karya secara gratis dan legal asal mencantumkan kredit.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 1.0,
+              fontSize: 14,
+              color: COLOR_TEXT_MUTED,
+            },
+          );
+          s7.addText(
+            'Contoh Format Penulisan Kredit:\n"Foto oleh: gidlark01 / Pixabay.com (2025)"',
+            {
+              x: 0.8,
+              y: 2.8,
+              w: 8.4,
+              h: 1.5,
+              fontSize: 16,
+              color: "10B981",
+              bold: true,
+            },
+          );
+
+          // SLIDE 8: Skenario A & B
+          let s8 = pptx.addSlide();
+          s8.background = { color: COLOR_BG };
+          s8.addText("ANALISIS SKENARIO (A & B)", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "EC4899",
+            bold: true,
+          });
+          s8.addText(
+            "Skenario A (Budi): Backsound lagu YT tanpa sumber.\n-> Status: MELANGGAR. Alasan: Lagu berhak cipta tanpa izin. Solusi: Gunakan Audio Library / minta izin.\n\nSkenario B (Siti): Foto Unsplash + Kredit 'Jane Doe via Unsplash'.\n-> Status: MENGHORMATI. Alasan: Menggunakan platform bebas lisensi + atribusi benar.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.5,
+              fontSize: 13,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 9: Skenario C & D
+          let s9 = pptx.addSlide();
+          s9.background = { color: COLOR_BG };
+          s9.addText("ANALISIS SKENARIO (C & D)", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: "EC4899",
+            bold: true,
+          });
+          s9.addText(
+            "Skenario C (Edo): Copy-paste artikel blog ke Word tugas atas nama sendiri.\n-> Status: MELANGGAR. Alasan: Plagiarisme. Solusi: Parafrasa dengan bahasa sendiri & tulis sumber.\n\nSkenario D (Rani): Menggambar fanart komik favorit + kredit komikus di IG.\n-> Status: MENGHORMATI. Alasan: Mengapresiasi karya asli dan memberikan kredit jelas.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.5,
+              fontSize: 13,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          // SLIDE 10: Rangkuman
+          let s10 = pptx.addSlide();
+          s10.background = { color: COLOR_BG };
+          s10.addText("RANGKUMAN CATATAN SISWA", {
+            x: 0.8,
+            y: 0.6,
+            w: 8.4,
+            h: 0.5,
+            fontSize: 22,
+            color: COLOR_ACCENT,
+            bold: true,
+          });
+          s10.addText(
+            "• Hak Cipta = Hak khusus pencipta atas karyanya.\n• Jangan mengutip/mereupload tanpa izin & tanpa kredit.\n• Penting untuk melindungi karya & menghargai effort pencipta.\n• Gunakan situs bebas lisensi & selalu tuliskan kredit sumber.",
+            {
+              x: 0.8,
+              y: 1.5,
+              w: 8.4,
+              h: 3.5,
+              fontSize: 14,
+              color: COLOR_TEXT_WHITE,
+            },
+          );
+
+          pptx.writeFile({ fileName: "Hak_Cipta_Konten_Digital_Kelas7.pptx" });
+        } catch (err) {
+          alert("Gagal mengekspor file PPTX: " + err.message);
+        }
+      }
+    </script>
+  </body>
+</html>
