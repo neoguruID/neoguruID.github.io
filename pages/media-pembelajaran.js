@@ -1,202 +1,55 @@
 // === 1. Logika Dark Mode & Menu Mobile ===
-const themeToggleBtn = document.getElementById("theme-toggle");
-const themeToggleBtnMobile = document.getElementById("theme-toggle-mobile");
-const themeIcon = document.getElementById("theme-icon");
-const themeIconMobile = document.getElementById("theme-icon-mobile");
+// const themeToggleBtn = document.getElementById("theme-toggle");
+// const themeToggleBtnMobile = document.getElementById("theme-toggle-mobile");
+// const themeIcon = document.getElementById("theme-icon");
+// const themeIconMobile = document.getElementById("theme-icon-mobile");
 
-if (
-  localStorage.getItem("color-theme") === "dark" ||
-  (!("color-theme" in localStorage) &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches)
-) {
-  document.documentElement.classList.add("dark");
-  updateIcons(true);
-} else {
-  document.documentElement.classList.remove("dark");
-  updateIcons(false);
-}
+// if (
+//   localStorage.getItem("color-theme") === "dark" ||
+//   (!("color-theme" in localStorage) &&
+//     window.matchMedia("(prefers-color-scheme: dark)").matches)
+// ) {
+//   document.documentElement.classList.add("dark");
+//   updateIcons(true);
+// } else {
+//   document.documentElement.classList.remove("dark");
+//   updateIcons(false);
+// }
 
-function updateIcons(isDark) {
-  if (isDark) {
-    themeIcon.classList.remove("fa-moon");
-    themeIcon.classList.add("fa-sun");
-    themeIconMobile.classList.remove("fa-moon");
-    themeIconMobile.classList.add("fa-sun");
-  } else {
-    themeIcon.classList.add("fa-moon");
-    themeIcon.classList.remove("fa-sun");
-    themeIconMobile.classList.add("fa-moon");
-    themeIconMobile.classList.remove("fa-sun");
-  }
-}
+// function updateIcons(isDark) {
+//   if (isDark) {
+//     themeIcon.classList.remove("fa-moon");
+//     themeIcon.classList.add("fa-sun");
+//     themeIconMobile.classList.remove("fa-moon");
+//     themeIconMobile.classList.add("fa-sun");
+//   } else {
+//     themeIcon.classList.add("fa-moon");
+//     themeIcon.classList.remove("fa-sun");
+//     themeIconMobile.classList.add("fa-moon");
+//     themeIconMobile.classList.remove("fa-sun");
+//   }
+// }
 
-function toggleTheme() {
-  if (document.documentElement.classList.contains("dark")) {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("color-theme", "light");
-    updateIcons(false);
-  } else {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("color-theme", "dark");
-    updateIcons(true);
-  }
-}
+// function toggleTheme() {
+//   if (document.documentElement.classList.contains("dark")) {
+//     document.documentElement.classList.remove("dark");
+//     localStorage.setItem("color-theme", "light");
+//     updateIcons(false);
+//   } else {
+//     document.documentElement.classList.add("dark");
+//     localStorage.setItem("color-theme", "dark");
+//     updateIcons(true);
+//   }
+// }
 
-themeToggleBtn.addEventListener("click", toggleTheme);
-themeToggleBtnMobile.addEventListener("click", toggleTheme);
+// themeToggleBtn.addEventListener("click", toggleTheme);
+// themeToggleBtnMobile.addEventListener("click", toggleTheme);
 
 const mobileMenuBtn = document.getElementById("mobile-menu-btn");
 const mobileMenu = document.getElementById("mobile-menu");
 mobileMenuBtn.addEventListener("click", () => {
   mobileMenu.classList.toggle("hidden");
 });
-
-// === 2. Data Dummy Media Pembelajaran (Dibuat >10 data untuk test paginasi) ===
-const mediaData = [
-  {
-    id: 1,
-    title: "Gelang Algoritma",
-    desc: "Simulasi algoritma dengan bantuan visualisasi gelang.",
-    subject: "Informatika",
-    topic: "Berpikir Komputasional",
-    grade: "VII",
-    icon: "fa-robot",
-    link: "AlgoritmaGelang/MP_algoritma_gelang.html",
-    target: "_blank",
-  },
-  {
-    id: 2,
-    title: "Cyber Detective",
-    desc: "Permainan edukatif untuk mengasah kemampuan berpikir komputasional dan analisis data.",
-    subject: "Informatika",
-    topic: "Berpikir Komputasional",
-    grade: "VIII",
-    icon: "fa-robot",
-    link: "CyberDetectiveGame/cyber_detective_game.html",
-    target: "_blank",
-  },
-  {
-    id: 3,
-    title: "Sandi Kuat",
-    desc: "Aplikasi web sederhana untuk melatih kemampuan membuat dan mengelola sandi yang kuat.",
-    subject: "Informatika",
-    topic: "Kata Sandi dan Keamanan Data",
-    grade: "VII",
-    icon: "fa-robot",
-    link: "SandiKuat/MPI_Kata_Sandi.html",
-    target: "_blank",
-  },
-  {
-    id: 4,
-    title: "Dunia Hardware",
-    desc: "Media untuk membantu siswa memahami konsep dan jenis perangkat keras komputer",
-    subject: "Informatika",
-    topic: "Sistem Komputer",
-    grade: "VII",
-    icon: "fa-microchip",
-    link: "DuniaHardware/MPI_Hardware.html",
-    target: "_blank",
-  },
-  {
-    id: 5,
-    title: "Dunia Software",
-    desc: "Media untuk membantu siswa memahami konsep dan jenis perangkat lunak komputer",
-    subject: "Informatika",
-    topic: "Sistem Komputer",
-    grade: "VII",
-    icon: "fa-laptop",
-    link: "DuniaSoftware/MPI_Software.html",
-    target: "_blank",
-  },
-  {
-    id: 6,
-    title: "Detektif Junior",
-    desc: "Gim Edukasi Berbasis Web untuk Melatih Berpikir Komputasional dan Numerasi Siswa SMP.",
-    subject: "Informatika",
-    topic: "Berpikir Komputasional",
-    grade: "Umum",
-    icon: "fa-robot",
-    link: "Detektif_Junior/Detektif_Junior.html",
-    target: "_self",
-  },
-  {
-    id: 7,
-    title: "Hak Cipta Konten Digital",
-    desc: "Slide interaktif untuk memahami hak cipta konten digital dan etika penggunaan konten digital.",
-    subject: "Koding dan Kecerdasan Artifisial",
-    topic: "Konten Digital",
-    grade: "VII",
-    icon: "fa-file-powerpoint",
-    link: "HakCipta/hak_cipta_konten_digital.html",
-    target: "_self",
-  },
-  {
-    id: 8,
-    title: "Media 8",
-    desc: "Deskripsi media pembelajaran ke-8 untuk pengujian paginasi.",
-    subject: "Informatika",
-    topic: "Topik",
-    grade: "VII",
-    icon: "fa-binary",
-    link: "#",
-    target: "_self",
-  },
-  {
-    id: 9,
-    title: "Media 9",
-    desc: "Deskripsi media pembelajaran ke-9 untuk pengujian paginasi.",
-    subject: "Koding dan Kecerdasan Artifisial",
-    topic: "Topik",
-    grade: "VIII",
-    icon: "fa-cat",
-    link: "#",
-    target: "_self",
-  },
-  {
-    id: 10,
-    title: "Media 10",
-    desc: "Deskripsi media pembelajaran ke-10 untuk pengujian paginasi.",
-    subject: "Informatika",
-    topic: "Topik",
-    grade: "VII",
-    icon: "fa-cloud",
-    link: "#",
-    target: "_self",
-  },
-  {
-    id: 11,
-    title: "Media 11",
-    desc: "Deskripsi media pembelajaran ke-11 untuk pengujian paginasi.",
-    subject: "Koding dan Kecerdasan Artifisial",
-    topic: "Topik",
-    grade: "IX",
-    icon: "fa-terminal",
-    link: "#",
-    target: "_self",
-  },
-  {
-    id: 12,
-    title: "Media 12",
-    desc: "Deskripsi media pembelajaran ke-12 untuk pengujian paginasi.",
-    subject: "Umum",
-    topic: "Topik Umum",
-    grade: "Umum",
-    icon: "fa-map-marked-alt",
-    link: "#",
-    target: "_self",
-  },
-  {
-    id: 13,
-    title: "Media 13",
-    desc: "Deskripsi media pembelajaran ke-13 untuk pengujian paginasi.",
-    subject: "Umum",
-    topic: "Topik Umum",
-    grade: "Umum",
-    icon: "fa-map-marked-alt",
-    link: "#",
-    target: "_self",
-  },
-];
 
 // === 3. Variabel State Paginasi & Filter ===
 let filteredData = [...mediaData];

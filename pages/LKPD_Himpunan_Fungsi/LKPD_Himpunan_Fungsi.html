@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LKPD Kantin Digital Sekolah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --g: #0f6b5c;
+        --gd: #0a4a40;
+        --y: #ffc72c;
+        --bg: #f5f8f7;
+        --ink: #17262b;
+        --mint: #dceee9;
+        --r: #c42b3b;
+        --line: #9db8b1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          18px/1.6 "Atkinson Hyperlegible",
+          system-ui,
+          sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Baloo 2", system-ui, sans-serif;
+        line-height: 1.2;
+        margin: 0;
+      }
+      .hid {
+        display: none !important;
+      }
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 0 16px 48px;
+      }
+      .top {
+        background: var(--g);
+        color: #fff;
+        border-bottom: 6px solid var(--y);
+      }
+      .top .wrap {
+        padding: 14px 16px 10px;
+      }
+      .top h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+      .top h1 span {
+        background: var(--y);
+        color: var(--ink);
+        padding: 0 10px;
+        border-radius: 6px;
+      }
+      .top p {
+        margin: 2px 0 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+      .card {
+        background: #fff;
+        border: 2px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+      label.f {
+        display: block;
+        font-weight: 700;
+        margin-top: 14px;
+      }
+      .f input {
+        width: 100%;
+        font: inherit;
+        padding: 10px 12px;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        margin-top: 4px;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+      .btn {
+        background: var(--g);
+        color: #fff;
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 22px;
+        font-weight: 700;
+      }
+      .btn:hover {
+        background: var(--gd);
+      }
+      .btn:disabled {
+        background: #9db8b1;
+        cursor: not-allowed;
+      }
+      .btn.s {
+        background: #fff;
+        color: var(--g);
+        border: 2px solid var(--g);
+      }
+      :focus-visible {
+        outline: 3px solid var(--y);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 5px var(--gd);
+      }
+      #st {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--bg);
+        padding: 10px 0;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--line);
+      }
+      #st button {
+        min-width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 2px solid var(--g);
+        background: #fff;
+        color: var(--g);
+        font-weight: 800;
+      }
+      #st button.ok {
+        background: var(--mint);
+      }
+      #st button.ok::after {
+        content: "✓";
+        font-size: 0.7rem;
+        margin-left: 1px;
+      }
+      #st button.on {
+        background: var(--g);
+        color: #fff;
+      }
+      .who {
+        margin-left: auto;
+        align-self: center;
+        font-size: 0.9rem;
+      }
+      .dt {
+        margin-top: 16px;
+        border: 2px solid var(--y);
+        border-radius: 12px;
+        background: #fff8dc;
+        padding: 8px 16px;
+      }
+      .dt summary {
+        font-weight: 700;
+        cursor: pointer;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 8px 0;
+        max-width: 100%;
+      }
+      td,
+      th {
+        border: 1.5px solid var(--line);
+        padding: 5px 10px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      th {
+        background: var(--mint);
+      }
+      .sec {
+        display: none;
+      }
+      .sec.on {
+        display: block;
+      }
+      .sec h2 {
+        font-size: 1.6rem;
+        color: var(--gd);
+        margin: 24px 0 6px;
+      }
+      .sec h2 small {
+        font:
+          400 0.9rem "Atkinson Hyperlegible",
+          sans-serif;
+        color: #456;
+      }
+      .k,
+      .c {
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin: 10px 0;
+      }
+      .k {
+        background: var(--mint);
+        border-left: 6px solid var(--g);
+      }
+      .c {
+        background: #fff;
+        border: 2px dashed var(--g);
+      }
+      .h {
+        margin: 2px 0 14px;
+        font-size: 0.95rem;
+        color: #345;
+      }
+      .h summary {
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--g);
+      }
+      .i {
+        font: inherit;
+        border: 0;
+        border-bottom: 2px solid var(--g);
+        background: #f0f7f5;
+        padding: 1px 6px;
+        margin: 0 2px;
+        border-radius: 4px 4px 0 0;
+        min-width: 2.4em;
+      }
+      .r {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-right: 14px;
+        padding: 3px 0;
+      }
+      input[type="radio"] {
+        width: 22px;
+        height: 22px;
+        accent-color: var(--g);
+      }
+      .cy {
+        width: 44px;
+        height: 38px;
+        border: 2px solid var(--g);
+        border-radius: 8px;
+        background: #f0f7f5;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--gd);
+      }
+      .q {
+        background: #fff;
+        border: 2px solid var(--line);
+        border-left: 10px solid var(--g);
+        border-radius: 12px;
+        padding: 4px 18px 8px;
+        margin: 18px 0;
+      }
+      .q.q2 {
+        background: linear-gradient(90deg, #fff6d6, #fff 60%);
+        border-left-color: var(--y);
+      }
+      .q > p:first-child {
+        margin-top: 10px;
+      }
+      .r.b {
+        display: flex;
+        margin: 4px 0;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 28px;
+        gap: 10px;
+      }
+      #aw {
+        text-align: center;
+      }
+      #aw h2 {
+        font-size: 2rem;
+        color: var(--gd);
+      }
+      .stamp {
+        display: inline-block;
+        margin: 16px 0;
+        padding: 14px 26px;
+        border: 5px double var(--r);
+        color: var(--r);
+        border-radius: 14px;
+        font:
+          800 1.6rem "Baloo 2",
+          sans-serif;
+        transform: rotate(-3deg);
+        animation: st 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+      }
+      @keyframes st {
+        from {
+          transform: scale(2.2) rotate(-12deg);
+          opacity: 0;
+        }
+      }
+      .bd {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 10px 0 20px;
+      }
+      .bd span {
+        background: var(--mint);
+        border: 2px solid var(--g);
+        border-radius: 999px;
+        padding: 6px 16px;
+        font-weight: 700;
+      }
+      .bd span.no {
+        opacity: 0.45;
+        border-style: dashed;
+      }
+      .acts {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      dialog {
+        border: 3px solid var(--g);
+        border-radius: 14px;
+        max-width: 460px;
+      }
+      #ph {
+        display: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .stamp {
+          animation: none;
+        }
+      }
+      @media print {
+        @page {
+          margin: 14mm;
+        }
+        body {
+          background: #fff;
+          font-size: 12pt;
+        }
+        #intro,
+        #aw,
+        .top,
+        #st,
+        .nav,
+        .np,
+        dialog {
+          display: none !important;
+        }
+        #app {
+          display: block !important;
+        }
+        .sec {
+          display: block !important;
+        }
+        #ph {
+          display: block;
+          border-bottom: 3px solid #000;
+          margin-bottom: 8px;
+        }
+        #ph h1 {
+          font-size: 18pt;
+        }
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+        .dt {
+          border-color: #999;
+          background: #fff;
+          break-inside: avoid;
+        }
+        .dt[open] {
+          display: block;
+        }
+        .sec p,
+        .sec table {
+          break-inside: avoid;
+        }
+        .i {
+          background: none;
+          border-bottom: 1.5px solid #000;
+        }
+        .cy {
+          border: 1px solid #000;
+          background: #fff;
+        }
+        .q,
+        .q.q2 {
+          background: #fff;
+          border: 1px solid #888;
+          border-left: 5px solid #000;
+          margin: 8px 0;
+          padding: 2px 10px;
+          break-inside: avoid;
+        }
+        .sec h2 {
+          margin-top: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <h1><span>Kantin</span> Digital Sekolah</h1>
+        <p>LKPD Himpunan dan Fungsi · Informatika Kelas 8</p>
+      </div>
+    </header>
+
+    <div id="intro" class="wrap">
+      <div class="card">
+        <h2>Selamat datang, Programmer Kantin!</h2>
+        <p>
+          Kantin sekolahmu akan jadi digital. Tugasmu: menyiapkan data pesanan
+          dan aturan hitung harga. Kerjakan sendiri, pelan-pelan. Jawabanmu
+          tersimpan otomatis di Chromebook ini.
+        </p>
+        <label class="f"
+          >Nama lengkap<input id="nm" autocomplete="off"
+        /></label>
+        <label class="f"
+          >Kelas (contoh: 8B)<input id="kl" autocomplete="off"
+        /></label>
+        <label class="f"
+          >No. absen (boleh dikosongkan)<input
+            id="ab"
+            autocomplete="off"
+            inputmode="numeric"
+        /></label>
+        <p style="margin-top: 18px">
+          <button class="btn" id="go" disabled>Mulai mengerjakan</button>
+        </p>
+      </div>
+    </div>
+
+    <div id="app" class="wrap hid">
+      <div id="ph">
+        <h1>LKPD Kantin Digital Sekolah: Himpunan dan Fungsi</h1>
+        <p id="phi"></p>
+      </div>
+      <nav id="st" aria-label="Bagian LKPD"></nav>
+      <details class="dt" open>
+        <summary>Data Kantin Digital</summary>
+        <table>
+          <tr>
+            <th>Menu</th>
+            <th>Harga</th>
+            <th>Menu</th>
+            <th>Harga</th>
+          </tr>
+          <tr>
+            <td>Nasi goreng</td>
+            <td>Rp10.000</td>
+            <td>Gorengan</td>
+            <td>Rp2.000</td>
+          </tr>
+          <tr>
+            <td>Mie ayam</td>
+            <td>Rp8.000</td>
+            <td>Es teh</td>
+            <td>Rp3.000</td>
+          </tr>
+          <tr>
+            <td>Bakso</td>
+            <td>Rp9.000</td>
+            <td>Es jeruk</td>
+            <td>Rp4.000</td>
+          </tr>
+        </table>
+        <p>
+          <b>Adik</b> memesan: mie ayam, gorengan, es teh.<br /><b>Kakak</b>
+          memesan: nasi goreng, gorengan, es teh, es jeruk.
+        </p>
+      </details>
+      <div id="secs"></div>
+      <div class="nav np">
+        <button class="btn s" id="pv">← Sebelumnya</button
+        ><button class="btn" id="nx">Berikutnya →</button>
+      </div>
+    </div>
+
+    <div id="aw" class="wrap hid"></div>
+
+    <dialog id="dlg">
+      <h3>Simpan sebagai PDF</h3>
+      <p>
+        Di jendela cetak: pada <b>Tujuan</b> pilih <b>Simpan sebagai PDF</b>,
+        lalu klik <b>Simpan</b>. Setelah itu kirim file PDF-nya dari emailmu
+        sendiri ke gurumu.
+      </p>
+      <p>
+        <button class="btn" id="dgo">Buka jendela cetak</button>
+        <button class="btn s" id="dx">Batal</button>
+      </p>
+    </dialog>
+
+    <script>
+      const KEY = "lkpd-kantin-v1";
+      let S = { n: "", k: "", b: "", a: {}, p: 0 };
+      try {
+        const x = JSON.parse(localStorage.getItem(KEY));
+        if (x && x.a) S = x;
+      } catch (e) {}
+      const save = () => {
+        try {
+          localStorage.setItem(KEY, JSON.stringify(S));
+        } catch (e) {}
+      };
+      const esc = (s) =>
+        String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      const $ = (id) => document.getElementById(id);
+      const T = (s) =>
+        s.replace(/\[\[([?~]?)(\w+)(?::(.*?))?\]\]/g, (m, t, k, x) => {
+          const v = S.a[k] || "";
+          if (t == "~")
+            return `<button type="button" class="cy" data-k="${k}" aria-label="Isi centang atau silang">${v || "&nbsp;"}</button>`;
+          if (t == "?")
+            return x
+              .split("|")
+              .map(
+                (o) =>
+                  `<label class="r${o.length > 22 ? " b" : ""}"><input type="radio" name="${k}" data-k="${k}" value="${o}"${v == o ? " checked" : ""}>${o}</label>`,
+              )
+              .join("");
+          return `<input class="i" data-k="${k}" data-s="${x || 8}" size="${Math.max(x || 8, v.length + 1)}" value="${esc(v)}" autocomplete="off" aria-label="Isian ${k}">`;
+        });
+      const H = (t) =>
+        `<details class="h np"><summary>💡 Bantuan</summary>${t}</details>`;
+      const K = (t) => `<div class="k np">${t}</div>`;
+      const C = (t) => `<div class="c np"><b>Contoh Dikerjakan.</b> ${t}</div>`;
+      const TB = (h, r) =>
+        `<table><tr>${h.map((x) => `<th>${x}</th>`).join("")}</tr>${r.map((a) => `<tr>${a.map((x) => `<td>${x}</td>`).join("")}</tr>`).join("")}</table>`;
+      const M = [
+        "Nasi goreng",
+        "Mie ayam",
+        "Bakso",
+        "Gorengan",
+        "Es teh",
+        "Es jeruk",
+      ];
+      const blanks = (p, n, w) =>
+        Array.from({ length: n }, (_, i) => `[[${p}${i}:${w}]]`).join(", ");
+
+      const SEC = [
+        [
+          "A. Mengenal Himpunan",
+          10,
+          `
+${K("<b>Himpunan</b> adalah kelompok benda yang anggotanya <b>jelas</b>. Ditulis dengan kurung kurawal { }, anggotanya dipisah koma. Banyak anggota ditulis <b>n( )</b>.")}
+${C("Menu = {nasi goreng, mie ayam, bakso, gorengan, es teh, es jeruk}. Hitung satu per satu: 1, 2, 3, 4, 5, 6. Jadi n(Menu) = 6.")}
+<p><b>A1.</b> Tulis himpunan pesanan Adik.<br>Adik = { ${blanks("a1_", 3, 11)} }</p>
+${H("Lihat bagian “Data Kantin Digital” di atas. Satu menu untuk satu isian.")}
+<p><b>A2.</b> Tulis himpunan pesanan Kakak.<br>Kakak = { ${blanks("a2_", 4, 11)} }</p>
+<p><b>A3.</b> Banyak anggota: n(Adik) = [[a3a:3]] &nbsp; n(Kakak) = [[a3b:3]]</p>
+<p><b>A4.</b> Pilih jawaban yang benar.</p>
+${TB(
+  ["Pernyataan", "Jawaban"],
+  [
+    ["Bakso adalah anggota himpunan Adik", "[[?a4a:Anggota|Bukan anggota]]"],
+    [
+      "Gorengan adalah anggota himpunan Kakak",
+      "[[?a4b:Anggota|Bukan anggota]]",
+    ],
+    ["Es jeruk adalah anggota himpunan Adik", "[[?a4c:Anggota|Bukan anggota]]"],
+  ],
+)}
+<p><b>A5.</b> Mana yang bisa dijadikan himpunan?<br>[[?a5:Menu yang dipesan Adik|Menu yang enak]]</p>
+<p>Pilih alasan yang cocok dengan jawabanmu:<br>[[?a5r:Anggotanya jelas, bisa disebutkan satu per satu|Anggotanya tergantung selera tiap orang|Anggotanya hanya sedikit]]</p>`,
+        ],
+
+        [
+          "B. Gabungan dan Irisan",
+          12,
+          `
+${K("<b>Gabungan (∪)</b>: semua menu yang dipesan salah satu atau keduanya; menu yang sama ditulis <b>1 kali</b>. Kata kunci: <b>ATAU</b>.<br><b>Irisan (∩)</b>: menu yang dipesan <b>keduanya sekaligus</b>. Kata kunci: <b>DAN</b>.")}
+${C("Dewi = {bakso, es teh}, Eko = {bakso, gorengan}. Bakso dipesan keduanya (✓✓), es teh hanya Dewi (✓✗), gorengan hanya Eko (✗✓). Irisan = menu dengan dua centang = {bakso}. Gabungan = menu dengan minimal satu centang = {bakso, es teh, gorengan}.")}
+<p><b>B1.</b> Klik kotak untuk memilih ✓ atau ✗. Baris pertama sudah diisi sebagai contoh.</p>
+${TB(["Menu", "Adik pesan?", "Kakak pesan?", "Dua-duanya (irisan)", "Salah satu (gabungan)"], [["Nasi goreng", "✗", "✓", "✗", "✓"], ...M.slice(1).map((m, i) => [m, ...[0, 1, 2, 3].map((c) => `[[~b1_${i}${c}]]`)])])}
+<p><b>B2.</b> Adik ∩ Kakak = { ${blanks("b2_", 2, 11)} }</p>
+${H("Ambil menu yang kolom “Dua-duanya” berisi ✓.")}
+<p><b>B3.</b> Adik ∪ Kakak = { ${blanks("b3_", 5, 11)} }</p>
+${H("Ambil menu yang kolom “Salah satu” berisi ✓. Menu yang sama ditulis satu kali.")}
+<p><b>B4.</b> n(Adik) + n(Kakak) − n(irisan) = [[b4a:3]] + [[b4b:3]] − [[b4c:3]] = [[b4d:3]]<br>Hasilnya [[?b4e:sama|beda]] dengan banyak anggota di jawaban B3.</p>
+${H("Irisan dikurangi karena menu yang dipesan keduanya terhitung <b>dua kali</b> saat Adik dan Kakak dijumlahkan.")}
+<p><b>B5.</b> Gabungan atau irisan?</p>
+${TB(
+  ["Kalimat", "Operasi"],
+  [
+    ["Menu yang dipesan Adik <b>ATAU</b> Kakak", "[[?b5a:gabungan|irisan]]"],
+    ["Menu yang dipesan Adik <b>DAN</b> Kakak", "[[?b5b:gabungan|irisan]]"],
+  ],
+)}
+<p><b>B6.</b> Di jawaban B3, “es teh” dan “gorengan” hanya ditulis satu kali. Mengapa?<br>[[?b6:Anggota yang sama tidak ditulis berulang dalam himpunan|Es teh dan gorengan tidak jadi dipesan|Supaya tulisannya lebih rapi saja]]</p>`,
+        ],
+
+        [
+          "C. Fungsi: Mesin Harga",
+          13,
+          `
+${K("<b>Fungsi</b> adalah mesin dengan alur <b>Input → Aturan → Output</b>. Syarat utamanya: <b>setiap input punya tepat satu output</b> (tidak boleh nol, tidak boleh dua atau lebih).")}
+${C("Mesin Harga: input <b>bakso</b> → aturan: cari di daftar harga → output <b>Rp9.000</b>.")}
+<p><b>C1.</b> Jalankan Mesin Harga untuk pesanan Adik.</p>
+${TB(
+  ["Input (menu)", "Aturan", "Output (harga)"],
+  [
+    ["Mie ayam", "cari di daftar harga", "Rp[[c1a:6]]"],
+    ["Gorengan", "cari di daftar harga", "Rp[[c1b:6]]"],
+    ["Es teh", "cari di daftar harga", "Rp[[c1c:6]]"],
+  ],
+)}
+<p><b>C2.</b> Total bayar Adik:<br>Rp[[c2a:6]] + Rp[[c2b:6]] + Rp[[c2c:6]] = Rp[[c2d:7]]</p>
+${H("Jumlahkan dua angka dulu, hasilnya baru ditambah angka berikutnya.")}
+<p><b>C3.</b> Total bayar Kakak:<br>Rp[[c3a:6]] + Rp[[c3b:6]] + Rp[[c3c:6]] + Rp[[c3d:6]] = Rp[[c3e:7]]</p>
+<p><b>C4.</b> Uji mesin: apakah ini fungsi? Pertanyaan kuncinya: <b>satu input menghasilkan berapa output?</b></p>
+${C("Mesin 1: menu → harga. Input “es teh” hanya menghasilkan satu output, yaitu Rp3.000. Setiap menu punya satu harga, jadi Mesin 1 adalah fungsi ✓")}
+<p><b>Mesin 2: pelanggan → menu yang dipesan.</b> Input “Adik” menghasilkan [[c4a:3]] output. Mesin 2: [[?c4b:fungsi|bukan fungsi]]</p>
+<p><b>Mesin 3: menu → jenis.</b> es teh → minuman, es jeruk → minuman, mie ayam → makanan. Setiap input punya [[c4c:3]] output. Mesin 3: [[?c4d:fungsi|bukan fungsi]]</p>
+${H("Yang tidak boleh adalah <b>satu input</b> punya banyak output. Dua input berbeda boleh menghasilkan output yang sama.")}
+<p><b>C5.</b> Pilih kesimpulan yang benar tentang fungsi.<br>[[?c5:Setiap input punya tepat satu output|Setiap input punya dua output|Boleh ada input yang tidak punya output]]</p>`,
+        ],
+
+        [
+          "D. Fungsi Diskon f(x)",
+          10,
+          `
+${K("Promo <b>Potongan Hari Jumat</b>: total belanja dikurangi Rp2.000. Ditulis <b>f(x) = x − 2.000</b>.<br><b>x</b> = total sebelum diskon (input). <b>f(x)</b> = total bayar setelah diskon (output), dibaca “f dari x”.")}
+${C("Total belanja Rp10.000, berarti x = 10.000. f(10.000) = 10.000 − 2.000 = <b>8.000</b>. Caranya: ganti huruf x dengan angkanya, lalu hitung.")}
+<p><b>D1.</b> Total belanja Adik ada di C2.<br>f([[d1a:6]]) = [[d1b:6]] − 2.000 = [[d1c:6]]</p>
+${H("Masukkan angka dari C2 ke tempat x.")}
+<p><b>D2.</b> Total belanja Kakak ada di C3.<br>f([[d2a:6]]) = [[d2b:6]] − 2.000 = [[d2c:6]]</p>
+<p><b>D3.</b> Lengkapi tabel Mesin Diskon.</p>
+${TB(
+  ["x (sebelum diskon)", "f(x) setelah diskon"],
+  ["6.000", "11.000", "15.000", "20.000"].map((x, i) => [x, `[[d3_${i}:6]]`]),
+)}
+<p>Pola yang kulihat: output selalu [[?d3p:2.000 lebih kecil|2.000 lebih besar|sama]] dibanding inputnya.</p>
+<p><b>D4. Tantangan ⭐ (boleh dilewati).</b> Seorang pelanggan membayar <b>Rp17.000</b> setelah diskon. Berapa total belanja sebelum diskon? x = [[o_d4:7]]</p>
+${H("Mesin mengurangi 2.000. Untuk mencari input, lakukan kebalikannya. Atau coba tebak-uji: x = 18.000 menghasilkan f(18.000) = 16.000, masih kurang dari 17.000. Naikkan tebakanmu.")}`,
+        ],
+
+        [
+          "E. Misi Akhir: Patungan",
+          12,
+          `
+<p>Adik dan Kakak makan bersama dan <b>berbagi</b>: menu yang sama cukup dipesan <b>1 porsi</b>. Kantin Digital mencatat pesanan gabungan mereka, lalu memberi diskon <b>f(x) = x − 2.000</b> pada totalnya.</p>
+<p><b>E1.</b> Adik ∪ Kakak = { ${blanks("e1_", 5, 11)} }</p>
+<p><b>E2.</b> Cari harga tiap menu, lalu jumlahkan. Hasilnya adalah x.</p>
+${TB(["Menu", "Harga"], [...[0, 1, 2, 3, 4].map((i) => [`[[e2m${i}:12]]`, `Rp[[e2h${i}:6]]`]), ["<b>Jumlah (x)</b>", "Rp[[e2x:7]]"]])}
+<p><b>E3.</b> Total bayar setelah diskon:<br>f([[e3a:6]]) = [[e3b:6]] − 2.000 = Rp[[e3c:7]]</p>
+<p><b>E4.</b> Kalau <b>tidak berbagi</b> (masing-masing memesan sendiri, tanpa diskon): total Adik + total Kakak = Rp[[e4a:6]] + Rp[[e4b:6]] = Rp[[e4c:7]]</p>
+<p><b>E5.</b> Uang yang dihemat berkat berbagi (sebelum diskon):<br>Rp[[e5a:7]] − Rp[[e5b:7]] = Rp[[e5c:7]]</p>
+<p><b>E6. Detektif!</b> Harga menu di irisan Adik ∩ Kakak: Rp[[e6a:6]] + Rp[[e6b:6]] = Rp[[e6c:7]]<br>Bandingkan dengan jawaban E5. Hasilnya [[?e6d:sama|beda]].<br>Jadi, uang yang dihemat sama dengan harga menu di [[?e6e:irisan|gabungan]].</p>
+${H("Menu irisan dipesan oleh keduanya, tapi sekarang hanya dibayar satu kali.")}
+<p><b>E7. Alur mesin Kantin Digital.</b><br>Gabungan: { [[e7a:26]] } → x = Rp[[e7b:7]] → f([[e7c:7]]) = [[e7d:7]] → total bayar: Rp[[e7e:7]]</p>`,
+        ],
+
+        [
+          "Refleksi",
+          3,
+          `
+<p><b>Cek dirimu.</b> Pilih sesuai kondisimu sekarang.</p>
+${TB(
+  ["Aku bisa…", "Pilihanku"],
+  [
+    [
+      "Menulis himpunan dan menghitung anggotanya",
+      "[[?r1:Sudah paham|Masih ragu|Perlu dibantu]]",
+    ],
+    [
+      "Mencari gabungan (ATAU) dan irisan (DAN)",
+      "[[?r2:Sudah paham|Masih ragu|Perlu dibantu]]",
+    ],
+    [
+      "Menjelaskan fungsi dan menguji suatu mesin",
+      "[[?r3:Sudah paham|Masih ragu|Perlu dibantu]]",
+    ],
+    ["Menghitung f(x)", "[[?r4:Sudah paham|Masih ragu|Perlu dibantu]]"],
+    [
+      "Memakai himpunan dan fungsi untuk soal cerita",
+      "[[?r5:Sudah paham|Masih ragu|Perlu dibantu]]",
+    ],
+  ],
+)}
+<p><b>Bagian yang paling sulit buatku:</b><br>[[?r6:A|B|C|D|E|Tidak ada]]</p>
+<p><b>Yang ingin kutanyakan ke guru</b> (boleh dikosongkan):<br>[[o_r7:40]]</p>`,
+        ],
+      ];
+      const LET = "ABCDER";
+      $("secs").innerHTML = SEC.map((s, i) =>
+        `<section class="sec" data-i="${i}"><h2>${T("Bagian " + s[0]) || ""} <small>${s[1]} menit</small></h2>${T(s[2])}</section>`.replace(
+          "Bagian Refleksi",
+          "Refleksi",
+        ),
+      ).join("");
+      document.querySelectorAll(".sec").forEach((s) => {
+        let q = null,
+          n = 0;
+        [...s.children].forEach((c) => {
+          if (c.tagName == "H2") return;
+          const f = c.firstElementChild;
+          if (
+            c.tagName == "P" &&
+            f &&
+            f.tagName == "B" &&
+            /^[A-E]\d\./.test(f.textContent)
+          ) {
+            q = document.createElement("div");
+            q.className = "q" + (n++ % 2 ? " q2" : "");
+            s.insertBefore(q, c);
+          }
+          if (q) q.appendChild(c);
+        });
+      });
+      $("st").innerHTML =
+        SEC.map(
+          (s, i) =>
+            `<button data-i="${i}" aria-label="${s[0]}">${LET[i]}</button>`,
+        ).join("") + '<span class="who" id="who"></span>';
+
+      const keys = (i) => [
+        ...new Set(
+          [...document.querySelectorAll(`.sec[data-i="${i}"] [data-k]`)]
+            .map((e) => e.dataset.k)
+            .filter((k) => !k.startsWith("o_")),
+        ),
+      ];
+      const done = (i) => keys(i).every((k) => (S.a[k] || "").trim());
+      const filled = (ks) => ks.every((k) => (S.a[k] || "").trim());
+      function show() {
+        document
+          .querySelectorAll(".sec")
+          .forEach((e) => e.classList.toggle("on", +e.dataset.i === S.p));
+        document.querySelectorAll("#st button").forEach((b) => {
+          const i = +b.dataset.i;
+          b.classList.toggle("on", i === S.p);
+          b.classList.toggle("ok", done(i));
+        });
+        $("pv").style.visibility = S.p ? "visible" : "hidden";
+        $("nx").textContent =
+          S.p == SEC.length - 1 ? "Selesai ✓" : "Berikutnya →";
+        save();
+      }
+      function go(i) {
+        S.p = i;
+        show();
+        scrollTo(0, 0);
+      }
+      function screen(id) {
+        ["intro", "app", "aw"].forEach((x) =>
+          $(x).classList.toggle("hid", x !== id),
+        );
+        scrollTo(0, 0);
+      }
+      function head() {
+        const t = `${S.n} · Kelas ${S.k}${S.b ? " · No. " + S.b : ""}`;
+        $("who").textContent = t;
+        $("phi").textContent =
+          t +
+          " · " +
+          new Date().toLocaleDateString("id-ID", { dateStyle: "long" });
+      }
+
+      document.addEventListener("input", (e) => {
+        const t = e.target,
+          k = t.dataset && t.dataset.k;
+        if (!k) return;
+        S.a[k] = t.value;
+        if (t.classList.contains("i"))
+          t.size = Math.max(+t.dataset.s, t.value.length + 1);
+        show();
+      });
+      document.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t.classList.contains("cy")) {
+          const v = ["", "✓", "✗"],
+            k = t.dataset.k,
+            n = v[(v.indexOf(S.a[k] || "") + 1) % 3];
+          S.a[k] = n;
+          t.innerHTML = n || "&nbsp;";
+          show();
+        }
+        if (t.closest("#st button")) go(+t.closest("#st button").dataset.i);
+      });
+      $("pv").onclick = () => go(S.p - 1);
+      $("nx").onclick = () => (S.p == SEC.length - 1 ? award() : go(S.p + 1));
+
+      const fi = () => {
+        $("go").disabled = !($("nm").value.trim() && $("kl").value.trim());
+      };
+      $("nm").value = S.n;
+      $("kl").value = S.k;
+      $("ab").value = S.b;
+      fi();
+      if (S.n && Object.keys(S.a).length)
+        $("go").textContent = "Lanjutkan mengerjakan";
+      ["nm", "kl", "ab"].forEach((id) => $(id).addEventListener("input", fi));
+      $("go").onclick = () => {
+        S.n = $("nm").value.trim();
+        S.k = $("kl").value.trim();
+        S.b = $("ab").value.trim();
+        head();
+        screen("app");
+        show();
+      };
+
+      function award() {
+        const d = SEC.filter((_, i) => done(i)).length;
+        const tier =
+          d == SEC.length
+            ? "Programmer Kantin Andal"
+            : d >= 4
+              ? "Programmer Kantin Tangguh"
+              : "Programmer Kantin Pemberani";
+        const msg =
+          d == SEC.length
+            ? "Semua bagian sudah kamu isi sampai selesai. Kerja kerasmu luar biasa!"
+            : d >= 4
+              ? "Sebagian besar bagian sudah kamu kerjakan dengan sungguh-sungguh. Terus semangat!"
+              : "Kamu sudah berani mencoba dan mulai belajar. Itu langkah yang paling penting!";
+        const bs = [
+          [
+            "🧠 Penalar",
+            filled(["a5", "a5r", "b6", "c5", "d3p", "e6d", "e6e"]),
+          ],
+          ["⭐ Penantang", filled(["o_d4"])],
+          ["🪞 Pemikir Reflektif", done(5)],
+          ["📋 Pengisi Tuntas", d == SEC.length],
+        ];
+        $("aw").innerHTML =
+          `<div class="card"><h2>Selamat, ${esc(S.n)}!</h2><p>Kamu menyelesaikan LKPD Kantin Digital.</p><div class="stamp">${tier}</div><p>${msg}</p><p><b>${d} dari ${SEC.length}</b> bagian sudah terisi lengkap.</p><div class="bd">${bs.map((b) => `<span class="${b[1] ? "" : "no"}">${b[0]}${b[1] ? "" : " (belum)"}</span>`).join("")}</div>
+ <div class="acts"><button class="btn" id="pdf">Simpan sebagai PDF</button><button class="btn s" id="bk">Kembali mengisi</button></div>
+ <p style="font-size:.9rem">Langkah mengumpulkan: simpan PDF, lalu kirim file itu dari emailmu sendiri ke gurumu.</p></div>`;
+        $("pdf").onclick = () => $("dlg").showModal();
+        $("bk").onclick = () => {
+          screen("app");
+        };
+        screen("aw");
+      }
+      $("dx").onclick = () => $("dlg").close();
+      $("dgo").onclick = () => {
+        $("dlg").close();
+        const old = document.title;
+        document.title = `LKPD_Kantin_Digital_${S.n}_${S.k}`.replace(
+          /\s+/g,
+          "_",
+        );
+        head();
+        setTimeout(() => {
+          print();
+          document.title = old;
+        }, 100);
+      };
+      if (S.n && S.k) head();
+      show();
+    </script>
+  </body>
+</html>
